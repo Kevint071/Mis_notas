@@ -1,0 +1,1 @@
+Este espacio será para anotar todas las notas relacionadas con python, pruebas, descubrimientos y lo que haya.
