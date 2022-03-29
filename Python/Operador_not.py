@@ -21,7 +21,6 @@ lista = [1, 2, 6, 9, 3]
 
 print(f"\n{lista}")
 
-
 if 4 not in lista:
     print("\nEl número 4 no está en la lista")
 else:
