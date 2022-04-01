@@ -19,9 +19,6 @@ print(nombre[-4]) # t
 # El primer parametro antes de los ":" es la posicion desde la que se quiere comenzar y el parametro que va despues de los ":" es la posicion hasta la que se quiere llegar
 
 print(nombre[0:2]) # Cr
-
-# Solo me muestra la posicion 0 y 1 ya que el parámetro final agarra una posicion anterior a la que le pusimos, en este caso cogió desde la posicion 0 a la posición 1
-
 print(nombre[3:7]) # stia
 
 # Además tambien se pueden usar numeros negativos
@@ -29,29 +26,35 @@ print(nombre[3:7]) # stia
 print(nombre[-5: 6]) # sti
 print(nombre[-8:4]) # Cris
 
-# Lo que no se puede hacer es colocar una posicion inicial que este despues de la posicion final ya que en esos casos no agarraría ningun valor, como por ejemplo:
+# Lo que no se puede hacer es colocar una posicion inicial que esté despues de la posicion final ya que en esos casos no agarraría ningun valor, como por ejemplo:
 
-print(nombre[-3:2]) # None
-print(nombre[-6:1]) # None
+print(nombre[-3:2]) # 
+print(nombre[-6:1]) # 
 
-# Además de esto, hay un tercer parámetro el cual sirve para indicar la cantidad de pasos que se haran para llegar al número final, además de agregar el sentido en el cual irá
+# Hay un tercer parámetro el cual sirve para indicar la cantidad de pasos que se haran para llegar al número final, además de agregar el sentido en el cual irá
 
-print(nombre[7:-6:-1]) # naist
+print(nombre[1:6:2]) # rsi
+print(nombre[1:6:1]) # risti
+
+# Para devolver valores en reversa se coloca el ultimo valor negativo
+
+print(nombre[7:-6:-2]) # nist
 print(nombre[6:-4:-1]) # ai
 
-# Como se puede ver devuelve valores en reversa ya que se va desde una posicion mayor hasta una posicion menor con sentido negativo debido al ultimo parámetro negativo
+# Para decidir la cantidad de pasos que se van a recorrer se coloca el tercer parámetro diferente a 1
 
 print(nombre[0:6:2]) # Cit
 print(nombre[1:5:2]) # rs
 
-# Aqui se observa que va de 2 en 2 pasos, por lo tanto acepta un caracter y rechaza otro y asi sucesivamente hasta llegar al parámetro final. Como se observa va en sentido positivo
-
 # Para obtener todos los caracteres en reversa se hace lo siguiente:
 
-print(nombre[::-1]) # naitsirC   # Sentido en negativo
-print(nombre[::1]) # Cristian    # Sentido positivo
+print(nombre[::-1]) # naitsirC
 
-# Se observa que los valores por defecto de el parametro 1 y 2 varian de acuerdo al parámetro 3 y el valor por defecto del parametro 3 es positivo con paso 1
+# Para obtener todos los caracteres en sentido normal se hace lo siguiente
+
+print(nombre[::1]) # Cristian
+
+# El valor por defecto del parametro 3 es positivo con paso 1
 
 print(nombre[::]) # Cristian
 

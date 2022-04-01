@@ -7,6 +7,9 @@ nombre = "keiner"
 nombre = nombre.replace("e", "u")
 print(nombre) # kuinur
 
+nombre = nombre.replace("u", "")
+print(nombre) # kinr
+
 # Para quitar espacios adicionales en un string se usa el método strip()
 
 print("\nUsando el metodo strip():")
