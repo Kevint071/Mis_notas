@@ -58,4 +58,9 @@ print(nombre[::1]) # Cristian
 
 print(nombre[::]) # Cristian
 
+# Para guardar slices se hace lo siguiente
+
+variable = nombre[0:3]
+variable = nombre[::-1]
+
 
