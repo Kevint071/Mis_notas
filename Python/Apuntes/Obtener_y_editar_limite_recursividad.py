@@ -9,4 +9,4 @@ print(variable) # 1000
 
 sys.setrecursionlimit(1300) # El límite editado que se puso es 1300
 
-# Esto sirve para cuando necesites hacer algo con un límite de recursividad mayor a 997 ya que python por defecto coloca este número como el límite para que no haya un debordamiento en C y python no se bloquee.
+# Esto sirve para cuando necesites hacer algo con un límite de recursividad mayor a (el número de recursividad obtenido con sys.getrecursionlimit), ya que python por defecto coloca este número como el límite para que no haya un debordamiento en C y python no se bloquee.
