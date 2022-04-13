@@ -1,5 +1,5 @@
 from random import randint
-lista_usuario = []
+lista_usuario = [0]
 si_no = 1
 
 while si_no == 1:
@@ -35,10 +35,6 @@ while si_no == 1:
                 print("Número no válido")
 
         if numero_menos_1 == True and numero_mas_1 == True:
-            break
-        elif numero - 1 == 0  and numero_mas_1 == True:
-            print(f"Como ya has elegido el número {numero+1} ovbiamente el número que pienso es el {numero} así que has ganado\n")
-            win = 0
             break
 
         if num_usuario > numero:
