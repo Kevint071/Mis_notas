@@ -62,5 +62,3 @@ print(nombre[::]) # Cristian
 
 variable = nombre[0:3]
 variable = nombre[::-1]
-
-
