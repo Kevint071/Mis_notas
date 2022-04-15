@@ -1,9 +1,13 @@
 def entero(num):
+    # Se guardan la cantidad de valores del numero binario para luego usarlos como exponentes
+
     cantidad_numeros = range(len(num))
 
     exponentes = list(cantidad_numeros)
     exponentes.reverse()
-    print(num)
+
+    # Sumando las potencias de 2 si el valor de el numero binario contiene 1, si contiene 0 no se suman.
+
     acumulado = 0
 
     for i in cantidad_numeros:
@@ -13,10 +17,14 @@ def entero(num):
     return acumulado
 
 def binario(num):
+    # Hallar limite de exponente con base 2. La potencia no puede superar al número entero
+    
     exponente = 0
 
     while 2 ** exponente <= num:
         exponente += 1
+    
+    # Acumular la potencia que es menor a el número entero y luego esa potencia sumarla con la que sigue, si el resultado es mayor no se guarda y la potencia sigue quedando igual.
 
     acumulado = 0
     numero_binario = []
@@ -46,8 +54,7 @@ def run():
 
     if opcion == 1:
         while True:
-            num = input("Digite un número binario:")
-            num = list(num)
+            num = input("Digite un número binario: ")
 
             if num.count("0") + num.count("1") < len(num):
                 print("Solo digite numeros 1 y 0\n")
@@ -55,12 +62,12 @@ def run():
                 break
 
         num_entero = entero(num)
-        print(num_entero)
+        print(f"El número binario {num} a número entero es {num_entero}")
         
     elif opcion == 2:
-        num = int(input("Digite un número entero:"))
+        num = int(input("Digite un número entero: "))
         num_binario = binario(num)
-        print(num_binario)
+        print(f"El número {num} a binario es: {num_binario}")
 
 if __name__ == "__main__":
     run()
