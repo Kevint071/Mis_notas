@@ -5,4 +5,7 @@ diccionarios = {
 
 for i in diccionarios.values():
     print(f"Valores: {i}")
+
+    # Valores: 15
+    # Valores: M
     
