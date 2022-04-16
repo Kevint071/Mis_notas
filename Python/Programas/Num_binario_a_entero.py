@@ -1,5 +1,9 @@
 def entero(num):
-    # Se guardan la cantidad de valores del numero binario para luego usarlos como exponentes
+    """Convierte un numero binario a entero
+    
+    num string cualquier numero
+    returns un numero binario
+    """
 
     cantidad_numeros = range(len(num))
 
@@ -17,7 +21,11 @@ def entero(num):
     return acumulado
 
 def binario(num):
-    # Hallar limite de exponente con base 2. La potencia no puede superar al número entero
+    """Convierte un numero entero a binario
+
+    num int cualquier entero
+    returns un numero entero
+    """
     
     exponente = 0
 
