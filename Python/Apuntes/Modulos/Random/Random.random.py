@@ -5,7 +5,7 @@ import random
 valor_random = random.random()
 print(valor_random)
 
-# Este valor posee varios decimales que varian entre 17 y 18 o aveces 16
+# Este valor posee varios decimales aleatorios que varian entre 17 y 18 o aveces 16
 
 # Ejemplo:
          # 0.8394636473927384

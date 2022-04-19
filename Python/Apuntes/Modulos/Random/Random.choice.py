@@ -10,7 +10,3 @@ print(valor_lista)
 nombre = "Kevin"
 letra = random.choice(nombre)
 print(letra)
-
-# Pasar a archivo random.random()
-
-print(round(random.random() * 100, 2))
