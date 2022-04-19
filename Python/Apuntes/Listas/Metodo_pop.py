@@ -15,3 +15,11 @@ lista.pop(2) # Se elimina el valor con íncide 2 (3)
 print(lista) # [1, 2, 4, 5, 6, 7, 8, 4]
 
 lista.pop(1)
+
+# Uno puede ver el valor que elimina pop()
+
+print(lista.pop()) # 4
+print(lista) # [1, 4, 5, 6, 7, 8]
+
+print(lista.pop(2)) # 5
+print(lista) # [1, 4, 6, 7, 8]

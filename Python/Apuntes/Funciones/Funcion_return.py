@@ -8,7 +8,7 @@ def multiplicar(num1, num2):
     return resultado
 
 multiplicacion_3_6 = multiplicar(3, 6)
-print(multiplicacion_3_6)
+print(multiplicacion_3_6) # 18
 
 # Ejemplo 2
 
@@ -17,4 +17,4 @@ def mostrar_mensaje():
     return mensaje
 
 frase_mensaje = mostrar_mensaje()
-print(frase_mensaje)
+print(frase_mensaje) # "Hola, este es un mensaje de prueba"
