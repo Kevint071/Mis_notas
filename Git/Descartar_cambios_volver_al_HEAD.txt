@@ -1,0 +1,7 @@
+Para descartar cambios y volver al HEAD que se tenia anteriormente, sea por que ya tu código ha dejado de funcionar o por otros motivos inesperados se usa el comando:
+
+       git reset --hard HEAD~1
+
+Eso funciona para volver un HEAD atras, si se coloca despues del guion curvado un 2, te lleva al penultimo commit y asi sucesivamente.
+
+Hay que tener cuidado cuando se vaya a usar, sobretodo si se han creado nuevos archivos porque al hacer esto, estás dejando tu trabajo hecho hasta el ultimo commit que hiciste(el commit antes del no deseado), por lo que si creaste un archivo despues del ultimo commit que guardaste (el commit antes del no deseado), perderás el progreso hecho.
