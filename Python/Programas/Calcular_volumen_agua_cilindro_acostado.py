@@ -1,0 +1,91 @@
+from email.mime import base
+from math import pi, acos, degrees, tan
+
+
+def obtener_datos():
+    print("\n\n"+ "  PARA MEDIDAS PRECISAS USAR UNA MISMA MEDIDA MÉTRICA  ".center(80, "-") + "\n\n")
+
+    lista_datos = []
+
+    print('Nota: se le asignara la medida "u" a los siguientes datos, ya que esta medida representa cualquier medida que el usuario asigne. Ej: m, cm, km\n')
+
+    radio = float(input("Digite el radio de la base circular del cilindro: "))
+    largo = float(input("Digite el largo de el cilindro acostado: "))
+    altura_agua = float(input("Digite la altura del agua con el cilindro acostado: "))
+
+    lista_datos.append(radio)
+    lista_datos.append(largo)
+    lista_datos.append(altura_agua)
+
+    return lista_datos
+
+
+def mostrar_datos(*datos):
+
+    radio, largo, altura_agua, area, volumen, grados, area_radio_fondo, base_triangulo, area_triangulo = datos
+
+    print("\n\n"+ "  DATOS  ".center(80, "-") + "\n")
+
+    print("u = unidades\n")
+
+    print(f"Largo: {largo} u")
+    print(f"Radio: {radio} u")
+    print(f"Altura del agua: {altura_agua} u\n")
+    print(f"Área de la base: {area} u²")
+    print(f"Volumen del cilindro: {volumen} u³\n")
+    print(f"Grados triángulo área: {grados}°")
+    print(f"Area desde el centro hasta fondo con esquina de altura agua: {area_radio_fondo} u³\n")
+    print(f"Base del triángulo: {base_triangulo} u")
+    print(f"Área del triángulo: {area_triangulo} u\n")
+    print(f"Área del agua: {(area_radio_fondo - area_triangulo):g} u²")
+    print(f"Volumen del agua: {((area_radio_fondo - area_triangulo) * largo):.2f} u³")
+
+
+def aproximar_datos(*datos):
+
+    datos_aproximados = []
+    
+    for i in datos:
+        i = (f"{i:g}")
+
+        if i.count(".") >= 1:
+            i = float(i)
+        else:
+            i = int(i)
+        
+        datos_aproximados.append(i)
+    
+    return datos_aproximados
+
+
+def run():
+    radio, largo, altura_agua = obtener_datos()
+
+    radio, largo, altura_agua = aproximar_datos(radio, largo, altura_agua)
+
+    area = pi * radio ** 2
+    area, = aproximar_datos(area)
+
+    volumen = area * largo
+    volumen, = aproximar_datos(volumen)
+
+    coseno = (radio - altura_agua) / radio 
+    radianes = acos(coseno)
+    grados = 2 * degrees(radianes)
+    grados, = aproximar_datos(grados)
+
+    area_radio_fondo = (pi * (radio ** 2)) * (grados /360)
+    area_radio_fondo, = aproximar_datos(area_radio_fondo)
+
+    tangente = tan(((grados/2) * pi)/180)
+
+    base_triangulo = tangente * (radio - altura_agua)
+    base_triangulo, = aproximar_datos(base_triangulo)
+
+    area_triangulo = base_triangulo * (radio - altura_agua)
+    
+    mostrar_datos(radio, largo, altura_agua, area, volumen, grados, area_radio_fondo, base_triangulo, area_triangulo)
+
+    
+if __name__ == "__main__":
+    run()
