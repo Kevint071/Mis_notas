@@ -19,11 +19,9 @@ print("Hola el uso de desempaquetar un conjunto de datos es %s y %s, además de 
 
 # Ejemplo de uso con funcion
 
-# Se coloca 
-
 def sumar_numeros(*numeros):
 
-    # Se suman los números contenidos en una tupla por medio de un ciclo fort
+    # Se suman los números contenidos en una tupla por medio de un ciclo for
 
     acum = 0
     for i in numeros:
