@@ -1,13 +1,30 @@
-from email.mime import base
 from math import pi, acos, degrees, tan
 
 
 def obtener_datos():
-    print("\n\n"+ "  PARA MEDIDAS PRECISAS USAR UNA MISMA MEDIDA MÉTRICA  ".center(80, "-") + "\n\n")
+    print("\n\n"+ "  PARA MEDIDAS PRECISAS DIGITE MEDIDA MÉTRICA  ".center(80, "-") + "\n\n")
+
+    nombre_medidas = ["Milímetros", "Centímetros", "Decímetros", "Metros", "Decámetros", "Hectómetros", "Kilómetros"]
+    medidas = ["mm", "cm", "dm", "m", "Dm", "Hm", "Km"]
+    cantidad_medidas = list(range(1, len(medidas)+1))
+
+    print("Medidas\n")
+
+    while True:
+
+        for item, nombre, medida in zip(cantidad_medidas, nombre_medidas, medidas):
+            print(f"{item}. {nombre} ({medida})")
+
+        medida = input("\nDigite una medida de la siguiente lista: ")
+
+        if medida in medidas:
+            print(f'\nNOTA: Se le asignara la medida "{medida}" a los datos que el usuario digite \n')
+            break
+        else:
+            print("Medida no válida, digite la medida abreviada, Ej: cm, m, Dm")
+
 
     lista_datos = []
-
-    print('Nota: se le asignara la medida "u" a los siguientes datos, ya que esta medida representa cualquier medida que el usuario asigne. Ej: m, cm, km\n')
 
     radio = float(input("Digite el radio de la base circular del cilindro: "))
     largo = float(input("Digite el largo de el cilindro acostado: "))
@@ -36,7 +53,7 @@ def mostrar_datos(*datos):
     print(f"Grados triángulo área: {grados}°")
     print(f"Area desde el centro hasta fondo con esquina de altura agua: {area_radio_fondo} u³\n")
     print(f"Base del triángulo: {base_triangulo} u")
-    print(f"Área del triángulo: {area_triangulo} u\n")
+    print(f"Área del triángulo: {abs(area_triangulo)} u\n")
     print(f"Área del agua: {(area_radio_fondo - area_triangulo):g} u²")
     print(f"Volumen del agua: {((area_radio_fondo - area_triangulo) * largo):.2f} u³")
 
