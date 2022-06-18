@@ -35,4 +35,26 @@ print(vocales_a_o) # {97:101, 105:111}
 
 # Se observa que arroja una respuesta similar que con el método maketrans
 
+# Además, el método maketrans posee un tercer parámetro el cual sirve para eliminar carácteres de el texto
+
+saludo = "Hola mundo"
+convertir = saludo.maketrans("oa", "eo", "dm")
+print(convertir) # {111: 101, 97: 111, 100: None, 109: None}
+
+convertir = saludo.maketrans("oa", "eo", "uo")
+print(convertir) # {111: None, 97: 111, 117: None}
+
+convertir = saludo.maketrans("au", "oa", "uos")
+print(convertir) # {97: 111, 117: None, 111: None, 115: None
+
+# Lo primero que se hace en este proceso es colocar en primer lugar los keycodes del parámetro 1
+
+# Mientras se colocan, se revisa que no los caracteres del parámetro 1 no estén en el parámetro 3
+
+# Si los caracteres del parámetro 1 están en el parámetro 3, no habrá conversión con el parámetro 2 y habrá conversion con (parametro 1) y (None)
+
+# Luego de esto se colocan en el diccionario los caracteres del parámetro 3 que no estén en el parámetro 1 ya que si alguno está en el parametro 1, entonces este pasará a la posicion del parámetro 1 en el diccionario (osea en la posicion donde debia ir el parámetro 1)
+
+# Luego, se colocan los caracteres del tercer parámetro pasando del caracter del tercer parámetro a None (ningun valor), por lo tanto se elimina el caracter.
+
 # Para reemplazar estos caracteres se usa el método translate
