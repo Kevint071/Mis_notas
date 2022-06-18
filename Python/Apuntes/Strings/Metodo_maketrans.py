@@ -45,7 +45,7 @@ convertir = saludo.maketrans("oa", "eo", "uo")
 print(convertir) # {111: None, 97: 111, 117: None}
 
 convertir = saludo.maketrans("au", "oa", "uos")
-print(convertir) # {97: 111, 117: None, 111: None, 115: None
+print(convertir) # {97: 111, 117: None, 111: None, 115: None}
 
 # Lo primero que se hace en este proceso es colocar en primer lugar los keycodes del parámetro 1
 
