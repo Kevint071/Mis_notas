@@ -1,8 +1,5 @@
 # Para desempaquetar una lista se usa el símbolo *
 
-from ast import FunctionDef
-
-
 lista = [1, 2, 4, "Hola"]
 
 print(*lista) # 1 2 4 Hola
