@@ -1,20 +1,22 @@
 # Usos de pip
 
-## Instalar módulo o libreria
+## Instalar módulo o librería
 
-Para instalar un modulo o libreria con una version específica de python, ejecutamos el siguiente comando: 
+Para instalar un módulo o librería con una versión específica de python, ejecutamos el siguiente comando: 
 
-    python3.x -m pip install <modulo>
+    python3.x -m pip install <módulo>
 
->Cambia "x" por el numero de la version de Python que se esté usando y "<modulo>" por el nombre del modulo que se vaya  a instalar
+>Cambia "x" por el número de la version de Python que se esté usando y "<modulo>" por el nombre del módulo que se vaya  a instalar
 
-## Deinstalar módulo o librería
+## Desinstalar módulo o librería
 
-Para desinstalar un modulo o librería solo se cambia la palabra "install" por "uninstall"
+Para desinstalar un módulo o librería solo se cambia la palabra "install" por "uninstall"
+
+    python3.x -m pip uninstall <módulo>
 
 ## Ver los módulos instalados
 
-Para ver los modulos instalados en una version específica de python ejecutamos el siguiente comando:
+Para ver los módulos instalados en una versión específica de python, ejecutamos el siguiente comando:
 
     python3.x -m pip freeze
 
