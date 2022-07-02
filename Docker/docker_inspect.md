@@ -25,8 +25,8 @@ Este comando, muestra a detalle un contenedor específico.
 
 Por lo general se usa este comando cuando se quiere matar el proceso de un contenedor
 
-                docker inspect --format '{{.State.Pid}}' nombre_contenedor
+        docker inspect --format '{{.State.Pid}}' nombre_contenedor
 
 Para matar el proceso principal se ejecuta el comando:
 
-                kill -9 ID
+        kill -9 ID
