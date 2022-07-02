@@ -1,0 +1,17 @@
+El comando:
+
+        docker run
+
+se utiliza para ejecutar contenedores de Docker pero para correr un contenedor en específico se ejecuta con el nombre de la siguiente forma:
+
+        docker run nombre_contenedor
+
+Como función especial de docker run, este comando no ejecuta el mismo contenedor que ejecutó antes, sino que crea uno nuevo y lo ejecuta.
+
+Si.. lindo y todo, pero no es la única función de este comando. Tambien puedes crear el mismo contenedor con otro nombre usando el atributo "--name (en resumen es como copiar un contenedor pero con otro nombre):
+
+        docker run --name nombre_nuevo nombre_imagen
+
+Esto hara se cree un nuevo contenedor con otro nombre. Ojo que esto crea un nuevo contenedor, no le cambia el nombre al actual.
+
+Algo que no se puede hacer es intentar crear 2 contenedores con el mismo nombre
