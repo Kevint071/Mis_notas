@@ -2,7 +2,7 @@
 
 1. Primero que todo descargamos el archivo "XZ compressed source tarball" de la verison de Python que sea de nuestra conveniencia. Link: https://www.python.org
 
-2. Luego, accedemos a la carpeta de descargas con:
+2. Luego, abrimos la terminal y accedemos a la carpeta de descargas con:
     
         cd Descargas
 
@@ -35,8 +35,6 @@ ___
 
         ./configure --enable-optimizations"
     
-    
-
 8. Ahora escribimos el siguiente comando  para iniciar el proceso de compilación:
 
         make -j 8

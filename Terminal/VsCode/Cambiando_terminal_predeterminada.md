@@ -13,7 +13,7 @@ Para hacer esto primeramente:
 
 ## En Windows
 
-- Escirbimos en la barra de busqueda:
+- Escribimos en la barra de busqueda:
 
         terminal integrated default windows
     
