@@ -1,4 +1,4 @@
-Con el comando:
+# Comando docker run
 
         - docker run -it nombre_contenedor 
 
