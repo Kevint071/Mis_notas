@@ -1,5 +1,0 @@
-Para hacer esto primeramente:
-
-    ♦  Adentro de VS Code, presionamos las teclas "ctrl" + "," ó manualmente nos dirigimos a "Archivo/Preferencias/Configuracion"
-
-    ♦  Luego escirbimos en la barra de busqueda: "terminal integrated default windows" para solamente luego elegir la terminal que se desee

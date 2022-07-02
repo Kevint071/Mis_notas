@@ -1,9 +1,0 @@
-El comando "git show" muestra todos los cambios hechos en un archivos en específico.
-
-Se ejecuta de la sigueinte manera:
-
-git show Nombre_del_archivo
-
-Para ver todos los ultimos cambios hechos se hace lo siguiente:
-
-git show

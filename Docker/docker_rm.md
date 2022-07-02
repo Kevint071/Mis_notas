@@ -1,12 +1,22 @@
-El comando
+# Comando docker rm
 
-        - docker rm
+        docker rm
 
-Puede eliminar un contenedor de la lista de contenedores que tengamos en nuestro sistema de la siguientes formas:
+Con este comando se puede eliminar un contenedor de la lista de contenedores que tengamos en nuestro sistema.
 
-        1. docker rm <contenedor>
-        2. docker rm <id_contenedor>
+## Maneras de ejecutarlo
+
+1. Por el nombre del contenedor
+
+        docker rm <nombre_contenedor>
+
+2. Por el id del contenedor
+
+        docker rm <id_contenedor>
+
+## Atributo -f
     
 Para borrar definitivamente un contenedor se usa el atributo "-f". Esto es por si sucede algun inconveniente en el borrado.
 
-        - docker rm -f <contenedor>
+        docker rm -f <nombre_contenedor>
+        docker rm -f <id_contenedor>

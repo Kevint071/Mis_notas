@@ -1,9 +1,0 @@
-pwd: Nos muestra la ruta de carpetas en la que te encuentras ahora mismo.
-
-cd: Nos permite navegar entre carpetas.
-- cd /: Ir a la ruta principal:
-- cd o cd ~: Ir a la ruta de tu usuario
-- cd carpeta/subcarpeta: Navegar a una ruta dentro de la carpeta donde estamos ahora mismo.
-- cd .. (cd + dos puntos): Regresar una carpeta hacia atrás.
-- Si quieres referirte al directorio en el que te encuentras ahora mismo puedes usar cd . (cd + un punto).
-- cd ../.. : Restroceder 2 carpetas (si se quiere retroceder mas se usan mas de doble dos puntos)

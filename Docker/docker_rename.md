@@ -1,12 +1,17 @@
-Con el comando
+# Comando docker rename
 
-        - docker rename
+        docker rename
 
-Se le cambia el nombre a un contenedor. Este comando quita el nombre viejo del contenedor y le agrega el que el usuario escriba.
+Este comando le cambia el nombre a un contenedor. Este comando quita el nombre actual del contenedor y le agrega el que el usuario escriba.
 
-Para hacer esto se ejecuta el comando de la siguiente forma:
+## Formas de ejecutar este comando  
 
-        1. docker rename nombre_actual nombre_nuevo
-        2. docker rename id_del_contenedor nombre_nuevo
+1. Por medio del nombre del contenedor
 
-Esto no crea un nuevo contenedor como lo hacia el comando run. Este le cambia el nombre a el mismo contenedor.
+        docker rename <nombre_actual> <nombre_nuevo>
+        
+2. Por medio del ID del contenedor
+        
+        docker rename <id_contenedor> <nombre_nuevo>
+
+>Esto no crea un nuevo contenedor como lo hacia el comando run. Este le cambia el nombre a el mismo contenedor.
