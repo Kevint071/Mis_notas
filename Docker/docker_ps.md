@@ -1,6 +1,6 @@
 # Comando docker ps
 
-        - docker ps
+        docker ps
 
 Con este comando, se muestran los contenedores que estén activos pero no muestra todos los contenedores.
 
@@ -8,7 +8,7 @@ Con este comando, se muestran los contenedores que estén activos pero no muestr
 
 Con este atributo muestran tanto los contenedores que estén activos como los que no
 
-        - docker ps -a
+        docker ps -a
 
 Una muestra de este comando con el contenedor de hello-world
 
