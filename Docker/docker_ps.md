@@ -12,5 +12,5 @@ Con este atributo muestran tanto los contenedores que estén activos como los qu
 
 Una muestra de este comando con el contenedor de hello-world
 
-        CONTAINER ID      IMAGE                            COMMAND                      CREATED                                    STATUS                                            PORTS                           NAMES
-        d1834f844143         hello-world               "/hello"                         12 seconds ago                Exited (0) 8 seconds ago                                                         adoring_spence
+CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                     PORTS     NAMES
+3ba3af62bdd0   hello-world   "/hello"   5 seconds ago   Exited (0) 3 seconds ago             serene_taussig
