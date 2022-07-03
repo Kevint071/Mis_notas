@@ -70,4 +70,4 @@ Con el comando anterior, se corre el archivo null y hasta que ese proceso no se 
 
 ### Atributo -d
 
-La funcion del atribudo -d es el de dejar activo un contenedor, ya que sin este, el contenedor se apagaría.
+La funcion del atribudo -d es el de dejar activo un contenedor, ya que sin este, el contenedor se apagaría. En otras palabras deja el contenedor corriendo en segundo plano.
