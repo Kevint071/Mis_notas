@@ -1,4 +1,4 @@
-# Almacenar y ejecutar un contenedor en un volumen
+# Almacenando un contenedor dentro de un volumen
 
 ## 1. Crear volumen
 
@@ -23,6 +23,8 @@ Para hacerlo escribimos el siguiente comando:
 
     docker exec -it db bash
 
-Listo, se nos debería abrir el bash de este contenedor. Si queremos usar mongo, escribirmos el comando:
+Listo, se nos debería abrir el bash de este contenedor. Si queremos usar mongo, escribimos el comando:
 
     mongo
+
+> Lo que guardemos dentro de este volumen, quedará allí, aún si eliminamos el contenedor

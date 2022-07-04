@@ -10,7 +10,7 @@ Este comando sirve para ejecutar un contenedor. Este comando recibe 3 parámetro
 
 - Primero ponemos a correr el contenedor de ubuntu, ya que si no está activo, no funcionaría
 
-        docker run --name <cualquier_nombre> -d ubuntu tail -f /dev/null
+        docker run --name nombre_random -d ubuntu tail -f /dev/null
 
 - Para comprobar que el contenedor esté activo escribimos el siguiente comando:
 
