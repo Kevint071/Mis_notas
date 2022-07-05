@@ -8,7 +8,11 @@ Se utiliza para ejecutar contenedores de Docker pero para correr un contenedor e
 
 Como función especial de docker run, este comando no ejecuta el mismo contenedor que ejecutó antes, sino que crea uno nuevo y lo ejecuta.
 
+<br>
+
 ## Crear el mismo contenedor con otro nombre
+
+<br>
 
 Tambien puedes crear el mismo contenedor con otro nombre usando el atributo "--name" (en resumen es como copiar un contenedor pero con otro nombre)
 
@@ -18,16 +22,22 @@ Esto hará que se cree un nuevo contenedor con otro nombre.
 - Ojo que esto crea un nuevo contenedor, no le cambia el nombre al actual.
 - Algo que no se puede hacer es intentar crear 2 contenedores con el mismo nombre
 
+<br>
+
 ## Atributo -it
 
         docker run -it nombre_contenedor 
 
 Se puede interactuar con el contenedor si este tiene entrada.
 
+<br>
+
 ## Las funciones i y t en "-it" son:
 
         i: interactivo
         t: abre la consola
+
+<br>
 
 ## Atributo -p
 
