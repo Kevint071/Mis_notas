@@ -20,3 +20,9 @@ Para borrar definitivamente un contenedor se usa el atributo "-f". Esto es por s
 
         docker rm -f <nombre_contenedor>
         docker rm -f <id_contenedor>
+
+## Usando docker --rm
+
+Este comando se utiliza cuando vaya a eliminar un contenedor después de ejecutarlo:
+
+        docker run --rm <contenedor>

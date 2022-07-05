@@ -28,3 +28,9 @@ Se puede interactuar con el contenedor si este tiene entrada.
 
         i: interactivo
         t: abre la consola
+
+## Atributo -p
+
+Este atributo sirve para publicar un contenedor y poderlo conectar a un puerto
+
+        docker run -p -d <puerto_maquina>:<puerto_contenedor> <nombre_contenedor>
