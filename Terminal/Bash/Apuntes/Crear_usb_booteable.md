@@ -44,11 +44,11 @@ Por lo general nuestra memoria siempre usará el disco /dev/sdb
 
 Para desmontar el pen drive hacemos lo siguiente:
 
-    umont /dev/sdb1
+    umont /dev/sdb
 
 En caso de que les salga el error **"umount: /dev/sdb1: no montado."**, escriban el siguiente comando:
 
-    umont /dev/sdb
+    umont /dev/sdb1
 
 <br>
 
@@ -64,15 +64,19 @@ Formatear en formato **FAT 16**:
 
     mkfs.vfat -F 16 /dev/sdb -I
 
+> En este comando no se reemplaza el "sdb" por "sdb1" ya que es necesario que todo el disco se formatee
+
+<br>
+
 ## 5. Hacemos el proceso para tener la usb booteable
 
 <br>
 
 Para convertir la usb a booteable, ejecutamos el siguiente comando: 
 
-    dd if=imagen_iso of=/dev/sdb
+    dd if=imagen_iso of=/dev/sdb conv=fdatasync
 
-> La imagen iso ya debe estar descargada
+> La imagen iso ya debe estar descargada en nuestor ordenador
 
 Si quieres ver el progreso del proceso, instala el paquete **pv**:
 
@@ -80,4 +84,6 @@ Si quieres ver el progreso del proceso, instala el paquete **pv**:
 
 Ahora ejecutamos el comando:
 
-    dd if=imagen_iso |pv| dd of=/dev/sdb
+    dd if=imagen_iso |pv| dd of=/dev/sdb conv=fdatasync
+
+> El atributo conv=fdatasync sirve para que el comando "dd" no termine si aun no se ha completado el proceso.
