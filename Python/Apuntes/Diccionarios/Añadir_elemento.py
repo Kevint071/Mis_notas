@@ -1,4 +1,4 @@
-# Para añador una llave a un diccionario se hace lo siguiente: 
+# Para añadir una dato a un diccionario se hace lo siguiente: 
 
 dic = {}
 

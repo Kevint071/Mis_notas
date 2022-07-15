@@ -2,7 +2,7 @@
 
 - Dejar 2 lineas entre un bloque de una funcion y cualquier otro tipo de código
 
--  A los programas y a las variables, colocarles nombres que tengan que ver con la funcion del programa. 
+-  A los programas y a las variables, colocarles nombres que tengan que ver con la funcion del programa:
 
     >Ej: Programa_para_sumar:  
     >
