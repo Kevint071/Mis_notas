@@ -12,11 +12,11 @@
 
 <br>
 
-### - En este grupo, los apuntes se comenzaran a indagar desde el 1 de abril para comenzar a tomar apuntes...
+### - En este grupo, los apuntes se comenzaran a indagar desde el 25 de marzo para comenzar a tomar apuntes...
 
 <br>
 
-### - Dia actual en el que llevo indagando: 1 de abril.
+### - Dia actual en el que llevo indagando: 30 de marzo.
 
 <br>
 
