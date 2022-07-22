@@ -20,6 +20,9 @@
 
 5. Ahora verificamos que tengamos todos estos paquetes instalados:
 
+    - make
+    - wget
+    - build-essential
     - zlib1g-dev
     - libgdbm-dev
     - libnss3-dev
