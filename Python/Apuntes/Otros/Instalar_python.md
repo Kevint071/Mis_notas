@@ -57,4 +57,4 @@ ___
 
 >NOTA: No instale python con "make install", ya que así estaría sobreescribiendo a python3 con el intérprete que va a usar. Siempre use "make altinstall".
 
->Si en algun paso de la instalación tienes problemas, escríbeme al correo "andrestorrecilla.14@gmail.com"
+>Si en algun paso de la instalación tienes problemas, o si al instalar Python no funciona como debería, escríbeme al correo "andrestorrecilla.14@gmail.com"
