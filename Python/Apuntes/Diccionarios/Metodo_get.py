@@ -1,4 +1,4 @@
-# El método get devuelve el valor de una clave que manualmente se le asigna si no está una llave en el diccionario, y si está la llave, se muestra el valor de esta.
+# El método get devuelve el valor de una clave o key que manualmente se le asigna si no está una llave en el diccionario, y si está la llave, se muestra el valor de esta.
 
 genero = {
     "Juana": "Femenino",
@@ -11,7 +11,7 @@ respuesta = genero.get("Jaime", "No se encuentra el nombre")
 print(respuesta) # No se encuentra el nombre
 
 respuesta = genero.get("Lucía", "No se encuentra el nombre")
-print(respuesta) # F
+print(respuesta) # Femenino
 
 input("\nPresione enter para continuar... ")
 
