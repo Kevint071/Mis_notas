@@ -11,3 +11,5 @@ class rectangulo:
         print(f"El perimetro del rectángulo es {lados.base * 2 + lados.altura * 2}")
     
 lados= rectangulo()
+lados.hallar_area()
+lados.hallar_perimetro()
