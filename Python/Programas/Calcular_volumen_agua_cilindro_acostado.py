@@ -21,7 +21,7 @@ def obtener_datos():
             print(f'\nNOTA: Se le asignara la medida "{medida}" a los datos que el usuario digite \n')
             break
         else:
-            print("Medida no válida, digite la medida abreviada, Ej: cm, m, Dm")
+            print("\nMedida no válida, digite la medida abreviada, Ej: cm, m, Dm\n")
 
 
     lista_datos = []
@@ -102,7 +102,6 @@ def run():
     area_triangulo = base_triangulo * (radio - altura_agua)
     
     mostrar_datos(radio, largo, altura_agua, area, volumen, grados, area_radio_fondo, base_triangulo, area_triangulo)
-
     
 if __name__ == "__main__":
     run()
