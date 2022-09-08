@@ -2,7 +2,7 @@
 
 # En este código, las vocales con tildes o caracteres especiales serán reemplazadas con los otros caracteres
 
-vocal = "aaeeiioouuAEEIIOOUU"
+vocal = "aaeeiioouuaeeiioouu"
 vocal_tilde = "áäéëíïóöúüÁÉËÍÏÓÖÚÜ"
 quitar_tilde = str.maketrans(vocal_tilde, vocal)
 
