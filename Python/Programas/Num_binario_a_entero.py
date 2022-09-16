@@ -1,3 +1,5 @@
+from os import system
+
 def entero(num):
     """Convierte un numero binario a entero
     
@@ -52,30 +54,70 @@ def binario(num):
 
 def run():
 
-    print("""Conversiones:
-    
+    while True:
+        while True:
+            try:
+                print("""Conversiones:
+                
     1) Conversion binario-entero
     2) Conversion entero-binario
-    """)
+            """)
 
-    opcion = int(input("Digite un modo de conversion: "))
+                opcion = int(input("Digite un modo de conversion: "))
 
-    if opcion == 1:
+                if opcion != 1 and opcion != 2:
+                    system("clear")
+                    print("Elija la opcion 1 o 2\n")
+                else:
+                    break
+
+            except ValueError:
+                system("clear")
+                print("Elija la opcion 1 o 2\n")
+
+        if opcion == 1:
+            while True:
+                num = input("\nDigite un número binario: ")
+
+                if num.count("0") + num.count("1") < len(num):
+                    print("Solo digite numeros 1 y 0")
+                else:
+                    break
+
+            num_entero = entero(num)
+            print(f"El número binario {num} a número entero es {num_entero}\n")
+            
+        elif opcion == 2:
+            while True:
+                try:
+                    num = int(input("\nDigite un número entero: "))
+                    break
+                except ValueError:
+                    system("clear")
+                    print("Valor no válido...")
+
+            num_binario = binario(num)
+            print(f"El número {num} a binario es: {num_binario}\n")
+
+
+        # Hacer otra conversion
+
         while True:
-            num = input("Digite un número binario: ")
+            continuar = int(input("¿Quieres hacer otra conversion? 1(si) 2(no): "))
 
-            if num.count("0") + num.count("1") < len(num):
-                print("Solo digite numeros 1 y 0\n")
-            else:
+            if continuar == 2:
+                print()
                 break
-
-        num_entero = entero(num)
-        print(f"El número binario {num} a número entero es {num_entero}")
+            elif continuar != 1:
+                system("clear")
+                print("Valor no válido...\n")
+            else:
+                system("clear")
+                print()
+                break
+        if continuar == 2:
+            break
         
-    elif opcion == 2:
-        num = int(input("Digite un número entero: "))
-        num_binario = binario(num)
-        print(f"El número {num} a binario es: {num_binario}")
 
 if __name__ == "__main__":
     run()

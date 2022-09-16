@@ -3,10 +3,12 @@ import cv2, datetime, os
 
 def hallar_tiempo (directorio, video, num_video, nombre):
 
+    # Funcion que halla el tiempo de el video por medio de un directorio
+
     datos = cv2.VideoCapture(f"{directorio}/{video}")
 
-    frames = int(datos.get(cv2.CAP_PROP_FRAME_COUNT))
-    fps = datos.get(cv2.CAP_PROP_FPS)
+    frames = int(datos.get(cv2.CAP_PROP_FRAME_COUNT)) # Fotogramas
+    fps = datos.get(cv2.CAP_PROP_FPS) # fps
 
     seconds = int(frames / fps)
     video_time = str(datetime.timedelta(seconds=seconds)) 
@@ -18,10 +20,15 @@ def hallar_tiempo (directorio, video, num_video, nombre):
 
 
 def run():
+
+    # Obtener directorio de la carpeta de videos
+
     directorio = input("Digite el directorio raiz de los videos (carpeta donde se encuentran los videos): ")
 
     directorio_principal = os.chdir(directorio)
     directorio_principal = os.getcwd()
+
+    # Obtener la lista de videos y eliminar archivos de la lista que no sean videos
 
     lista_videos = os.listdir(directorio_principal)
 
@@ -32,7 +39,11 @@ def run():
 
     print("\nLista de los videos...\n")
 
+    lista_videos.sort()
+
     j = 0
+
+    # Ciclo para hallar la duracion de cada video de la lista de videos
 
     for i in lista_videos:
         num = lista_videos[j][0:3]
