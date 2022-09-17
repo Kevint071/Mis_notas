@@ -1,11 +1,13 @@
 import cv2, datetime, os
 
 
-def hallar_tiempo (directorio, video, num_video, nombre):
+def hallar_tiempo (directorio_video, num_video, nombre):
 
     # Funcion que halla el tiempo de el video por medio de un directorio
 
-    datos = cv2.VideoCapture(f"{directorio}/{video}")
+    
+
+    datos = cv2.VideoCapture(directorio_video)
 
     frames = int(datos.get(cv2.CAP_PROP_FRAME_COUNT)) # Fotogramas
     fps = datos.get(cv2.CAP_PROP_FPS) # fps
@@ -45,12 +47,25 @@ def run():
 
     # Ciclo para hallar la duracion de cada video de la lista de videos
 
+    acum = 0
+
     for i in lista_videos:
         num = lista_videos[j][0:3]
         num = int(num.strip(" ._"))
         nombre = i[3:].strip(". ")
-        hallar_tiempo(directorio_principal, i, num, nombre)
+
+        # Hallar directorio de cada video y ver su peso
+
+        directorio_video = f"{directorio_principal}/{i}"
+        peso = os.path.getsize(directorio_video) / (1024 ** 2)
+        acum += peso
+
+        # Hallar el tiempo de cada video
+
+        hallar_tiempo(directorio_video, num, nombre)
         j += 1
+    
+    print(f"\nPeso total: {round(acum, 2)} MB")
     
 if __name__ == "__main__":
     run()
