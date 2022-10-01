@@ -1,4 +1,12 @@
-from os import system
+from os import system, name
+
+
+def limpiar_pantalla():
+    if name == "posix":
+        system("clear")
+    elif name == "ce" or name == "nt" or name == "dos":
+        system("cls")
+
 
 def entero(num):
     """Convierte un numero binario a entero
@@ -66,13 +74,13 @@ def run():
                 opcion = int(input("Digite un modo de conversion: "))
 
                 if opcion != 1 and opcion != 2:
-                    system("clear")
+                    limpiar_pantalla()
                     print("Elija la opcion 1 o 2\n")
                 else:
                     break
 
             except ValueError:
-                system("clear")
+                limpiar_pantalla()
                 print("Elija la opcion 1 o 2\n")
 
         if opcion == 1:
@@ -80,6 +88,7 @@ def run():
                 num = input("\nDigite un número binario: ")
 
                 if num.count("0") + num.count("1") < len(num):
+                    limpiar_pantalla()
                     print("Solo digite numeros 1 y 0")
                 else:
                     break
@@ -93,7 +102,7 @@ def run():
                     num = int(input("\nDigite un número entero: "))
                     break
                 except ValueError:
-                    system("clear")
+                    limpiar_pantalla()
                     print("Valor no válido...")
 
             num_binario = binario(num)
@@ -109,11 +118,10 @@ def run():
                 print()
                 break
             elif continuar != 1:
-                system("clear")
+                limpiar_pantalla()
                 print("Valor no válido...\n")
             else:
-                system("clear")
-                print()
+                limpiar_pantalla()
                 break
         if continuar == 2:
             break
