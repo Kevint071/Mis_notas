@@ -1,11 +1,10 @@
-import cv2, datetime, os
+import cv2, os, datetime
 
 
 def hallar_tiempo (directorio_video, num_video, nombre):
 
     # Funcion que halla el tiempo de el video por medio de un directorio
 
-    
 
     datos = cv2.VideoCapture(directorio_video)
 
