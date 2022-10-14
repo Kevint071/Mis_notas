@@ -1,6 +1,7 @@
 import cv2, os, datetime
 
 
+
 def hallar_tiempo (directorio_video, num_video, nombre):
 
     # Funcion que halla el tiempo de el video por medio de un directorio
@@ -32,10 +33,23 @@ def run():
     # Obtener la lista de videos y eliminar archivos de la lista que no sean videos
 
     lista_videos = os.listdir(directorio_principal)
+    print()
 
-    for i in lista_videos:
+    # for i in lista_videos:
+    #     if i.count(".ini") >= 1:
+    #         print(i)
+    #         lista_videos.remove(i)
+
+    # for i in range(len(lista_videos)-1, -1, -1):
+    #     if lista_videos[i].count(".mp4") == 0:
+    #         print(f"Archivo eliminado de la lista: {lista_videos[i]}")
+    #         lista_videos.remove(lista_videos[i])
+
+    # Usando la lista al revés con reversed para evitar problemas con archivos de carpetas .ini y/o parecidos
+        
+    for i in reversed(lista_videos):
         if i.count(".mp4") == 0:
-            print(f"\nArchivo eliminado de la lista: {i}")
+            print(f"Archivo eliminado de la lista: {i}")
             lista_videos.remove(i)
 
     print("\nLista de los videos...\n")

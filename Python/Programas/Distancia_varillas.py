@@ -1,4 +1,4 @@
-# Programa para calcular la cantidad de varillas posibles en un lugar
+# Programa para calcular la cantidad de varillas posibles en un lugar (Tipo reja de una casa)
 
 distancia = float(input("Digite la distancia en cm: "))
 ancho_varillas = float(input("Digite el grosor de las varillas en cm: "))
