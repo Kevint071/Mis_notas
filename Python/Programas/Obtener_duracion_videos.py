@@ -1,5 +1,7 @@
-import cv2, os, datetime
+import datetime
+import os
 
+import cv2
 
 
 def hallar_tiempo (directorio_video, num_video, nombre):
