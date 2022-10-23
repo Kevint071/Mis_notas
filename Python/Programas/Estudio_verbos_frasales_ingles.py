@@ -1,5 +1,4 @@
 from os import name, system
-import ssl
 
 
 lista_separables = {"Set back": "Retrasar", "Fix up": "Arreglar", "Figure out": "Analizar hasta entender", "Win over": [["Estar de acuerdo con alguien"], ["Estar de acuerdo conmigo"]], "Call off": "Cancelar", "Take on": ["Contratar", ["Aceptar responsabilidad"]], "Tell of": "Criticar por algo malo", "Point out": ["Señalar", "Resaltar"], "Let down": "Desilusionar", "Mess up": "Arruinar"}
