@@ -1,9 +1,10 @@
 from os import name, system
+import ssl
 
 
 lista_separables = {"Set back": "Retrasar", "Fix up": "Arreglar", "Figure out": "Analizar hasta entender", "Win over": [["Estar de acuerdo con alguien"], ["Estar de acuerdo conmigo"]], "Call off": "Cancelar", "Take on": ["Contratar", ["Aceptar responsabilidad"]], "Tell of": "Criticar por algo malo", "Point out": ["Señalar", "Resaltar"], "Let down": "Desilusionar", "Mess up": "Arruinar"}
 
-lista_inseparables = {"Get into": "Profundizar", "Cut back": ["Reducir", "Acortar"], "Blow up": "Enojar", "Die down": "Decaer", "Whatch out": ["Cuidadoso", "cuidado"], "Step down": "Renunciar a un trabajo", "Hear of": [["Aprender algo de alguien"], ["Aprender algo de algo"]], "Settle on": ["Decidir", "Elegir"], "Touch on": "Mencionar a alguien superficialmente", "Draws on": "Plasmar"}
+lista_inseparables = {"Get into": "Profundizar", "Cut back": ["Reducir", "Acortar"], "Blow up": "Enojar", "Die down": "Decaer", "Whatch out": ["Cuidadoso", "Cuidado"], "Step down": "Renunciar a un trabajo", "Hear of": [["Aprender algo de alguien"], ["Aprender algo de algo"]], "Settle on": ["Decidir", "Elegir"], "Touch on": "Mencionar a alguien superficialmente", "Draws on": "Plasmar"}
 
 
 def limpiar_pantalla():
@@ -66,6 +67,10 @@ def agregar_variaciones_respuestas(i, lista_palabras, id_separable, tipo_verbo):
 
         lista_palabras[i].append(temporal)
         lista_palabras[i].append(temporal_2)
+
+    for x in range(0, len(lista_palabras[i])):
+        if type(lista_palabras[i][x]) == list:
+            lista_palabras[i][x] = str(lista_palabras[i][x]).strip("[]'")
 
     palabra_traducida = lista_palabras[i]
 
@@ -164,7 +169,7 @@ def run():
         if type(palabra_traducida) == str:
             palabra_traducida = list([palabra_traducida])
 
-        # Mostrando resultados dependiendo de lo que haya escrito el usuario en la variable traduccion y es.
+        # Mostrando resultados dependiendo de lo que haya escrito el usuario en la variable "traduccion" y "es"
 
         if id_separable == es and traduccion in palabra_traducida:
             puntos += 1
