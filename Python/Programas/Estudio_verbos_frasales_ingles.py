@@ -43,7 +43,7 @@ def variacion_respuesta_inversa(lista_item):
         temporal += x
         if x != "".join(lista_item[0]):
             temporal += " o "
-    
+
     return temporal.capitalize()
 
 
@@ -54,19 +54,19 @@ def agregar_variaciones_respuestas(i, lista_palabras, id_separable, tipo_verbo):
        returns list con variables palabra_traducida, tipo_verbo, id_separable"""
 
     # Separar significados para ser mostrados en caso de equivocacion
-    
+
     if type(lista_palabras[i]) == list:
 
         lista_item = lista_palabras[i]
 
         temporal = variacion_respuesta_derecho(lista_item)
         temporal_2 = variacion_respuesta_inversa(lista_item)
-        
+
         # Agregando una variacion de respuesta con las 2 opciones
-        
+
         lista_palabras[i].append(temporal)
         lista_palabras[i].append(temporal_2)
-    
+
     palabra_traducida = lista_palabras[i]
 
     return [palabra_traducida, tipo_verbo, id_separable]
@@ -132,20 +132,22 @@ def run():
         # Ciclo while True para evitar errores de valores
         while True:
             traduccion = input(f"\nTraduce {i}: ")
-            traduccion = traduccion.capitalize()
+            traduccion = traduccion.capitalize().strip(" ")
 
-            if traduccion.isalpha():
+            traduccion_temp = traduccion.replace(" ", "")
+
+            if traduccion_temp.isalpha():
                 break
             else:
                 limpiar_pantalla()
                 print("No utilices números ni caracteres especiales...")
-        
+
         if i in lista_separables:
             palabra_traducida, tipo_verbo, id_separable = agregar_variaciones_respuestas(i, lista_separables, 1, "separable")
-            
+
         else:
             palabra_traducida, tipo_verbo, id_separable = agregar_variaciones_respuestas(i, lista_inseparables, 2, "inseparable")
-        
+
         while True:
             try:
                 es = int(input("¿Es separable? 1(si) 2(no): "))
@@ -172,14 +174,15 @@ def run():
             print(f'\nEl significado es incorrecto, pero el tipo de verbo frasal es correcto...\nPuedes colocar una de estas respuestas:\n')
 
             mostrar_respuestas(palabra_traducida)
-            
+
         elif id_separable != es and traduccion in palabra_traducida:
-        
+
             print(f"La traduccion es correcta pero el verbo frasal está mal ya que es {tipo_verbo}")
         else:
             print(f'\nEl significado y el tipo de verbo frasal son incorrectos ya que es {tipo_verbo}...\nPuedes colocar una de estas respuestas:\n')
-            
+
             mostrar_respuestas(palabra_traducida)
 
 if __name__ == "__main__":
     run()
+    input("Presiona enter para salir: ")
