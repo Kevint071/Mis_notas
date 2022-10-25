@@ -34,11 +34,12 @@
     - python3-tk
     - libsqlite3-dev
     - libbz2-dev
+    - python3-dev
 ___
 
 6. Si no tienes idea de si estos paquetes están instalados o si sabes si están instalados igualmente te recomiendo ejecutar el siguiente comando para verificar que todos estén correctamente instalados:
 
-        sudo apt install wget make xz-utils build-essential zlib1g-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev python3-tk tcl-dev tk-dev libsqlite3-dev libbz2-dev
+        sudo apt install wget make xz-utils build-essential zlib1g-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev python3-tk tcl-dev tk-dev libsqlite3-dev libbz2-dev python3-dev
 
 7. Luego de que todo esté correctamente instalado procedemos a escribir el siguiente comando para asegurarse de que tdas las dependencias esten instaladas
 
