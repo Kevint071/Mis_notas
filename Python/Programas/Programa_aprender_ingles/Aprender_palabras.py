@@ -1,5 +1,6 @@
 from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, Frame, font, END, Listbox
 import psycopg2
+from os import name, system
 
 palabras_traducidas = {}
 
@@ -153,15 +154,30 @@ def run():
     # Entrada 4
 
     label = Label(root, text="Borrar palabras agregadas: ", font=estilo_label)
-    label.place(x=77, y=200)
+    label.place(x=72, y=200)
 
-    boton_editar = Button(root, text="Borrar", width= 9, font=estilo_botones)
-    boton_editar.place(x=296, y= 198)
+    boton_borrar = Button(root, text="Borrar", width= 9, font=estilo_botones)
+    boton_borrar.place(x=296, y= 198)
+
+    # Entrada 5
+
+    label = Label(root, text="Iniciar test: ", font=estilo_label)
+    label.place(x=195, y=240)
+
+        # Probando sistema operativo
+    
+    if name == "posix":
+        comando = "python3 ./Estudiar_palabras_verbos_ingles.py"
+    elif name == "nt" or name == "dos" or name == "ce":
+        comando = "python ./Estudiar_palabras_verbos_ingles.py"
+
+    boton_test = Button(root, text="Iniciar", width= 9, font=estilo_botones, command=lambda: (root.destroy(), system(comando)))
+    boton_test.place(x=296, y= 238)
 
     # Salida
 
     boton_salir = Button(root, text="Salir", command=root.destroy, width=6, font=estilo_botones)
-    boton_salir.place(x=220, y=260)
+    boton_salir.place(x=220, y=300)
 
     root.mainloop()
 
