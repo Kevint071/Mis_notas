@@ -1,8 +1,29 @@
 from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, Frame, font, END, Listbox
 import psycopg2
-from os import name, system
+from os import name, system, chdir, getcwd
 
 palabras_traducidas = {}
+
+
+def verificar_palabras(palabra, label, x, y):
+    if palabra.count(" ") >= 1:
+        if palabra.replace(" ", "").isalpha():
+            label["text"] = "✔"
+            label.place(x=x, y=y)
+            return True
+        else:
+            label["text"] = "X"
+            label.place(x=x, y=y)
+            return False
+    else:
+        if palabra.isalpha():
+            label["text"] = "✔"
+            label.place(x=x, y=y)
+            return True
+        elif palabra.isalpha() == False or palabra.len() == 0:
+            label["text"] = "X"
+            label.place(x=x, y=y)
+            return False
 
 
 def limpiar_input(*entry):
@@ -10,7 +31,26 @@ def limpiar_input(*entry):
         i.delete(0, END)
 
 
-def guardar_palabras(palabra, traduccion):
+def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
+
+    # Obteniendo palabra de las entradas y verificando que no tengan caracteres especiales
+
+    palabra = entry_ingles.get()
+    traduccion = entry_traducir.get()
+
+    label_1 = Label(ventana_agregar, font=("Comic sans Ms", 11))
+    label_2 = Label(ventana_agregar, font=("Comic sans Ms", 11))
+    
+    verificacion_palabra = verificar_palabras(palabra, label_1, x=430, y=85)
+    verificacion_traducir = verificar_palabras(traduccion, label_2, x=430, y=115)
+
+    if verificacion_palabra and verificacion_traducir:
+        limpiar_input(entry_ingles, entry_traducir)
+        palabra = palabra.capitalize()
+        traduccion = traduccion.capitalize()
+    else:
+        return None
+
     conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
 
     cursor = conn.cursor()
@@ -56,7 +96,7 @@ def abrir_ventana_agregar():
     entry_traducir = Entry(ventana_agregar)
     entry_traducir.place(x=300, y=120)
 
-    boton_1 = Button(ventana_agregar, text="Guardar", width=9, font=estilo_botones, command=lambda: (guardar_palabras(entry_ingles.get(), entry_traducir.get()),limpiar_input(entry_traducir, entry_ingles)))
+    boton_1 = Button(ventana_agregar, text="Guardar", width=9, font=estilo_botones, command=lambda: (guardar_palabras(entry_ingles, entry_traducir, ventana_agregar)))
     boton_1.place(x=220, y=170)
 
     # Salir

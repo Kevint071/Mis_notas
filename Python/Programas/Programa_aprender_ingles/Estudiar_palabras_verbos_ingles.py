@@ -1,7 +1,7 @@
 from os import name, system
 import psycopg2
 
-lista_palabras = {}
+lista_palabras = {"Moa": "Sabrosa o coqueta"}
 
 conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
 
