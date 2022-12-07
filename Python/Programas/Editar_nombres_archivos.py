@@ -1,4 +1,9 @@
-import os
+from os import name, rename, listdir, path, chdir, getcwd
+
+if name == "posix":
+    union = "/"
+elif name == "nt" or name == "dos" or name == "ce":
+    union = "\ ".replace(" ", "")
 
 
 def pedir_informacion(accion, opcion_3):
@@ -33,7 +38,7 @@ def pedir_informacion(accion, opcion_3):
     return (insertar, None)
 
 
-def agregar_caracteres(directorio, i, caracteres, insertar, posicion):
+def agregar_caracteres(subdirectorio, i, caracteres, insertar, posicion):
 
     """Función que agrega caracteres a los nombres de archivos
     parametros directorio tipo directorio, string i, string caracteres, int insertar, int posicion
@@ -55,19 +60,19 @@ def agregar_caracteres(directorio, i, caracteres, insertar, posicion):
         nombre.insert(posicion, caracteres)
         nombre = "".join(nombre)
 
-    os.rename(f"{directorio}/{i}", nombre)
+    rename(subdirectorio, nombre)
 
 
-def borrar_caracteres(directorio, i, caracteres, insertar):
+def borrar_caracteres(subdirectorio, i, caracteres, insertar):
     
     if insertar == 1:
-        os.rename(f"{directorio}/{i}", i.lstrip(caracteres))
+        rename(subdirectorio, i.lstrip(caracteres))
     elif insertar == 2:
-        os.rename(f"{directorio}/{i}", i.rstrip(caracteres))
+        rename(subdirectorio, i.rstrip(caracteres))
     elif insertar == 3:
         if len(caracteres) > 1:
             for j in caracteres:
-                os.rename(f"{directorio}/{i}", i.replace(j, ""))
+                rename(subdirectorio, i.replace(j, ""))
                 i = i.replace(j, "")
 
 
@@ -76,11 +81,13 @@ def reemplazar_caracteres(directorio, i, caracteres, reemplazo):
     # Ciclo que recorre los caracteres y sus reemplazos y los aplica en los nombres de archivos
 
     for caracter, su_reemplazo in zip(caracteres, reemplazo):
-        os.rename(f"{directorio}/{i}", i.replace(caracter, su_reemplazo))
+        rename(directorio + union + i, i.replace(caracter, su_reemplazo))
         i = i.replace(caracter, su_reemplazo)
     
 
 def interior_dir(directorio, opcion, caracteres, reemplazo, insertar, posicion):
+
+    chdir(directorio)
 
     """Función que recorre todas las carpetas y subcarpetas
        Parámetro 'directorio' es cualquier directorio Ej: /home/user/Documentos
@@ -88,7 +95,7 @@ def interior_dir(directorio, opcion, caracteres, reemplazo, insertar, posicion):
 
     print(f"\nDirectorio: {directorio}\n")
 
-    directorio_interior = os.listdir(directorio)
+    directorio_interior = listdir(directorio)
 
     # Excluyendo la carpeta de gestion de versiones (git)
 
@@ -97,16 +104,24 @@ def interior_dir(directorio, opcion, caracteres, reemplazo, insertar, posicion):
     
     # Verificando si es archivo o carpeta
     # Si es carpeta entra en esa carpeta y busca archivos (accion con recursividad)
+    # Si es archivo se escoge la funcion que eligió el usuario
 
     for i in directorio_interior:
 
-        if os.path.isdir(f"{directorio}/{i}") == True:
-            interior_dir(f"{directorio}/{i}")
+        subdirectorio = directorio + union + i
+        print(subdirectorio)
+
+
+        if path.isdir(subdirectorio):
+            if opcion ==1 or opcion == 2:
+                interior_dir(subdirectorio, opcion, caracteres, None, insertar, posicion)
+            elif opcion == 3:
+                interior_dir(subdirectorio, opcion, caracteres, reemplazo, None, None)
         else:
             if opcion == 1:
-                agregar_caracteres(directorio, i, caracteres, insertar, posicion)
+                agregar_caracteres(subdirectorio, i, caracteres, insertar, posicion)
             elif opcion == 2:
-                borrar_caracteres(directorio, i, caracteres, insertar)
+                borrar_caracteres(subdirectorio, i, caracteres, insertar)
             elif opcion == 3:
                 reemplazar_caracteres(directorio, i, caracteres, reemplazo)
 
@@ -116,13 +131,14 @@ def run():
     # Obtener el directorio que digita el usuario
 
     directorio = input('Digite el directorio al que desea cambiarle los nombres de los archivos: ')
-    directorio_principal = os.chdir(directorio)
-    directorio_principal = os.getcwd()
+    chdir(directorio)
+    directorio_principal = getcwd()
     print(directorio_principal)
 
     # Ciclo para repetir la edicion de nombres
 
     while True:
+        chdir(directorio)
 
         # Elegir que tipo de edicion de nombre de archivos quiere el usuario
 
@@ -157,7 +173,7 @@ def run():
             reemplazo = input("Digite un caracter para reemplazar el caracter anterior: ")
             interior_dir(directorio_principal, opcion, caracteres, reemplazo, None, None)
 
-        desicion = int(input(f"¿Desea volver a editar el archivo? 1(si) 2(no): "))
+        desicion = int(input(f"\n¿Desea volver a editar archivos? 1(si) 2(no): "))
 
         if desicion == 2:
             break
