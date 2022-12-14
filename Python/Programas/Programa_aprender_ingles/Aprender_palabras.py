@@ -1,34 +1,73 @@
-from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, Frame, font, END, Listbox
+from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, font, END, Listbox, StringVar
 import psycopg2
-from os import name, system, chdir, getcwd
+from os import name, system
 
 palabras_traducidas = {}
 
 
 def verificar_palabras(palabra, label, x, y):
+    label.place(x=x, y=y)
     if palabra.count(" ") >= 1:
         if palabra.replace(" ", "").isalpha():
             label["text"] = "✔"
-            label.place(x=x, y=y)
             return True
         else:
             label["text"] = "X"
-            label.place(x=x, y=y)
             return False
     else:
         if palabra.isalpha():
             label["text"] = "✔"
-            label.place(x=x, y=y)
             return True
         elif palabra.isalpha() == False or palabra.len() == 0:
             label["text"] = "X"
-            label.place(x=x, y=y)
             return False
 
 
 def limpiar_input(*entry):
     for i in entry:
         i.delete(0, END)
+
+
+def obtener_palabra(query, conn):
+    cursor = conn.cursor()
+    cursor.execute(query)
+    row = cursor.fetchone()
+
+    return row
+
+
+def buscar_palabras(valor, label):
+
+    """Funcion que busca palabras en la ventana mostrar
+       parametros palabra cualquier str, label"""
+
+    conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
+
+    valor = valor.capitalize()
+
+    query = f"""SELECT palabra, traduccion FROM palabras WHERE palabra='{valor}'"""
+
+    row = obtener_palabra(query, conn)
+
+    if row == None:
+        query = f"""SELECT palabra, traduccion FROM palabras WHERE traduccion='{valor}'"""
+
+    row = obtener_palabra(query, conn)
+    
+    if row == None:
+        query = f"""SELECT palabra, traduccion FROM palabras WHERE id='{valor}'"""
+
+    row = obtener_palabra(query, conn)
+    mostrar_busqueda(row, label)
+
+    conn.commit()
+    conn.close()
+
+
+def mostrar_busqueda(row, label):
+
+    label["text"] = (f"Resultado: {row[0]} → {row[1]}")
+
 
 
 def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
@@ -115,6 +154,7 @@ def abrir_ventana_mostrar():
     canvas = Canvas(ventana_mostrar, width=500, height=380)
     canvas.pack()
 
+    estilo_label = font.Font(family="Bahnschrift", size=10)
     estilo_botones = font.Font(family="Bahnschrift", size=10)
 
     # Conectar con base de datos
@@ -127,8 +167,8 @@ def abrir_ventana_mostrar():
 
     row = cursor.fetchall()
 
-    listbox = Listbox(ventana_mostrar, width=20, height=5)
-    listbox.place(x= 180, y = 100)
+    listbox = Listbox(ventana_mostrar, width=40, height=5)
+    listbox.place(x= 130, y = 130)
 
     for x in row:
         listbox.insert(END, x)
@@ -142,10 +182,24 @@ def abrir_ventana_mostrar():
     label = Label(ventana_mostrar, text="Lista palabras", font=("Comic sans Ms", 20))
     label.place(x=160, y=20)
 
+    # Buscar palabras
+
+    label = Label(ventana_mostrar, text="Buscar palabra:", font=estilo_label)
+    label.place(x=130, y=90)
+
+    entry_buscar = Entry(ventana_mostrar)
+    entry_buscar.place(x=230, y=92, width=80)
+
+    label_busqueda = Label(ventana_mostrar, font=("Bahnschrift", 10))
+    label_busqueda.place(x=160, y=230)
+
+    boton_buscar = Button(ventana_mostrar, text="Buscar", command=lambda: buscar_palabras(entry_buscar.get(), label_busqueda))
+    boton_buscar.place(x=320, y=89)
+
     # Salir
 
     boton_salir = Button(ventana_mostrar, text="Salir", command=ventana_mostrar.destroy, width=9, font=estilo_botones)
-    boton_salir.place(x=210, y=220)
+    boton_salir.place(x=210, y=270)
 
 
 def run():
