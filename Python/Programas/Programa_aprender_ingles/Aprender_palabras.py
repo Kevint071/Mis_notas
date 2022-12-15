@@ -1,4 +1,4 @@
-from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, font, END, Listbox, StringVar
+from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, font, END, Listbox, StringVar, ANCHOR
 import psycopg2
 from os import name, system
 
@@ -28,12 +28,22 @@ def limpiar_input(*entry):
         i.delete(0, END)
 
 
-def obtener_palabra(query, conn):
+def obtener_palabra(query, conn, valor):
+
+    """Función que obtiene el dato de la base de datos para mostrar en ventana_mostrar
+    parametro query tipo SQL, conn coneccion con base de datos, valor cualquier str
+    returns datos o None"""
+
     cursor = conn.cursor()
     cursor.execute(query)
-    row = cursor.fetchone()
+    row = cursor.fetchall()
 
-    return row
+
+    for i in row:
+        for j in i:
+            if valor in str(j):
+                datos = i
+                return datos
 
 
 def buscar_palabras(valor, label):
@@ -45,19 +55,9 @@ def buscar_palabras(valor, label):
 
     valor = valor.capitalize()
 
-    query = f"""SELECT palabra, traduccion FROM palabras WHERE palabra='{valor}'"""
+    query = f"""SELECT * FROM palabras"""
+    row = obtener_palabra(query, conn, valor)
 
-    row = obtener_palabra(query, conn)
-
-    if row == None:
-        query = f"""SELECT palabra, traduccion FROM palabras WHERE traduccion='{valor}'"""
-
-    row = obtener_palabra(query, conn)
-    
-    if row == None:
-        query = f"""SELECT palabra, traduccion FROM palabras WHERE id='{valor}'"""
-
-    row = obtener_palabra(query, conn)
     mostrar_busqueda(row, label)
 
     conn.commit()
@@ -66,8 +66,13 @@ def buscar_palabras(valor, label):
 
 def mostrar_busqueda(row, label):
 
-    label["text"] = (f"Resultado: {row[0]} → {row[1]}")
+    """Funcion que muestra el resultado de la busqueda en ventana_mostrar
+    parametros row tupla de datos, label de tkinter"""
 
+    if row == None:
+        label["text"] = "Dato no encontrado"
+    else:
+        label["text"] = (f"{row[0]}. {row[1]} → {row[2]}")
 
 
 def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
@@ -190,8 +195,8 @@ def abrir_ventana_mostrar():
     entry_buscar = Entry(ventana_mostrar)
     entry_buscar.place(x=230, y=92, width=80)
 
-    label_busqueda = Label(ventana_mostrar, font=("Bahnschrift", 10))
-    label_busqueda.place(x=160, y=230)
+    label_busqueda = Label(ventana_mostrar, font=("Bahnschrift", 10), anchor="center", width=40)
+    label_busqueda.place(x=110, y=230)
 
     boton_buscar = Button(ventana_mostrar, text="Buscar", command=lambda: buscar_palabras(entry_buscar.get(), label_busqueda))
     boton_buscar.place(x=320, y=89)
