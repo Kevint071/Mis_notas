@@ -4,8 +4,12 @@ from os import name, system
 
 palabras_traducidas = {}
 
-
 def verificar_palabras(palabra, label, x, y):
+
+    """Función que verifica palabras con errores de caracteres especiales. 
+    Parametros palabra cualquier str, label de tkinter, x cualquier int, y cualquier int. 
+    Returns True o False"""
+
     label.place(x=x, y=y)
     if palabra.count(" ") >= 1:
         if palabra.replace(" ", "").isalpha():
@@ -52,7 +56,7 @@ def buscar_palabras(valor, label):
 
     conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
 
-    valor = valor.capitalize().strip()
+    valor = valor.strip().capitalize()
 
     query = f"""SELECT * FROM palabras"""
     row = obtener_palabra(query, conn, valor)
@@ -83,6 +87,8 @@ def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
 
     print(palabra, traduccion)
 
+    # Creando labels para agregar datos y luego se verifican para ser agregados
+
     label_1 = Label(ventana_agregar, font=("Comic sans Ms", 11))
     label_2 = Label(ventana_agregar, font=("Comic sans Ms", 11))
     
@@ -95,6 +101,8 @@ def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
         traduccion = traduccion.capitalize()
     else:
         return None
+
+    # Estableciendo conección con la base de datos postgresql para agregar las palabras
 
     conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
 
@@ -170,6 +178,8 @@ def abrir_ventana_mostrar():
     cursor = conn.cursor()
     query = '''SELECT * FROM palabras'''
     cursor.execute(query)
+
+    # Extraer palabras de base de datos y mostrarla en un listbox
 
     row = cursor.fetchall()
 
