@@ -38,7 +38,6 @@ def obtener_palabra(query, conn, valor):
     cursor.execute(query)
     row = cursor.fetchall()
 
-
     for i in row:
         for j in i:
             if valor in str(j):
@@ -53,7 +52,7 @@ def buscar_palabras(valor, label):
 
     conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
 
-    valor = valor.capitalize()
+    valor = valor.capitalize().strip()
 
     query = f"""SELECT * FROM palabras"""
     row = obtener_palabra(query, conn, valor)
@@ -79,8 +78,10 @@ def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
 
     # Obteniendo palabra de las entradas y verificando que no tengan caracteres especiales
 
-    palabra = entry_ingles.get()
-    traduccion = entry_traducir.get()
+    palabra = entry_ingles.get().strip().capitalize()
+    traduccion = entry_traducir.get().strip().capitalize()
+
+    print(palabra, traduccion)
 
     label_1 = Label(ventana_agregar, font=("Comic sans Ms", 11))
     label_2 = Label(ventana_agregar, font=("Comic sans Ms", 11))
@@ -264,7 +265,7 @@ def run():
     label.place(x=195, y=240)
 
         # Probando sistema operativo
-    
+
     if name == "posix":
         comando = "python3 ./Estudiar_palabras_verbos_ingles.py"
     elif name == "nt" or name == "dos" or name == "ce":
