@@ -1,4 +1,4 @@
-from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, font, END, Listbox, StringVar, ANCHOR
+from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, font, END, Listbox
 import psycopg2
 from os import name, system
 
