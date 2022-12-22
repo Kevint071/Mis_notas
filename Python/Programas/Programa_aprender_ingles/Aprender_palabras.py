@@ -150,14 +150,32 @@ def editar(valor, label_palabra, entry_palabra, label_traduccion, entry_traducci
     else:
         return None
 
+    # Conectar con base de datos
+
     conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
+
+    # Editar palabra
 
     query = '''SELECT * FROM palabras'''
     row = obtener_palabra(query, conn, valor)
 
-    query = f'''UPDATE palabras SET palabra='{palabra}', traduccion='{traduccion}' WHERE id={row[0]};'''
     cursor = conn.cursor()
+
+    query = f'''UPDATE palabras SET palabra='{palabra}', traduccion='{traduccion}' WHERE id={row[0]};'''
     cursor.execute(query)
+
+    # organizar tabla base de datos
+
+    query = '''SELECT * FROM palabras'''
+    cursor.execute(query)
+    lista_palabras = cursor.fetchall()
+
+    lista_palabras.sort()
+
+    for i in lista_palabras:
+
+        query = f'''UPDATE palabras SET palabra='{i[1]}', traduccion='{i[2]}' WHERE id={i[0]};'''
+        cursor.execute(query)
 
     conn.commit()
     conn.close()
