@@ -57,14 +57,19 @@ def buscar_palabras(valor, label):
     conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
 
     valor = valor.strip().capitalize()
-
-    query = f"""SELECT * FROM palabras"""
-    row = obtener_palabra(query, conn, valor)
+    
+    if valor == "":
+        row = None
+    else:
+        query = '''SELECT * FROM palabras;'''
+        row = obtener_palabra(query, conn, valor)
 
     mostrar_busqueda(row, label)
 
     conn.commit()
     conn.close()
+
+    return label["text"]
 
 
 def mostrar_busqueda(row, label):
@@ -72,10 +77,46 @@ def mostrar_busqueda(row, label):
     """Funcion que muestra el resultado de la busqueda en ventana_mostrar
     parametros row tupla de datos, label de tkinter"""
 
-    if row == None:
+    if row == None or row == "":
         label["text"] = "Dato no encontrado"
     else:
         label["text"] = (f"{row[0]}. {row[1]} → {row[2]}")
+
+
+def borrar_palabras(entry_mostrar, label_mostrar, boton_borrar):
+
+    valor = entry_mostrar.get().strip().capitalize()
+    resultado = buscar_palabras(entry_mostrar.get(), label_mostrar)
+
+    limpiar_input(entry_mostrar)
+
+    if valor == "" or resultado == "Dato no encontrado":
+        boton_borrar.place_forget()
+        return None
+    else:
+        boton_borrar.place(x=390, y=89)
+        boton_borrar["command"] = lambda: borrar(valor, boton_borrar)
+
+
+def borrar(valor, boton_borrar):
+    conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
+
+    query = '''SELECT * FROM palabras'''
+    row = obtener_palabra(query, conn, valor)
+
+    query = f'''DELETE FROM palabras WHERE id={row[0]};
+    UPDATE palabras SET id=1000000 + nextval('palabras_id_seq');
+    ALTER SEQUENCE palabras_id_seq RESTART WITH 1;
+    UPDATE palabras SET id=nextval('palabras_id_seq');'''
+    cursor = conn.cursor()
+    cursor.execute(query)
+
+    conn.commit()
+    conn.close()
+
+    print("Datos borrados")
+
+    boton_borrar.place_forget()
 
 
 def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
@@ -84,8 +125,6 @@ def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
 
     palabra = entry_ingles.get().strip().capitalize()
     traduccion = entry_traducir.get().strip().capitalize()
-
-    print(palabra, traduccion)
 
     # Creando labels para agregar datos y luego se verifican para ser agregados
 
@@ -218,6 +257,45 @@ def abrir_ventana_mostrar():
     boton_salir.place(x=210, y=270)
 
 
+def abrir_ventana_borrar():
+
+    ventana_borrar = Toplevel()
+    ventana_borrar.resizable(0, 0)
+
+    canvas = Canvas(ventana_borrar, width=500, height=380)
+    canvas.pack()
+
+    estilo_label = font.Font(family="Bahnschrift", size=10)
+
+    # Título 
+
+    label = Label(ventana_borrar, text="Borrar palabras", font=("Comic sans Ms", 20))
+    label.place(x=145, y=20)
+
+    # Buscar palabras
+
+    label = Label(ventana_borrar, text="Escribir id o palabra: ", font=estilo_label)
+    label.place(x=100, y=90)
+
+    entry_mostrar = Entry(ventana_borrar)
+    entry_mostrar.place(x=230, y=92, width=90)
+
+    label_mostrar = Label(ventana_borrar, font=("Bahnschrift", 10), anchor="center", width=40)
+    label_mostrar.place(x=100, y=130)
+
+    # Mostrar y borrar palabras
+
+    boton_borrar = Button(ventana_borrar, text="Borrar", width=7)
+
+    boton_mostrar = Button(ventana_borrar, text="Mostrar", command=lambda: borrar_palabras(entry_mostrar, label_mostrar, boton_borrar))
+    boton_mostrar.place(x=330, y=89)
+
+    # Salir
+
+    boton_salir = Button(ventana_borrar, text="Salir", width=9, command=lambda: ventana_borrar.destroy())
+    boton_salir.place(x=207, y=170)
+
+
 def run():
 
     root = Tk()
@@ -266,7 +344,7 @@ def run():
     label = Label(root, text="Borrar palabras agregadas: ", font=estilo_label)
     label.place(x=72, y=200)
 
-    boton_borrar = Button(root, text="Borrar", width= 9, font=estilo_botones)
+    boton_borrar = Button(root, text="Borrar", width= 9, command=abrir_ventana_borrar, font=estilo_botones)
     boton_borrar.place(x=296, y= 198)
 
     # Entrada 5
