@@ -3,6 +3,7 @@ import psycopg2
 from os import name, system
 
 palabras_traducidas = {}
+validacion = []
 
 def verificar_palabras(palabra, label, x, y):
 
@@ -13,14 +14,14 @@ def verificar_palabras(palabra, label, x, y):
     label.place(x=x, y=y)
     if palabra.count(" ") >= 1:
         if palabra.replace(" ", "").isalpha():
-            label["text"] = "✔"
+            label["text"] = "  "
             return True
         else:
             label["text"] = "X"
             return False
     else:
         if palabra.isalpha():
-            label["text"] = "✔"
+            label["text"] = "  "
             return True
         elif palabra.isalpha() == False or palabra.len() == 0:
             label["text"] = "X"
@@ -83,22 +84,89 @@ def mostrar_busqueda(row, label):
         label["text"] = (f"{row[0]}. {row[1]} → {row[2]}")
 
 
-def borrar_palabras(entry_mostrar, label_mostrar, boton_borrar):
+def validar_palabras(entry_mostrar, label_mostrar, boton, accion, ventana):
 
     valor = entry_mostrar.get().strip().capitalize()
     resultado = buscar_palabras(entry_mostrar.get(), label_mostrar)
 
     limpiar_input(entry_mostrar)
 
+
     if valor == "" or resultado == "Dato no encontrado":
-        boton_borrar.place_forget()
+        boton.place_forget()
         return None
     else:
-        boton_borrar.place(x=390, y=89)
-        boton_borrar["command"] = lambda: borrar(valor, boton_borrar)
+        if accion == "borrar":
+            boton.place(x=390, y=89)
+            boton["command"] = lambda: borrar(valor, boton)
+        elif accion == "editar":
+
+            label_palabra.place_forget()
+            entry_palabra.place_forget()
+            label_traduccion.place_forget()
+            entry_traduccion.place_forget()
+            boton_guardar.place_forget()
+
+            boton["command"] = lambda: agregar_palabras_editar(valor, boton, ventana, label_palabra, entry_palabra, label_traduccion, entry_traduccion)
+            boton.place(x=215, y=165)
+
+
+def agregar_palabras_editar(valor, boton_editar, ventana_editar, label_palabra, entry_palabra, label_traduccion, entry_traduccion):
+
+    boton_editar.place_forget()
+    label_palabra.place(x=155, y=170)
+    entry_palabra.place(x=255, y=170, width=90)
+    label_traduccion.place(x=177, y=200)
+    entry_traduccion.place(x=255, y=200, width=90)
+
+    # Guardar
+
+    global boton_guardar
+
+    boton_guardar["command"] = lambda: editar(valor, label_palabra, entry_palabra, label_traduccion, entry_traduccion, boton_guardar, ventana_editar, )
+    boton_guardar.place(x=215, y=235)
+
+
+def editar(valor, label_palabra, entry_palabra, label_traduccion, entry_traduccion, boton_guardar, ventana_editar):
+
+    palabra = entry_palabra.get().strip().capitalize()
+    traduccion = entry_traduccion.get().strip().capitalize()
+
+    label_1 = Label(ventana_editar, font=("Comic sans Ms", 11))
+    label_2 = Label(ventana_editar, font=("Comic sans Ms", 11))
+
+    verificacion_palabra = verificar_palabras(palabra, label_1, x=350, y=170)
+    verificacion_traduccion = verificar_palabras(traduccion, label_2, x=350, y=200)
+
+    if verificacion_palabra and verificacion_traduccion:
+        label_palabra.place_forget()
+        entry_palabra.place_forget()
+        label_traduccion.place_forget()
+        entry_traduccion.place_forget()
+        boton_guardar.place_forget()
+
+        limpiar_input(entry_palabra, entry_traduccion)
+    
+    else:
+        return None
+
+    conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
+
+    query = '''SELECT * FROM palabras'''
+    row = obtener_palabra(query, conn, valor)
+
+    query = f'''UPDATE palabras SET palabra='{palabra}', traduccion='{traduccion}' WHERE id={row[0]};'''
+    cursor = conn.cursor()
+    cursor.execute(query)
+
+    conn.commit()
+    conn.close()
+
+    print("Datos editados")
 
 
 def borrar(valor, boton_borrar):
+
     conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
 
     query = '''SELECT * FROM palabras'''
@@ -257,6 +325,56 @@ def abrir_ventana_mostrar():
     boton_salir.place(x=210, y=270)
 
 
+def abrir_ventana_editar():
+
+    ventana_editar = Toplevel()
+    ventana_editar.resizable(0, 0)
+
+    canvas = Canvas(ventana_editar, width=500, height=380)
+    canvas.pack()
+
+    estilo_label = font.Font(family="Bahnschrift", size=10)
+
+    # Título 
+
+    label = Label(ventana_editar, text="Editar palabras", font=("Comic sans Ms", 20))
+    label.place(x=145, y=20)
+
+    # Buscar palabras
+
+    label = Label(ventana_editar, text="Escribir id o palabra: ", font=estilo_label)
+    label.place(x=95, y=90)
+
+    entry_mostrar = Entry(ventana_editar)
+    entry_mostrar.place(x=230, y=92, width=90)
+
+    label_mostrar = Label(ventana_editar, font=("Bahnschrift", 10), anchor="center", width=40)
+    label_mostrar.place(x=100, y=130)
+
+    # Mostrar y borrar palabras
+
+        # Agregar palabra en ingles
+
+    global label_palabra, entry_palabra, label_traduccion, entry_traduccion, boton_guardar
+
+    label_palabra = Label(ventana_editar, text="Nueva palabra: ", font=("Bahnschrift", 10))
+    entry_palabra = Entry(ventana_editar)
+
+        # Agregar traducción de palabra
+
+    label_traduccion = Label(ventana_editar, text="Traducción: ", font=("Bahnschrift", 10))
+    entry_traduccion = Entry(ventana_editar)
+
+        # Guardar edicion
+
+    boton_guardar = Button(ventana_editar, text="Guardar") 
+    boton_editar = Button(ventana_editar, text="Editar", width=7)
+
+    boton_mostrar = Button(ventana_editar, text="Mostrar", command=lambda: validar_palabras(entry_mostrar, label_mostrar, boton_editar, "editar", ventana_editar))
+    boton_mostrar.place(x=335, y=89)
+
+
+
 def abrir_ventana_borrar():
 
     ventana_borrar = Toplevel()
@@ -287,7 +405,7 @@ def abrir_ventana_borrar():
 
     boton_borrar = Button(ventana_borrar, text="Borrar", width=7)
 
-    boton_mostrar = Button(ventana_borrar, text="Mostrar", command=lambda: borrar_palabras(entry_mostrar, label_mostrar, boton_borrar))
+    boton_mostrar = Button(ventana_borrar, text="Mostrar", command=lambda: validar_palabras(entry_mostrar, label_mostrar, boton_borrar, "borrar", ventana_borrar))
     boton_mostrar.place(x=330, y=89)
 
     # Salir
@@ -320,8 +438,8 @@ def run():
     label = Label(root, text="Mostrar palabras agregadas: ", font=estilo_label)
     label.place(x=66, y=80)
 
-    boton_editar = Button(root, text="Mostrar", width= 9, font=estilo_botones, command=lambda: abrir_ventana_mostrar())
-    boton_editar.place(x=296, y= 78)
+    boton_mostrar = Button(root, text="Mostrar", width= 9, font=estilo_botones, command=lambda: abrir_ventana_mostrar())
+    boton_mostrar.place(x=296, y= 78)
 
     # Entrada 2
 
@@ -336,7 +454,7 @@ def run():
     label = Label(root, text="Editar palabras agregadas: ", font=estilo_label)
     label.place(x=77, y=160)
 
-    boton_editar = Button(root, text="Editar", width= 9, font=estilo_botones)
+    boton_editar = Button(root, text="Editar", width= 9, font=estilo_botones, command=lambda: abrir_ventana_editar())
     boton_editar.place(x=296, y= 158)
 
     # Entrada 4
