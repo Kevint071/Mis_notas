@@ -37,7 +37,7 @@ def run():
 
     directorio = input("Digite el directorio raiz de los videos (carpeta donde se encuentran los videos): ")
 
-    directorio_principal = os.chdir(directorio)
+    os.chdir(directorio)
     directorio_principal = os.getcwd()
 
     # Obtener la lista de videos y eliminar archivos de la lista que no sean videos

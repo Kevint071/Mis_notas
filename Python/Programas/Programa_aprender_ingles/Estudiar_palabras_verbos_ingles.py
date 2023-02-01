@@ -12,7 +12,19 @@ cursor.execute(query)
 row = cursor.fetchall()
 
 for x in row:
-    lista_palabras[x[1]] = x[2]
+    if x[2].count(",") >= 1:
+        palabras = x[2].split(",")
+
+        for i in range(len(palabras)):
+            
+            palabras[i] = palabras[i].strip().capitalize()
+
+            if palabras[i].count(" ") >= 1:
+                palabras[i] = [palabras[i]]
+
+        lista_palabras[x[1]] = palabras
+    else:
+        lista_palabras[x[1]] = x[2]
 
 
 def limpiar_pantalla():
@@ -24,7 +36,7 @@ def limpiar_pantalla():
 
 def variacion_respuesta_derecho(lista_item):
 
-    """Funcion que une dos significados con conjuncion 'o'.
+    """Funcion que une significados con conjuncion 'o'.
        Parametros lista_item list con valores tipo strings.
        returns temporal."""
 
@@ -41,7 +53,7 @@ def variacion_respuesta_derecho(lista_item):
 
 def variacion_respuesta_inversa(lista_item):
 
-    """Funcion que une dos significados en sentido inverso con conjuncion 'o'.
+    """Funcion que une significados en sentido inverso con conjuncion 'o'.
        Parametros lista_item list con valores tipo strings.
        returns temporal"""
 
@@ -155,6 +167,7 @@ def run():
             print(f'\nEl significado es incorrecto...\nPuedes colocar una de estas respuestas:\n')
 
             mostrar_respuestas(palabra_traducida)
+
 
 if __name__ == "__main__":
     run()

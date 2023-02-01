@@ -13,14 +13,14 @@ def verificar_palabras(palabra, label, x, y):
 
     label.place(x=x, y=y)
     if palabra.count(" ") >= 1:
-        if palabra.replace(" ", "").isalpha():
+        if palabra.replace(" ", "").replace(",", "").isalpha():
             label["text"] = "  "
             return True
         else:
             label["text"] = "X"
             return False
     else:
-        if palabra.isalpha():
+        if palabra.replace(",", "").isalpha():
             label["text"] = "  "
             return True
         elif palabra.isalpha() == False or palabra.len() == 0:
