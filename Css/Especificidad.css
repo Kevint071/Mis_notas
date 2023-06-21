@@ -1,0 +1,53 @@
+/* Se van a mencionar cuales son las maneras de agregar estilos a una etiqueta y se organizaran de mas importante a menos importante */
+
+/* Primera esta la opcion !important que es la que mas importa de todas */
+
+h1 {
+  color: #ff0000 !important;
+}
+
+
+/* Luego estan los estilos en linea que son los que se agregan en html */
+
+
+
+/* Luego estan los identificadores que se agregan colocando un id en las etiquetas de html y en css se agregan así: */
+
+#nombre-id {
+  color: #0000ff;
+}
+
+/* Luego están las clases, pseudoclases y atributos*/
+
+/* Las clases se agregan de la siguiente manera */
+
+.nombre-clase {
+  color: #0000ff;
+}
+
+/* Las pseudoclases se agregan de la siguiente manera, en este ejemplo usare un hover */
+
+.nombre-clase:hover {
+  color: #0000ff;
+}
+
+/* Los atributos se agregan de la siguiente manera */
+
+[nombre-atributo="valor-atributo"] {
+  color: #0000ff;
+}
+
+
+/* Ahora vienen los menos importantes de todos que son los elementos y pseudoelementos */
+
+/* Los elementos son los siguiente */
+
+h1 {
+  color: #0000ff;
+}
+
+/* Y uno de los pseudoelementos puede ser este */
+
+h1::after{
+  color: #0000ff;
+}
