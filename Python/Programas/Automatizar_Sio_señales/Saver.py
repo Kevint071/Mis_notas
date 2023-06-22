@@ -1,6 +1,5 @@
 import asyncio
 import pyppeteer
-import pyautogui as pyto
 import os
 from datetime import datetime
 from pyppeteer_stealth import stealth
@@ -10,11 +9,11 @@ from Cataloger import configuracion_listas_señales, agregar_dias, seleccionar_c
 
 rangos = configuracion_listas_señales()
 tiempos, rango_dias, rango_porcentaje = rangos[:3]
-
+# headless=False, executablePath=r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe", args=['--start-maximized']
 
 async def obtener_guardar_señales(directorio):
     # Iniciar y lanzar nueva ventana
-    browser = await pyppeteer.launch(headless=False, executablePath=r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe", args=['--start-maximized'])
+    browser = await pyppeteer.launch()
     page = await browser.newPage()
     await stealth(page)
     await page.goto("https://siofiltrosinais.com/cataloger")
@@ -74,27 +73,44 @@ async def obtener_guardar_señales(directorio):
             for porcentaje in rango_porcentaje:
 
                 await page.reload()
-                await asyncio.sleep(0.4)
+                await asyncio.sleep(0.3)
 
                 # Cerrar anuncio
                 await page.click(".closeWS")
-                await asyncio.sleep(0.5)
-                pyto.click(40, 300)
+                await asyncio.sleep(0.4)
+                await page.mouse.click(40, 300)
 
                 # Llenar formulario de Catalogador
+
                 await asyncio.sleep(0.4)
-                seleccionar_tipo_mercado()
+                await seleccionar_tipo_mercado(page)
+
+                inputs = await page.xpath("//input[@type='number']")
+
+                if len(inputs) == 2:
+                    input_efectividad, input_dia = inputs
+                else:
+                    print("Ya no hay 2 elementos inputs")
+                    return "No hay 2 inputs"
+
                 await asyncio.sleep(0.4)
-                seleccionar_martingalas(porcentaje, num=0)
+                await seleccionar_martingalas(page, porcentaje, input_efectividad, num=0)
+
                 await asyncio.sleep(0.4)
-                seleccionar_call_put()
+                await seleccionar_call_put(page)
+
                 await asyncio.sleep(0.4)
-                tiempo_operacion(tiempo)
+                await tiempo_operacion(page, tiempo)
+
                 await asyncio.sleep(0.4)
-                agregar_dias(dia)
+                await agregar_dias(page, dia, input_dia)
+
+                await asyncio.sleep(0.4)
+
                 await page.click("#filter")
 
                 # Enviar el formulario y obtener el textarea con las señales
+
                 await page.waitForXPath('//button[contains(text(), "Catalogar")]')
 
                 catalogar_button = await page.xpath('//button[contains(text(), "Catalogar")]')
@@ -102,6 +118,7 @@ async def obtener_guardar_señales(directorio):
 
                 await page.waitForSelector('textarea')
                 contenido = await page.evaluate('document.querySelector("textarea").value')
+                await asyncio.sleep(0.1)
 
                 # Guardar las señales en un bloc de notas
 
@@ -109,6 +126,10 @@ async def obtener_guardar_señales(directorio):
                 os.chdir(directorio_dia)
 
                 nombre_archivo = f"Porcentaje_{porcentaje}_tiempo_{tiempo}.txt"
+                
+                print(f"{directorio_dia}")
+                print(f"{nombre_archivo}\n")
+                print(f"{contenido}\n\n")
 
                 if contenido:
                     with open(nombre_archivo, "w") as archivo:

@@ -1,5 +1,6 @@
 import pyautogui as pyto
-from time import sleep
+from asyncio import sleep
+
 
 def configuracion_listas_señales():
     tiempos = [5, 15]
@@ -11,29 +12,34 @@ def configuracion_listas_señales():
     return [tiempos, rango_dias, rango_porcentaje, periodos_ema, rango_backtesting]
 
 
-def seleccionar_tipo_mercado():
-    pyto.press("tab")
-    sleep(0.2)
-    pyto.press("tab")
-    sleep(0.2)
-    pyto.press("down")
-    pyto.press("down")
-    sleep(0.2)
-    pyto.press("enter")
-    pyto.press("esc")
+async def seleccionar_tipo_mercado(page):
+    await page.keyboard.press("Tab")
+    await sleep(0.2)
+    await page.keyboard.press("Tab")
+    await sleep(0.2)
+    await page.keyboard.press("ArrowDown")
+    await sleep(0.1)
+    await page.keyboard.press("ArrowDown")
+    await sleep(0.2)
+    await page.keyboard.press("Enter")
+    await sleep(0.2)
+    await page.keyboard.press("Escape")
 
 
-def seleccionar_martingalas(porcentaje, num):
-    pyto.press("tab")
-
+async def seleccionar_martingalas(page, porcentaje, input, num):
     if num == 0:
-        pyto.press("tab")
-        pyto.write(str(porcentaje))
+        await input.click()
+        await sleep(0.2)
+        await input.type(str(porcentaje))
     if num == 1:
-        pyto.press("down")
-        pyto.press("tab")
+        await page.keyboard.press("ArrowDown")
+        await sleep(0.2)
+        await page.keyboard.press("Tab")
+        await sleep(0.1)
         pyto.write(str(porcentaje))
-        pyto.press("tab")
+        await sleep(0.1)
+        await page.keyboard.press("Tab")
+        
 
         if porcentaje <= 94:
             pyto.write(str(porcentaje + 5))
@@ -58,26 +64,30 @@ def seleccionar_martingalas(porcentaje, num):
             pyto.write("100")
     
 
-def seleccionar_call_put():
-    pyto.press("tab")
-    pyto.press("down")
-    pyto.press("down")
+async def seleccionar_call_put(page):
+    await page.keyboard.press("Tab")
+    await sleep(0.1)
+    await page.keyboard.press("ArrowDown")
+    await sleep(0.1)
+    await page.keyboard.press("ArrowDown")
+    await sleep(0.1)
 
 
-def tiempo_operacion(tiempo):
-    pyto.press("tab")
+async def tiempo_operacion(page, tiempo):
+    await page.keyboard.press("Tab")
+    await sleep(0.1)
 
     if tiempo == 5:
-        pyto.press("down")
+        await page.keyboard.press("ArrowDown")
     elif tiempo == 15:
-        pyto.press("down")
-        pyto.press("down")
+        await page.keyboard.press("ArrowDown")
+        await sleep(0.1)
+        await page.keyboard.press("ArrowDown")
 
 
-def agregar_dias(dia):
-    pyto.press("tab")
-    pyto.write(str(dia))
+async def agregar_dias(page, dia, input):
+    await page.keyboard.press("Tab")
+    await input.click()
+    await sleep(0.2)
+    await input.type(str(dia))
 
-
-def agregar_ema():
-    pass
