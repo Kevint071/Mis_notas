@@ -1,13 +1,82 @@
-import pyautogui as pyto
 from asyncio import sleep
+from os import system, name, path
 
 
-def configuracion_listas_señales():
-    tiempos = [5, 15]
-    rango_dias = range(2, 12 +1)
-    periodos_ema = [9, 21, 50]
-    rango_backtesting = range(1, 12 + 1)
-    rango_porcentaje = range(70, 100 +1, 3)
+def limpiar_pantalla():
+    if name == "posix":
+        system("clear")
+    elif name == "nt" or name == "dos" or name == "ce":
+        system("cls")
+
+
+def configuracion_listas_señales(directorio_sin_filtro):
+    limpiar_pantalla()
+
+    ruta_archivo_configuracion = path.join(directorio_sin_filtro, "configuracion_catalogador.txt")
+
+    while True:
+        if path.exists(ruta_archivo_configuracion):
+
+            usar_conf = int(input("""¿Deseas seguir descargando señales por donde quedaste?
+        
+    1. Si
+    2. No
+        
+    Elige un número: """))
+            
+            limpiar_pantalla()
+            
+            if usar_conf == 1:
+                with open(ruta_archivo_configuracion, 'r') as archivo:
+                    lineas = archivo.readlines()
+                    tiempos = [int(x) for x in lineas[0].strip("[]\n").split(", ")]
+                    rango_dias = range(int(lineas[1]), 12 +1)
+                    rango_porcentaje = range(int(lineas[2]), 100 + 1, 4)
+                    periodos_ema = [9, 21, 50]
+                    rango_backtesting = range(1, 12 + 1)
+                break
+            elif usar_conf == 2:
+                break
+            else:
+                print("Opcion no válida")
+        else:
+            tiempos = []
+
+            opciones_tiempos = {
+                1: 1,
+                2: 5,
+                3: 15,
+                4: (1, 5),
+                5: (1, 15),
+                6: (5, 15),
+                7: (1, 5, 15)
+            }
+
+            while True:
+                elegir_tiempos = int(input("""Tiempo de operacion de las señales:
+                
+    1. Operaciones de 1 Minuto
+    2. Operaciones de 5 Minutos
+    3. Operaciones de 15 Minutos
+    4. Operaciones de 1 y 5 Minutos
+    5. Operaciones de 1 y 15 Minutos
+    6. Operaciones de 5 y 15 Minutos
+    7. Operaciones de 1, 5 y 15 Minutos
+            
+    Elige una opcion: """))
+
+                if elegir_tiempos in opciones_tiempos:
+                    tiempos.extend(opciones_tiempos[elegir_tiempos])
+                    limpiar_pantalla()
+                    break
+                else:
+                    print("Opcion no válida")
+
+            rango_dias = range(2, 12 + 1)
+            periodos_ema = [9, 21, 50]
+            rango_backtesting = range(1, 12 + 1)
+            rango_porcentaje = range(72, 100 + 1, 4)
+            break
 
     return [tiempos, rango_dias, rango_porcentaje, periodos_ema, rango_backtesting]
 
@@ -36,33 +105,32 @@ async def seleccionar_martingalas(page, porcentaje, input, num):
         await sleep(0.2)
         await page.keyboard.press("Tab")
         await sleep(0.1)
-        pyto.write(str(porcentaje))
+        await input.type(str(porcentaje))
         await sleep(0.1)
         await page.keyboard.press("Tab")
-        
 
         if porcentaje <= 94:
-            pyto.write(str(porcentaje + 5))
+            await input.type(str(porcentaje +5))
         else:
-            pyto.write("100")
+            await input.type("100")
 
     if num == 2:
-        pyto.press("down")
-        pyto.press("down")
-        pyto.press("tab")
-        pyto.write(str(porcentaje))
-        pyto.press("tab")
+        await page.keyboard.press("ArrowDown")
+        await page.keyboard.press("ArrowDown")
+        await page.keyboard.press("Tab")
+        await input.type(str(porcentaje))
+        await page.keyboard.press("Tab")
 
         if porcentaje <= 89:
-            pyto.write(str(porcentaje + 10))
+            await input.type(str(porcentaje + 10))
         else:
-            pyto.write("100")
-        
+            await input.type("100")
+
         if porcentaje + 10 <= 89:
-            pyto.write(str(porcentaje + 10))
+            await input.type(str(porcentaje + 10))
         else:
-            pyto.write("100")
-    
+            await input.type("100")
+
 
 async def seleccionar_call_put(page):
     await page.keyboard.press("Tab")
@@ -90,4 +158,3 @@ async def agregar_dias(page, dia, input):
     await input.click()
     await sleep(0.2)
     await input.type(str(dia))
-

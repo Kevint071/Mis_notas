@@ -1,7 +1,7 @@
 from screeninfo import get_monitors
 import pyppeteer
-import asyncio
-import os
+from asyncio import run, sleep
+from os import path, makedirs, walk
 from pyppeteer_stealth import stealth
 from Cataloger import configuracion_listas_señales
 
@@ -14,7 +14,7 @@ async def pegar_obtener_señales(root, nombre_archivo, page):
     for periodo in periodos_ema:
 
         await page.reload()
-        await asyncio.sleep(0.4)
+        await sleep(0.4)
 
         # Cerrar anuncio
         await page.click(".closeWS")
@@ -22,43 +22,43 @@ async def pegar_obtener_señales(root, nombre_archivo, page):
         lista_rutas_filtradas = []
         lista_rutas_filtradas.clear()
 
-        ruta_archivo = os.path.join(root, nombre_archivo)
+        ruta_archivo = path.join(root, nombre_archivo)
         with open(ruta_archivo, "r") as archivo:
             contenido = archivo.read()
 
-        await asyncio.sleep(0.2)
+        await sleep(0.2)
 
         # Obteniendo el textarea de la pagina y pegando las señales del archivo de señales
         textarea = await page.waitForSelector('textarea')
         await textarea.click()
-        await asyncio.sleep(0.1)
+        await sleep(0.1)
         await page.type('textarea', contenido)
 
         # Agregando el periodo en la pagina
 
         input_periodo = await page.waitForXPath("//input[@name='period']")
         await input_periodo.click()
-        await asyncio.sleep(0.1)
+        await sleep(0.1)
         await input_periodo.type(str(periodo))
-        await asyncio.sleep(0.1)
+        await sleep(0.1)
 
         # Dar click al boton para filtrar
 
         boton_filtrar = await page.waitForXPath('//button[contains(text(), "Filtrar Sinais")]')
-        await asyncio.sleep(0.1)
+        await sleep(0.1)
         await boton_filtrar.click()
 
         # Obtener señales filtradas
-        await asyncio.sleep(2)
+        await sleep(2)
         await page.waitForSelector('textarea')
         señales_filtradas = await page.evaluate('document.querySelector("textarea").value')
 
         root_filtro = root.replace("Sin_filtro", "Filtro_ema")
-        root_filtro =os.path.join(root_filtro, f"Filtro_{periodo}")
+        root_filtro =path.join(root_filtro, f"Filtro_{periodo}")
         nombre_archivo_filtrado = nombre_archivo.replace(".txt", "") + f"_filtro_{periodo}" + ".txt"
         
-        os.makedirs(root_filtro, exist_ok=True)
-        ruta_archivo_filtrado = os.path.join(root_filtro, nombre_archivo_filtrado)
+        makedirs(root_filtro, exist_ok=True)
+        ruta_archivo_filtrado = path.join(root_filtro, nombre_archivo_filtrado)
 
         if ruta_archivo_filtrado not in lista_rutas_filtradas:
             print(ruta_archivo_filtrado)
@@ -68,15 +68,11 @@ async def pegar_obtener_señales(root, nombre_archivo, page):
             print("Ya este archivo está agregado")
 
 
-
 async def filtrar_señales_ema(page):
-    for root, dirs, archivos in os.walk(directorio):
+    for root, dirs, archivos in walk(directorio):
         for nombre_archivo in archivos:
-            
-
             await pegar_obtener_señales(root, nombre_archivo, page)
-            await asyncio.sleep(0.4)
-                
+            await sleep(0.4)
 
 
 async def main():
@@ -104,5 +100,5 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    run(main())
 
