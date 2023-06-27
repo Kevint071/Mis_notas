@@ -68,6 +68,7 @@ async def obtener_guardar_señales(directorio):
             for porcentaje in rango_porcentaje:
                 tiempo_inicio = time()
                 if cantidad_archivos_descargados != 0:
+                    print("Recargando página")
                     await page.reload()
                 if porcentaje == 100 and rango_porcentaje != range(72, 100+1, 4):
                     rango_porcentaje, rango_dias = range(72, 100 +1, 4), range(2, 12 +1)
@@ -75,6 +76,7 @@ async def obtener_guardar_señales(directorio):
                 while True:
                     try:
                     # Cerrar anuncio
+                        print("Cerrando anuncio")
                         await page.waitForSelector(".closeWS")
                         await page.click(".closeWS")
                         await asyncio.sleep(0.4)
@@ -90,6 +92,7 @@ async def obtener_guardar_señales(directorio):
                 await page.waitForXPath("//input[@type='number']")
                 inputs = await page.xpath("//input[@type='number']")
 
+                print("Obteniendo inputs...")
                 if len(inputs) == 2:
                     input_efectividad, input_dia = inputs
                 else:
@@ -98,21 +101,26 @@ async def obtener_guardar_señales(directorio):
 
                 # Llenar formulario de Catalogador
 
+                print("Seleccionando mercado...")
                 await asyncio.sleep(0.4)
                 await seleccionar_tipo_mercado(page)
                 
+                print("Agregando porcentaje efectividad...")
                 await asyncio.sleep(0.4)
                 await seleccionar_martingalas(page, porcentaje, input_efectividad, num=0)
 
+                print("Añadiendo direcciones call y put...")
                 await asyncio.sleep(0.4)
                 await seleccionar_call_put(page)
 
+                print("Colocando tiempo de operación...")
                 await asyncio.sleep(0.4)
                 await tiempo_operacion(page, tiempo_op)
 
+                print("Agregando día...")
                 await asyncio.sleep(0.4)
                 await agregar_dias(page, dia, input_dia)
-
+                await asyncio.sleep(0.4)
                 await page.click("#filter")
 
                 # Enviar el formulario
@@ -122,6 +130,7 @@ async def obtener_guardar_señales(directorio):
                 catalogar_button = await page.xpath('//button[contains(text(), "Catalogar")]')
                 await catalogar_button[0].click()
                 await asyncio.sleep(2)
+                print("El formulario se envió...")
 
                 # Obtener el h1 del loading
 
@@ -129,14 +138,19 @@ async def obtener_guardar_señales(directorio):
                     h1 = await page.querySelectorAll("h1")
 
                     if len(h1) == 2:
+                        print("Hay 2 elementos h1...")
                         h1_1 = h1[1]
-                        await asyncio.sleep(0.5)
+                        await asyncio.sleep(0.7)
                         contenido_h1 = await page.evaluate('(element) => element.textContent', h1_1)
                     else:
+                        print("Hay 1 solo elemento h1...")
                         break
 
                     if contenido_h1.count("false"):
+                        print("Hay un false en el h1")
                         break
+                    print("Repetir bucle")
+                    await asyncio.sleep(0.1)
 
                 if contenido_h1.count("false"):
                     print("Error false%, recargando pagina...")
@@ -146,8 +160,10 @@ async def obtener_guardar_señales(directorio):
 
                 # Obtener el textarea con las señales
 
+                print("Obteniendo textarea")
                 await page.waitForSelector('textarea')
                 contenido = await page.evaluate('document.querySelector("textarea").value')
+                print("Textarea obtenido...")
                 await asyncio.sleep(0.2)
 
                 # Guardar las señales en un bloc de notas
