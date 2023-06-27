@@ -1,6 +1,6 @@
-import asyncio
-import pyppeteer
-import os
+from asyncio import sleep
+from pyppeteer import launch, errors
+import os 
 from datetime import datetime
 from pyppeteer_stealth import stealth
 from Cataloger import configuracion_listas_señales, agregar_dias, seleccionar_call_put, seleccionar_martingalas, seleccionar_tipo_mercado, tiempo_operacion
@@ -9,7 +9,7 @@ from time import time
 
 async def obtener_guardar_señales(directorio):
     # Iniciar y lanzar nueva ventana
-    browser = await pyppeteer.launch()
+    browser = await launch()
     page = await browser.newPage()
     page.setDefaultNavigationTimeout(45000)
     await stealth(page)
@@ -19,7 +19,7 @@ async def obtener_guardar_señales(directorio):
     if len(pages) > 1:
         await pages[0].close()
     
-    await asyncio.sleep(0.3)
+    await sleep(0.3)
 
     # Creando directorio carpeta fecha
     dia_actual, mes_actual = [
@@ -79,13 +79,13 @@ async def obtener_guardar_señales(directorio):
                         print("Cerrando anuncio")
                         await page.waitForSelector(".closeWS")
                         await page.click(".closeWS")
-                        await asyncio.sleep(0.4)
+                        await sleep(0.4)
                         await page.mouse.click(40, 300)
                         break
-                    except pyppeteer.errors.ElementHandleError:
+                    except errors.ElementHandleError:
                         print("No se obtuvo el div para cerrar el anuncio")
                         await page.goto("https://siofiltrosinais.com/cataloger")
-                        await asyncio.sleep(1)
+                        await sleep(1)
 
                 # Obtener los inputs de efectividad y dia para llenarlos
                 
@@ -102,25 +102,25 @@ async def obtener_guardar_señales(directorio):
                 # Llenar formulario de Catalogador
 
                 print("Seleccionando mercado...")
-                await asyncio.sleep(0.4)
+                await sleep(0.4)
                 await seleccionar_tipo_mercado(page)
                 
                 print("Agregando porcentaje efectividad...")
-                await asyncio.sleep(0.4)
+                await sleep(0.4)
                 await seleccionar_martingalas(page, porcentaje, input_efectividad, num=0)
 
                 print("Añadiendo direcciones call y put...")
-                await asyncio.sleep(0.4)
+                await sleep(0.4)
                 await seleccionar_call_put(page)
 
                 print("Colocando tiempo de operación...")
-                await asyncio.sleep(0.4)
+                await sleep(0.4)
                 await tiempo_operacion(page, tiempo_op)
 
                 print("Agregando día...")
-                await asyncio.sleep(0.4)
+                await sleep(0.4)
                 await agregar_dias(page, dia, input_dia)
-                await asyncio.sleep(0.4)
+                await sleep(0.4)
                 await page.click("#filter")
 
                 # Enviar el formulario
@@ -129,7 +129,7 @@ async def obtener_guardar_señales(directorio):
 
                 catalogar_button = await page.xpath('//button[contains(text(), "Catalogar")]')
                 await catalogar_button[0].click()
-                await asyncio.sleep(2)
+                await sleep(2)
                 print("El formulario se envió...")
 
                 # Obtener el h1 del loading
@@ -140,7 +140,7 @@ async def obtener_guardar_señales(directorio):
                     if len(h1) == 2:
                         print("Hay 2 elementos h1...")
                         h1_1 = h1[1]
-                        await asyncio.sleep(0.7)
+                        await sleep(0.7)
                         contenido_h1 = await page.evaluate('(element) => element.textContent', h1_1)
                     else:
                         print("Hay 1 solo elemento h1...")
@@ -150,12 +150,12 @@ async def obtener_guardar_señales(directorio):
                         print("Hay un false en el h1")
                         break
                     print("Repetir bucle")
-                    await asyncio.sleep(0.1)
+                    await sleep(0.1)
 
                 if contenido_h1.count("false"):
                     print("Error false%, recargando pagina...")
                     await page.reload()
-                    await asyncio.sleep(2)
+                    await sleep(2)
                     continue
 
                 # Obtener el textarea con las señales
@@ -164,7 +164,7 @@ async def obtener_guardar_señales(directorio):
                 await page.waitForSelector('textarea')
                 contenido = await page.evaluate('document.querySelector("textarea").value')
                 print("Textarea obtenido...")
-                await asyncio.sleep(0.2)
+                await sleep(0.2)
 
                 # Guardar las señales en un bloc de notas
 
@@ -198,11 +198,11 @@ async def obtener_guardar_señales(directorio):
                         archivo.write(f"{porcentaje}")
                 else:
                     rango_porcentaje, rango_dias = range(72, 100 +1, 4), range(2, 12 +1)
-                    await asyncio.sleep(0.3)
+                    await sleep(0.3)
                     break
 
                 
-                await asyncio.sleep(0.1)
+                await sleep(0.1)
 
                 print(f"Tiempo_operación: {tiempo_op}")
                 print(f"Día: {dia}")
@@ -219,7 +219,7 @@ async def obtener_guardar_señales(directorio):
                 print(
                     f"Promedio tiempo: {round(sum(lista_tiempos_catalogacion)/len(lista_tiempos_catalogacion), 2)}\n")
                 
-                await asyncio.sleep(0.1)
+                await sleep(0.1)
     
     ruta_archivo_configuracion = os.path.join(directorio_sin_filtro, "configuracion_catalogador.txt")
     if os.path.exists(ruta_archivo_configuracion):
