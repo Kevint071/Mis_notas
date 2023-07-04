@@ -2,7 +2,7 @@
 
 ## Creación de listas de señales
 
-1. Abrir catalogador de señales y colocar la configuracion de binarias que sean sin martingala desde 70 hasta 100
+1. Abrir catalogador de señales y colocar la configuracion de binarias que sean sin martingala desde 72 hasta 100 de 4 en 4. Ej: 72, 76, 80
 2. Poner direcciones en Put y Call
 3. Poner el tiempo en M5
 4. Colocar días de 2 hasta 12

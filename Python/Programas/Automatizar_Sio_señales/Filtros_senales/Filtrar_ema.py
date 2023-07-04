@@ -3,10 +3,17 @@ import pyppeteer
 from asyncio import run, sleep
 from os import path, makedirs, walk
 from pyppeteer_stealth import stealth
-from Cataloger import configuracion_listas_señales
+import sys
 
-periodos_ema = configuracion_listas_señales()[3]
-directorio = r"C:\Users\andre\Escritorio\Operaciones_Trading\June_day_11"
+from Directorio import obtener_directorio
+
+root = path.dirname(path.dirname(path.abspath(__file__)))
+sys.path.append(root)
+
+
+periodos_ema = [9, 21, 50]
+directorio = obtener_directorio()
+print(directorio)
 
 
 async def pegar_obtener_señales(root, nombre_archivo, page):
@@ -54,9 +61,10 @@ async def pegar_obtener_señales(root, nombre_archivo, page):
         señales_filtradas = await page.evaluate('document.querySelector("textarea").value')
 
         root_filtro = root.replace("Sin_filtro", "Filtro_ema")
-        root_filtro =path.join(root_filtro, f"Filtro_{periodo}")
-        nombre_archivo_filtrado = nombre_archivo.replace(".txt", "") + f"_filtro_{periodo}" + ".txt"
-        
+        root_filtro = path.join(root_filtro, f"Filtro_{periodo}")
+        nombre_archivo_filtrado = nombre_archivo.replace(
+            ".txt", "") + f"_filtro_{periodo}" + ".txt"
+
         makedirs(root_filtro, exist_ok=True)
         ruta_archivo_filtrado = path.join(root_filtro, nombre_archivo_filtrado)
 
@@ -101,4 +109,3 @@ async def main():
 
 if __name__ == "__main__":
     run(main())
-

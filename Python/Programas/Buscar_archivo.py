@@ -1,9 +1,4 @@
-from os import *
-
-if name == "posix":
-    union = "/"
-elif name == "nt" or name == "dos" or name == "ce":
-    union = "\ ".replace(" ", "")
+from os import walk, path
 
 ejemplo_dir = input("Digite el directorio: ")
 palabra = input("Digite la palabra que desea buscar en los archivos: ").lower()
@@ -12,7 +7,7 @@ dir_o_file = int(input("""\n¿Que quiere buscar?:
     1. Archivo
     2. Carpeta
             
-              :"""))
+    Elige un número:"""))
 
 for nombre_directorio, directorios, ficheros in walk(ejemplo_dir):
 
@@ -25,4 +20,4 @@ for nombre_directorio, directorios, ficheros in walk(ejemplo_dir):
     if dir_o_file == 2:
         for directorio in directorios:
             if directorio.count(palabra):
-                print(f"{nombre_directorio + union + directorio}\n")
+                print(f"{path.join(nombre_directorio, directorio)}\n")

@@ -4,11 +4,11 @@
 
 <br>
 
-1. El archivo a ejecutar es **Guardar_señales.py** ya que este es el archivo principal. Los archivos **Cataloguer.py** y **Saver.py** son archivos que no se ejecutan directamente sino que ayudan a que **Guardar_señales.py** funcione correctamente.
+1. El archivo a ejecutar es **main.py** ya que este es el archivo principal. Los archivos **Cataloguer_guardar.py** y **Saver.py** son archivos que no se ejecutan directamente sino que ayudan a que **main.py** funcione correctamente.
 
 <br>
 
-2. Por defecto, el archivo **Guardar_señales.py** no abre una ventana de un navegador para ejecutarse ya que así funciona mucho mejor, pero si aun así quieren que mientras se ejecuta este archivo la ventana del navegador se muestre, tienen que importar este modulo en el archivo **Saver.py** para que la pantalla se muestre correctamente:
+2. Por defecto, el archivo **main.py** no abre una ventana de un navegador para ejecutarse ya que así funciona mucho mejor, pero si aun así quieren que mientras se ejecuta este archivo la ventana del navegador se muestre, tienen que importar este modulo en el archivo **Saver.py** para que la pantalla se muestre correctamente:
 
     <br>
 
