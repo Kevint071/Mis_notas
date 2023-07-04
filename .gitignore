@@ -1,4 +1,2 @@
 .vscode
-Cataloger.cpython-310.pyc
-Directorio.cpython-310.pyc
-Saver.cpython-310.pyc
+__pycache__
