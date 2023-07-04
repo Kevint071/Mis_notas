@@ -113,27 +113,29 @@ async def obtener_guardar_senales(directorio):
                 await sleep(0.4)
                 await seleccionar_tipo_mercado(page)
 
+                await sleep(0.4)
                 await seleccionar_martingalas(page, porcentaje, input_efectividad, num=0)
+                
                 await sleep(0.4)
-
                 await seleccionar_call_put(page)
+                
                 await sleep(0.4)
-
                 await tiempo_operacion(page, tiempo_op)
-                await sleep(0.4)
 
-                await agregar_dias(page, dia, input_dia)
                 await sleep(0.4)
+                await agregar_dias(page, dia, input_dia)
+
+                await sleep(0.1)
                 await page.click("#filter")
 
                 # Enviar el formulario
 
                 await page.waitForXPath('//button[contains(text(), "Catalogar")]')
-
                 catalogar_button = await page.xpath('//button[contains(text(), "Catalogar")]')
                 await catalogar_button[0].click()
-                await sleep(2)
+                await sleep(0.1)
                 print("Esperando señales...")
+                await sleep(1.9)
 
                 # Obtener el h1 del loading
 
@@ -154,7 +156,7 @@ async def obtener_guardar_senales(directorio):
                     await sleep(0.1)
 
                 if contenido_h1.count("false"):
-                    print("Error false%, recargando pagina...")
+                    print("Error false%, recargando pagina...\n")
                     await page.reload()
                     await sleep(2)
                     continue
@@ -197,8 +199,10 @@ async def obtener_guardar_senales(directorio):
                         archivo.write(f"{dia}\n")
                         archivo.write(f"{porcentaje}")
                 else:
-                    rango_porcentaje, rango_dias = range(
-                        72, 100 + 1, 4), range(2, 12 + 1)
+                    print("No hay señales en esta catalogación...\n")
+
+                    if rango_porcentaje != range(72, 100 + 1, 4) and rango_dias != range(2, 12 + 1):
+                        rango_porcentaje, rango_dias = range(72, 100 + 1, 4), range(2, 12 + 1)
                     await sleep(0.3)
                     break
 
@@ -228,4 +232,5 @@ async def obtener_guardar_senales(directorio):
         directorio_sin_filtro, "configuracion_catalogador.txt")
     if os.path.exists(ruta_archivo_configuracion):
         os.remove(ruta_archivo_configuracion)
+    print("\nDescarga de señales finalizada exitosamente...")
     await browser.close()

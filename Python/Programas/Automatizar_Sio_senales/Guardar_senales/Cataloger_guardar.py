@@ -105,6 +105,7 @@ async def seleccionar_tipo_mercado(page):
 
 async def seleccionar_martingalas(page, porcentaje, input, num):
     if num == 0:
+        await sleep(0.2)
         await input.click()
         await sleep(0.2)
         await input.type(str(porcentaje))
