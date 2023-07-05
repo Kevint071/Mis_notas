@@ -1,9 +1,12 @@
 from os import name, system
 import psycopg2
+from credenciales import credenciales
+
+link_db = credenciales()
 
 lista_palabras = {}
 
-conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
+conn = psycopg2.connect(link_db)
 
 cursor = conn.cursor()
 query = '''SELECT * FROM palabras'''
@@ -114,7 +117,7 @@ def mostrar_respuestas(lista_palabra_traducida):
             print(f"- {i}")
 
 
-def run():
+def iniciar_test():
     limpiar_pantalla()
 
     # Mostrar palabras
@@ -168,7 +171,9 @@ def run():
 
             mostrar_respuestas(palabra_traducida)
 
+    if __name__ != "__main__":
+        input("\nPresiona enter para salir...")
 
 if __name__ == "__main__":
-    run()
+    iniciar_test()
     input("\nPresiona enter para salir: ")

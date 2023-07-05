@@ -2,6 +2,7 @@ from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, font, END, Listb
 import psycopg2
 from os import name, system
 from credenciales import credenciales
+from Estudiar_palabras_verbos_ingles import iniciar_test
 
 link_db = credenciales()
 
@@ -495,14 +496,7 @@ def run():
     label = Label(root, text="Iniciar test: ", font=estilo_label)
     label.place(x=195, y=240)
 
-        # Probando sistema operativo
-
-    if name == "posix":
-        comando = "python3 ./Estudiar_palabras_verbos_ingles.py"
-    elif name == "nt" or name == "dos" or name == "ce":
-        comando = "python ./Estudiar_palabras_verbos_ingles.py"
-
-    boton_test = Button(root, text="Iniciar", width= 9, font=estilo_botones, command=lambda: (root.destroy(), system(comando)))
+    boton_test = Button(root, text="Iniciar", width= 9, font=estilo_botones, command=lambda: (root.destroy(), iniciar_test()))
     boton_test.place(x=296, y= 238)
 
     # Salida
