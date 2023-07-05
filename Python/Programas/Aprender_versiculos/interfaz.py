@@ -1,28 +1,44 @@
-from tkinter import Tk, Canvas, font, Label
-
+from tkinter import Tk, Canvas, font, Label, Button, Frame
 
 def desplegar_interfaz():
+    # Crear y configurar ventana
     root = Tk()
-    root.title("Aprender versículos")
+    root.title("Almacenador Bíblico Pro")
     root.resizable(0, 0)
 
     alto = 400
-    ancho = 600
+    ancho = 500
 
     canvas = Canvas(root, height=alto, width=ancho)
     canvas.pack()
 
-    estilo_label = font.Font(family="Bahnschrift", size=12)
+    frame = Frame()
+    frame.place(relx=0.1, rely=0.08, relwidth=0.8, relheight=0.8)
+
+
+    # Estilos de tamaño y texto predeterminados
+    estilo_label = font.Font(family="Bahnschrift", size=11)
     estilo_botones = font.Font(family="Bahnschrift", size=10)
 
-    label = Label(text="Inicio", font=("Comic sans Ms", 20))
-    label.place(x=-1000, y=-100)
-    root.update_idletasks()
-    ancho_label = label.winfo_width()
-    root.after(5, print(ancho_label))
-    label.place(x=(ancho-ancho_label)/2, y=20)
+    # Creando label de inicio
 
-    # Obtener el ancho del Label
-    
+    label_version = Label(frame, text="Reina Valera Versión 1960", font=("Comic sans Ms", 14))
+    label_version.grid(row=0, column=0, pady=20, sticky="nw")
+
+    # Label pedir libro
+    label_pedir_libro = Label(frame, text="Seleccione un libro bíblico: ", font=estilo_label)
+    label_pedir_libro.grid(row=1, column=0, sticky="w")
+
+    boton_libro = Button(frame, text="Seleccionar")
+    boton_libro.grid(row=1, column=1, padx=10)
+
+    # Label pedir capítulo
+    label_pedir_libro = Label(frame, text="Selecciona un capítulo: ", font=estilo_label)
+    label_pedir_libro.grid(row=2, column=0, sticky="w")
+
+    boton_libro = Button(frame, text="Seleccionar")
+    boton_libro.grid(row=2, column=1, padx=10, pady=10)
 
     root.mainloop()
+
+desplegar_interfaz()
