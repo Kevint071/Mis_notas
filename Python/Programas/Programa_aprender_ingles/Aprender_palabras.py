@@ -55,7 +55,7 @@ def buscar_palabras(valor, label):
     """Funcion que busca palabras en la ventana mostrar
        parametros palabra cualquier str, label"""
 
-    conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
+    conn = psycopg2.connect("postgresql://postgres:IkLPSElpEdhYgjnzKSMf@containers-us-west-184.railway.app:7551/railway")
 
     valor = valor.strip().capitalize()
     
@@ -152,7 +152,7 @@ def editar(valor, label_palabra, entry_palabra, label_traduccion, entry_traducci
 
     # Conectar con base de datos
 
-    conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
+    conn = psycopg2.connect("postgresql://postgres:IkLPSElpEdhYgjnzKSMf@containers-us-west-184.railway.app:7551/railway")
 
     # Editar palabra
 
@@ -185,7 +185,7 @@ def editar(valor, label_palabra, entry_palabra, label_traduccion, entry_traducci
 
 def borrar(valor, boton_borrar):
 
-    conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
+    conn = psycopg2.connect("postgresql://postgres:IkLPSElpEdhYgjnzKSMf@containers-us-west-184.railway.app:7551/railway")
 
     query = '''SELECT * FROM palabras'''
     row = obtener_palabra(query, conn, valor)
@@ -229,7 +229,7 @@ def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
 
     # Estableciendo conección con la base de datos postgresql para agregar las palabras
 
-    conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
+    conn = psycopg2.connect("postgresql://postgres:IkLPSElpEdhYgjnzKSMf@containers-us-west-184.railway.app:7551/railway")
 
     cursor = conn.cursor()
     query = '''INSERT INTO palabras(palabra, traduccion) VALUES (%s, %s)'''
@@ -298,7 +298,7 @@ def abrir_ventana_mostrar():
 
     # Conectar con base de datos
 
-    conn = psycopg2.connect(dbname="postgres", user="postgres", password="Torrecilla", host="localhost", port=5432)
+    conn = psycopg2.connect("postgresql://postgres:IkLPSElpEdhYgjnzKSMf@containers-us-west-184.railway.app:7551/railway")
 
     cursor = conn.cursor()
     query = '''SELECT * FROM palabras'''
@@ -368,6 +368,9 @@ def abrir_ventana_editar():
 
     label_mostrar = Label(ventana_editar, font=("Bahnschrift", 10), anchor="center", width=40)
     label_mostrar.place(x=100, y=130)
+
+    boton_salir = Button(ventana_editar, text="Salir", command=ventana_editar.destroy, width=9, font=estilo_botones)
+    boton_salir.place(x=210, y=270)
 
     # Mostrar y borrar palabras
 
@@ -446,6 +449,7 @@ def run():
     # Título principal
 
     estilo_label = font.Font(family="Bahnschrift", size=12)
+    global estilo_botones
     estilo_botones = font.Font(family="Bahnschrift", size=10)
 
     label = Label(text="Inicio", font=("Comic sans Ms", 20))

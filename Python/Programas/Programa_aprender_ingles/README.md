@@ -1,10 +1,10 @@
 # Como usar esta base de datos para aprender vocabulario de ingles
 
-## 1. Descargar e instalar postgresql
+## 1. Crea una cuenta en railway
 
-Es recomendable que instalen algunos driver como los de .net, java y para otros lenguajes en el proceso de instalación
+Este programa usa una conextion de base de datos con railway
 
-## 2. Copiar el codigo que esta en el archivo "db.sql"
+## 2. Copiar el codigo (linea por linea, no todo de una vez) que esta en el archivo "db.sql"
 
 Cuando se copie este codigo, se pasa a la terminal de postgresql (**SQL shell(psql)**)
 
