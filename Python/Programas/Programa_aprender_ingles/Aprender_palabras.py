@@ -1,6 +1,9 @@
 from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, font, END, Listbox
 import psycopg2
 from os import name, system
+from credenciales import credenciales
+
+link_db = credenciales()
 
 palabras_traducidas = {}
 validacion = []
@@ -55,7 +58,7 @@ def buscar_palabras(valor, label):
     """Funcion que busca palabras en la ventana mostrar
        parametros palabra cualquier str, label"""
 
-    conn = psycopg2.connect("postgresql://postgres:IkLPSElpEdhYgjnzKSMf@containers-us-west-184.railway.app:7551/railway")
+    conn = psycopg2.connect(link_db)
 
     valor = valor.strip().capitalize()
     
@@ -152,7 +155,7 @@ def editar(valor, label_palabra, entry_palabra, label_traduccion, entry_traducci
 
     # Conectar con base de datos
 
-    conn = psycopg2.connect("postgresql://postgres:IkLPSElpEdhYgjnzKSMf@containers-us-west-184.railway.app:7551/railway")
+    conn = psycopg2.connect(link_db)
 
     # Editar palabra
 
@@ -185,7 +188,7 @@ def editar(valor, label_palabra, entry_palabra, label_traduccion, entry_traducci
 
 def borrar(valor, boton_borrar):
 
-    conn = psycopg2.connect("postgresql://postgres:IkLPSElpEdhYgjnzKSMf@containers-us-west-184.railway.app:7551/railway")
+    conn = psycopg2.connect(link_db)
 
     query = '''SELECT * FROM palabras'''
     row = obtener_palabra(query, conn, valor)
@@ -229,7 +232,7 @@ def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
 
     # Estableciendo conección con la base de datos postgresql para agregar las palabras
 
-    conn = psycopg2.connect("postgresql://postgres:IkLPSElpEdhYgjnzKSMf@containers-us-west-184.railway.app:7551/railway")
+    conn = psycopg2.connect(link_db)
 
     cursor = conn.cursor()
     query = '''INSERT INTO palabras(palabra, traduccion) VALUES (%s, %s)'''
@@ -298,7 +301,7 @@ def abrir_ventana_mostrar():
 
     # Conectar con base de datos
 
-    conn = psycopg2.connect("postgresql://postgres:IkLPSElpEdhYgjnzKSMf@containers-us-west-184.railway.app:7551/railway")
+    conn = psycopg2.connect(link_db)
 
     cursor = conn.cursor()
     query = '''SELECT * FROM palabras'''
