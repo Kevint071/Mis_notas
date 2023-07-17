@@ -11,4 +11,4 @@ En este espacio publicaré sobre todo lo que vaya aprendiendo respecto a la prog
     - Cmd
 - Trucos de VsCode
 
-https://github.com/Kevint071/Proyecto_NexaCode
+https://kevint071.github.io/Proyecto_NexaCode/
