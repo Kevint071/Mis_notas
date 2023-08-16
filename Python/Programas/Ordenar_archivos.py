@@ -1,19 +1,48 @@
-# Este codigo solo ordena los archivos del directorio dado, no sus carpetas ni subcarpetas
+from os import chdir, listdir, mkdir, path
+from shutil import move
+from tkinter import filedialog
+from tkinter import *
 
-from os import chdir, listdir, path
+def elegir_directorio():
+    root = Tk()
+    root.withdraw()
+    return filedialog.askdirectory()
 
 
-def generar_lista_solo_archivos(directorio):
+def filtrar_carpetas_archivos(directorio):
+    ext_ignorar = [".ini"]
     lista_directorio = listdir(directorio)
-    lista_archivos = list(
-        map(lambda x: path.join(directorio, x), lista_directorio))
-    lista_archivos = list(filter(lambda x: not path.isdir(x), lista_archivos))
+
+    def filtrar_extension(nombre):
+        if "." in nombre:
+            return not nombre.endswith(tuple(ext_ignorar))
+
+    return list(filter(filtrar_extension, lista_directorio))
 
 
 def run():
-    directorio = input("Digite el directorio a organizar: ")
+    directorio = elegir_directorio()
+    
     chdir(directorio)
-    generar_lista_solo_archivos(directorio)
+    lista_archivos = filtrar_carpetas_archivos(directorio)
+    print(lista_archivos)
+
+    for archivo in lista_archivos:
+        nombre, extension = path.splitext(archivo)
+        carpeta = f"Carpeta_archivos_{extension[1:]}"
+        ruta_carpeta = path.join(directorio, carpeta)
+
+        if not path.exists(ruta_carpeta):
+            try:
+              print(f"Creando carpeta {extension}...")
+              mkdir(ruta_carpeta)
+              print(f"Carpeta {extension} creada...")
+            except:
+                print("\nNo se pudo crear la carpeta...")
+
+        ruta_origen = path.join(directorio, archivo)
+        ruta_destino = path.join(ruta_carpeta, archivo)
+        move(ruta_origen, ruta_destino)
 
 
 if __name__ == "__main__":
