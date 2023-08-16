@@ -1,6 +1,5 @@
 from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, font, END, Listbox
 import psycopg2
-from os import name, system
 from credenciales import credenciales
 from Estudiar_palabras_verbos_ingles import iniciar_test
 
