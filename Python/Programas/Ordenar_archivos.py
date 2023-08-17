@@ -3,6 +3,7 @@ from shutil import move
 from tkinter import filedialog
 from tkinter import *
 
+
 def elegir_directorio():
     root = Tk()
     root.withdraw()
@@ -22,21 +23,21 @@ def filtrar_carpetas_archivos(directorio):
 
 def run():
     directorio = elegir_directorio()
-    
+
     chdir(directorio)
     lista_archivos = filtrar_carpetas_archivos(directorio)
     print(lista_archivos)
 
     for archivo in lista_archivos:
         nombre, extension = path.splitext(archivo)
-        carpeta = f"Carpeta_archivos_{extension[1:]}"
+        carpeta = f"Archivos_{extension[1:]}"
         ruta_carpeta = path.join(directorio, carpeta)
 
         if not path.exists(ruta_carpeta):
             try:
-              print(f"Creando carpeta {extension}...")
-              mkdir(ruta_carpeta)
-              print(f"Carpeta {extension} creada...")
+                print(f"Creando carpeta {extension}...")
+                mkdir(ruta_carpeta)
+                print(f"Carpeta {extension} creada...")
             except:
                 print("\nNo se pudo crear la carpeta...")
 
