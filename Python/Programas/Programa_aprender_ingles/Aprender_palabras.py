@@ -1,12 +1,10 @@
 from tkinter import Tk, Canvas, Label, Entry, Button, Toplevel, font, END, Listbox
-import psycopg2
-from credenciales import credenciales
+from credenciales import conn
 from Estudiar_palabras_verbos_ingles import iniciar_test
-
-link_db = credenciales()
 
 palabras_traducidas = {}
 validacion = []
+
 
 def verificar_palabras(palabra, label, x, y):
 
@@ -58,8 +56,6 @@ def buscar_palabras(valor, label):
     """Funcion que busca palabras en la ventana mostrar
        parametros palabra cualquier str, label"""
 
-    conn = psycopg2.connect(link_db)
-
     valor = valor.strip().capitalize()
     
     if valor == "":
@@ -69,9 +65,6 @@ def buscar_palabras(valor, label):
         row = obtener_palabra(query, conn, valor)
 
     mostrar_busqueda(row, label)
-
-    conn.commit()
-    conn.close()
 
     return label["text"]
 
@@ -155,8 +148,6 @@ def editar(valor, label_palabra, entry_palabra, label_traduccion, entry_traducci
 
     # Conectar con base de datos
 
-    conn = psycopg2.connect(link_db)
-
     # Editar palabra
 
     query = '''SELECT * FROM palabras'''
@@ -180,15 +171,11 @@ def editar(valor, label_palabra, entry_palabra, label_traduccion, entry_traducci
         query = f'''UPDATE palabras SET palabra='{i[1]}', traduccion='{i[2]}' WHERE id={i[0]};'''
         cursor.execute(query)
 
-    conn.commit()
-    conn.close()
 
     print("Datos editados")
 
 
 def borrar(valor, boton_borrar):
-
-    conn = psycopg2.connect(link_db)
 
     query = '''SELECT * FROM palabras'''
     row = obtener_palabra(query, conn, valor)
@@ -199,9 +186,6 @@ def borrar(valor, boton_borrar):
     UPDATE palabras SET id=nextval('palabras_id_seq');'''
     cursor = conn.cursor()
     cursor.execute(query)
-
-    conn.commit()
-    conn.close()
 
     print("Datos borrados")
 
@@ -232,14 +216,10 @@ def guardar_palabras(entry_ingles, entry_traducir, ventana_agregar):
 
     # Estableciendo conección con la base de datos postgresql para agregar las palabras
 
-    conn = psycopg2.connect(link_db)
-
     cursor = conn.cursor()
     query = '''INSERT INTO palabras(palabra, traduccion) VALUES (%s, %s)'''
     cursor.execute(query, (palabra, traduccion))
     print("Datos guardados")
-    conn.commit()
-    conn.close()
 
 
 def abrir_ventana_agregar():
@@ -301,8 +281,6 @@ def abrir_ventana_mostrar():
 
     # Conectar con base de datos
 
-    conn = psycopg2.connect(link_db)
-
     cursor = conn.cursor()
     query = '''SELECT * FROM palabras'''
     cursor.execute(query)
@@ -317,9 +295,6 @@ def abrir_ventana_mostrar():
     for x in row:
         listbox.insert(END, x)
         palabras_traducidas[x[1]] = x[2]
-
-    conn.commit()
-    conn.close()
 
     # Título
 
@@ -440,6 +415,7 @@ def abrir_ventana_borrar():
 
 def run():
 
+
     root = Tk()
     root.title("Palabras de ingles")
     root.resizable(0, 0)
@@ -507,3 +483,5 @@ def run():
 
 if __name__ == "__main__":
     run()
+    conn.commit()
+    conn.close()

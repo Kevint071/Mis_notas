@@ -1,33 +1,13 @@
 from os import name, system
-import psycopg2
-from credenciales import credenciales
-
-link_db = credenciales()
+from credenciales import conn
+from Conexion_base_de_datos import existencia_tabla, crear_tabla
 
 lista_palabras = {}
 
-conn = psycopg2.connect(link_db)
 
-cursor = conn.cursor()
-query = '''SELECT * FROM palabras'''
-cursor.execute(query)
-
-row = cursor.fetchall()
-
-for x in row:
-    if x[2].count(",") >= 1:
-        palabras = x[2].split(",")
-
-        for i in range(len(palabras)):
-            
-            palabras[i] = palabras[i].strip().capitalize()
-
-            if palabras[i].count(" ") >= 1:
-                palabras[i] = [palabras[i]]
-
-        lista_palabras[x[1]] = palabras
-    else:
-        lista_palabras[x[1]] = x[2]
+tabla_existe = existencia_tabla()
+if tabla_existe == False:
+    crear_tabla()
 
 
 def limpiar_pantalla():
@@ -38,7 +18,6 @@ def limpiar_pantalla():
 
 
 def variacion_respuesta_derecho(lista_item):
-
     """Funcion que une significados con conjuncion 'o'.
        Parametros lista_item list con valores tipo strings.
        returns temporal."""
@@ -50,12 +29,11 @@ def variacion_respuesta_derecho(lista_item):
         temporal += x
         if x != "".join(lista_item[-1]):
             temporal += " o "
-    
+
     return temporal.capitalize()
 
 
 def variacion_respuesta_inversa(lista_item):
-
     """Funcion que une significados en sentido inverso con conjuncion 'o'.
        Parametros lista_item list con valores tipo strings.
        returns temporal"""
@@ -72,7 +50,6 @@ def variacion_respuesta_inversa(lista_item):
 
 
 def agregar_variaciones_respuestas(i, lista_palabras):
-
     """Funcion que agrega respuestas unidas con la conjuncion 'o' a listas.
        Parámetro i string ó list, lista_palabras cualquier list, id_separable int 1 ó 2, tipo_verbo string.
        returns list con variables palabra_traducida, tipo_verbo, id_separable"""
@@ -101,7 +78,6 @@ def agregar_variaciones_respuestas(i, lista_palabras):
 
 
 def mostrar_respuestas(lista_palabra_traducida):
-
     """Función que muestra significados de una palabra en inglés.
        Parámetros lista_palabra_traducida cualquier list
        returns None
@@ -118,6 +94,27 @@ def mostrar_respuestas(lista_palabra_traducida):
 
 
 def iniciar_test():
+    cursor = conn.cursor()
+
+    query = '''SELECT * FROM palabras'''
+    cursor.execute(query)
+
+    row = cursor.fetchall()
+
+    for x in row:
+        if x[2].count(",") >= 1:
+            palabras = x[2].split(",")
+
+            for i in range(len(palabras)):
+
+                palabras[i] = palabras[i].strip().capitalize()
+
+                if palabras[i].count(" ") >= 1:
+                    palabras[i] = [palabras[i]]
+
+            lista_palabras[x[1]] = palabras
+        else:
+            lista_palabras[x[1]] = x[2]
     limpiar_pantalla()
 
     # Mostrar palabras
@@ -157,7 +154,6 @@ def iniciar_test():
 
         palabra_traducida = agregar_variaciones_respuestas(i, lista_palabras)
 
-
         if type(palabra_traducida) == str:
             palabra_traducida = list([palabra_traducida])
 
@@ -165,14 +161,17 @@ def iniciar_test():
 
         if traduccion in palabra_traducida:
             puntos += 1
-            print(f"Bien, {puntos} puntos de {len(palabras_ingles)} puntos {int((puntos/len(palabras_ingles)) * 100)}%")
+            print(
+                f"Bien, {puntos} puntos de {len(palabras_ingles)} puntos {int((puntos/len(palabras_ingles)) * 100)}%")
         else:
-            print(f'\nEl significado es incorrecto...\nPuedes colocar una de estas respuestas:\n')
+            print(
+                f'\nEl significado es incorrecto...\nPuedes colocar una de estas respuestas:\n')
 
             mostrar_respuestas(palabra_traducida)
 
     if __name__ != "__main__":
         input("\nPresiona enter para salir...")
+
 
 if __name__ == "__main__":
     iniciar_test()

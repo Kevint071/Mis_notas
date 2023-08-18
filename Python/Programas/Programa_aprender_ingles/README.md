@@ -1,26 +1,56 @@
-# Como usar esta base de datos para aprender vocabulario de ingles
+<style>
+  h1 {
+    color: #e6490b;
+  }
+  h2 {
+    color: #0077b5;
+  }
+  code {
+    background-color: #222;
+    color: #fffddd;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+  p,
+  ul,
+  li {
+    
+    font-size: 16px;
+  }
+</style>
 
-## 1. Crea una cuenta en railway
+<h1>Cómo usar este programa con una base de datos para aprender vocabulario de inglés</h1>
 
-Este programa usa una conexión de base de datos con railway, asi que debes crearte una cuenta y luego crea un nuevo proyecto de tipo base de datos con postgresql.
+<h2>1. Crea una cuenta en fl0</h2>
+<p>Crea una cuenta gratuita en fl0 para obtener acceso a una base de datos PostgreSQL hosted.</p>
 
-<br>
+<h2>2. Crea una tabla</h2>
+<p>Una vez tengas acceso a la base de datos, crea una tabla llamada palabras con los siguientes campos:</p>
 
-## 2. Crea una tabla
+<ul>
+  <li>id: llave primaria autoincremental</li>
+  <li>palabra: texto con la palabra en inglés</li>
+  <li>traduccion: texto con la traducción al español</li>
+</ul>
 
-Copia el contenido del archivo **db.sql** y luego pegalo en el query de railway en la tabla de postgresql ya creada en el paso 1.
+<p>Puedes crear la tabla ejecutando el siguiente SQL:</p>
 
-<br>
+<code>CREATE TABLE palabras (
+id SERIAL PRIMARY KEY,
+palabra TEXT,
+traduccion TEXT
+);</code>
 
-## 3. Conecta la tabla con el archivo **Aprender_palabras.py**
+<h2>3. Crea un archivo credenciales.py</h2>
+<p>Crea un archivo llamado credenciales.py en la carpeta Programa_aprender_ingles con los datos de conexión a tu base de datos:</p>
 
-        def credenciales():
-            link_db = "link coneccion"
-            return link_db
+<code>from psycopg2 import connect
 
-<br>
+conn = connect("postgres://fl0user:cGbsEdO3mL9u@ep-little-violet-60084371.ap-southeast-1.aws.neon.tech:5432/palabras?sslmode=require")</code>
 
-## 3. Ejecutar programa
+<p>Reemplaza usuario, contraseña, host, puerto y db con los valores correspondientes a tu base de datos.</p>
 
-Ahora ejecuta el programa **Aprender_palabras.py**
+<h2>4. Ejecuta el programa</h2>
+<p>Finalmente, ejecuta el programa Aprender_palabras.py para interactuar con la base de datos. Podrás agregar palabras nuevas, estudiar las existentes, y más.</p>
 
+<p>¡Y eso es todo! Sigue estos pasos para configurar una base de datos PostgreSQL para aprender vocabulario en inglés con este programa.</p>
