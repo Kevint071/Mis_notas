@@ -6,9 +6,11 @@
     color: #0077b5;
   }
   code {
+    font-size: 14px;
     background-color: #222;
-    color: #fffddd;
-    padding: 2px 4px;
+    margin-bottom: 0px;
+    color: #ffffdd;
+    padding: 2px 10px;
     border-radius: 4px;
   }
   p,
@@ -44,12 +46,35 @@ traduccion TEXT
 <h2>3. Crea un archivo credenciales.py</h2>
 <p>Crea un archivo llamado credenciales.py en la carpeta Programa_aprender_ingles con los datos de conexión a tu base de datos:</p>
 
-<code>from psycopg2 import connect
+<code>
 
-conn = connect("postgres://fl0user:cGbsEdO3mL9u@ep-little-violet-60084371.ap-southeast-1.aws.neon.tech:5432/palabras?sslmode=require")</code>
+<p>from psycopg2 import connect <br><br>
+conn = connect("postgres://fl0user:cGbsEdO3mL9u@ep-little-violet-60084371.ap-southeast-1.aws.neon.tech:5432/palabras?sslmode=require")</p></code>
 
 <p>Reemplaza usuario, contraseña, host, puerto y db con los valores correspondientes a tu base de datos.</p>
-
+<ul>
+    <li>
+    <strong>postgres://</strong> - Indica que es una conexión a PostgreSQL
+    </li>
+    <li>
+    <strong>fl0user</strong> - El usuario para la autenticación
+    </li>
+    <li>
+    <strong>cGbsEdO3mL9u</strong> - La contraseña del usuario fl0user
+    </li>
+    <li>
+    <strong>ep-little-violet-60084371.ap-southeast-1.aws.neon.tech</strong> - El host o dirección del servidor de base de datos  
+    </li>
+    <li>
+    <strong>5432</strong> - El puerto por defecto de PostgreSQL
+    </li>
+    <li>
+    <strong>palabras</strong> - El nombre de la base de datos específica a la que nos conectamos
+    </li>
+    <li>
+    <strong>?sslmode=require</strong> - Parámetro para forzar que la conexión use SSL
+    </li>
+</ul>
 <h2>4. Ejecuta el programa</h2>
 <p>Finalmente, ejecuta el programa Aprender_palabras.py para interactuar con la base de datos. Podrás agregar palabras nuevas, estudiar las existentes, y más.</p>
 
