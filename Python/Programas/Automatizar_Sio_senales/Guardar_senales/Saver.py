@@ -1,20 +1,27 @@
 import os
+import selenium
 from pyppeteer import launch, errors
 from asyncio import sleep
 from datetime import datetime
 from pyppeteer_stealth import stealth
 from time import time
+from screeninfo import get_monitors
 
 from Cataloger_guardar import configuracion_listas_senales, agregar_dias, seleccionar_call_put, seleccionar_martingalas, seleccionar_tipo_mercado, tiempo_operacion
 
 
 async def obtener_guardar_senales(directorio):
     # Iniciar y lanzar nueva ventana
-    browser = await launch()
+    browser = await launch(headless=False, executablePath=r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe", args=['--start-maximized'])
     page = await browser.newPage()
     page.setDefaultNavigationTimeout(45000)
     await stealth(page)
     await page.goto("https://siofiltrosinais.com/cataloger")
+
+    monitor = get_monitors()[0]
+    width = monitor.width
+    height = monitor.height
+    await page.setViewport({'width': width, 'height': height})
 
     pages = await browser.pages()
     if len(pages) > 1:
@@ -85,8 +92,11 @@ async def obtener_guardar_senales(directorio):
                     try:
                         # Cerrar anuncio
                         print("Cerrando anuncio...", end="")
-                        await page.waitForSelector(".closeWS")
-                        await page.click(".closeWS")
+                        try:
+                            await page.waitForXPath('//div[@onclick="closeModal()"]')
+                            await page.click('//div[@onclick="closeModal()"]')
+                        except:
+                            print("Tropel")
                         await sleep(0.4)
                         await page.mouse.click(40, 300)
                         break
