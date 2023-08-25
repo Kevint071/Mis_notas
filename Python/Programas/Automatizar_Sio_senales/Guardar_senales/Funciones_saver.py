@@ -46,7 +46,6 @@ def cerrar_anuncio():
 
 
 def elegir_idioma():
-    # Elegir idioma
     idiomas = ["English", "Español", "Português"]
 
     for indice, idioma in enumerate(idiomas, start=1):
