@@ -3,7 +3,11 @@ from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 from time import sleep
+
+options = Options()
+options.headless = True
 
 
 def ejecutar_navegador():
@@ -11,7 +15,7 @@ def ejecutar_navegador():
     # Encontrar ruta de el webdriver y abrir una ventana
     chdir(path.dirname(path.dirname(path.abspath(__file__))))
     global driver
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=options)
     driver.maximize_window()
 
     # Definir la ruta a abrir y abrirla
