@@ -1,4 +1,3 @@
-from asyncio import run
 from os import makedirs, path
 from Saver import obtener_guardar_senales
 import sys

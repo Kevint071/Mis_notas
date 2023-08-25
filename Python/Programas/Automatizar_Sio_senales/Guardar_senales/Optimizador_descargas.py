@@ -1,4 +1,3 @@
-from asyncio import sleep
 from os import system, name, path
 
 
