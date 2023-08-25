@@ -6,7 +6,6 @@ from Optimizador_descargas import configuracion_listas_senales
 
 
 def obtener_guardar_senales(directorio):
-
     # Creando directorio carpeta fecha
     dia_actual, mes_actual = [datetime.now().day, datetime.now().strftime("%B")]
     carpeta_fecha = f"{mes_actual}_day_{dia_actual}"
