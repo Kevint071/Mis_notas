@@ -9,12 +9,12 @@ sys.path.append(root)
 from Directorio import obtener_directorio
 
 
-async def main():
+def main():
     directorio = obtener_directorio()
     makedirs(directorio, exist_ok=True)
 
-    await obtener_guardar_senales(directorio)
+    obtener_guardar_senales(directorio)
 
 
 if __name__ == "__main__":
-    run(main())
+    main()
