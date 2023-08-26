@@ -1,8 +1,50 @@
 import os
 from datetime import datetime
-from Funciones_saver import ejecutar_navegador, retroceder_a_catalogador, cerrar_anuncio, elegir_idioma, seleccionar_mercado, obtener_inputs, agregar_efectividad, agregar_direccion_op
+from Funciones_saver import ejecutar_navegador, retroceder_a_catalogador, cerrar_anuncio, elegir_idioma, seleccionar_mercado, obtener_inputs, agregar_efectividad, agregar_direccion_op, agregar_timeframe, agregar_dia, filtrar_noticias, iniciar_catalogacion, obtener_senales
 from time import time, sleep
 from Optimizador_descargas import configuracion_listas_senales
+from colorama import Fore, Style
+
+
+def guardar_senales_txt(nombre_archivo, senales):
+    with open(nombre_archivo, "w") as archivo:
+        archivo.write(senales)
+
+
+def obtener_cantidad_senales(nombre_archivo):
+    with open(nombre_archivo, "r") as archivo:
+        cantidad_senales = archivo.readlines()
+        print(f"Cantidad de señales: {len(cantidad_senales)}")
+        return cantidad_senales
+
+
+def configuracion_catalogador_txt(directorio_sin_filtro, timeframe, tiempos, dia, porcentaje):
+    os.chdir(directorio_sin_filtro)
+
+    with open("configuracion_catalogador.txt", "w") as archivo:
+        if timeframe == tiempos[0]:
+            archivo.write(f"{tiempos}\n")
+        elif timeframe == tiempos[1]:
+            archivo.write(f"{tiempos[1:]}\n")
+        else:
+            archivo.write(f"{tiempos[2]}\n")
+
+        archivo.write(f"{dia}\n")
+        archivo.write(f"{porcentaje}")
+
+
+def configurar_catalogacion(timeframe, porcentaje, dia):
+    print("Iniciando configuración de catalogación...")
+    funciones_catalogacion = [seleccionar_mercado, obtener_inputs, agregar_efectividad, agregar_direccion_op, agregar_timeframe, agregar_dia, filtrar_noticias, iniciar_catalogacion]
+
+    params = {agregar_efectividad: (porcentaje, ),
+              agregar_timeframe: (timeframe, ),
+              agregar_dia: (dia, ),}
+
+    for funcion in funciones_catalogacion:
+        args = params.get(funcion, ())
+        funcion(*args)
+        sleep(0.1)
 
 
 def obtener_guardar_senales(directorio):
@@ -20,9 +62,6 @@ def obtener_guardar_senales(directorio):
     directorio_fecha = os.path.join(directorio, carpeta_fecha)
     os.chdir(directorio_fecha)
 
-    # with open("dir_descargas_senales.txt", "w") as archivo:
-    #     archivo.write(f"{directorio}")
-
     carpeta_senales_sin_filtro = "Sin_filtro"
 
     if not os.path.exists(carpeta_senales_sin_filtro):
@@ -39,19 +78,21 @@ def obtener_guardar_senales(directorio):
     print(f"Hora de inicio: {hora_inicio}")
 
     ejecutar_navegador()
+    sleep(0.5)
     cerrar_anuncio()
+    sleep(0.5)
     elegir_idioma()
 
-    for tiempo_op in tiempos:
-        # Directorio para crear las carpetas de dias
+    for timeframe in tiempos:
+        
         os.chdir(directorio_sin_filtro)
-        carpeta_tiempo = f"Tiempo_M{tiempo_op}"
+        carpeta_tiempo = f"Tiempo_M{timeframe}"
 
         if not os.path.exists(carpeta_tiempo):
             os.mkdir(carpeta_tiempo)
 
         for dia in rango_dias:
-            # Directorio para crear las carpetas de dias
+           
             directorio_tiempo = os.path.join(directorio_sin_filtro, carpeta_tiempo)
             carpeta_dia = f"Dia_{dia}"
             os.chdir(directorio_tiempo)
@@ -61,15 +102,40 @@ def obtener_guardar_senales(directorio):
 
             for porcentaje in rango_porcentaje:
                 tiempo_inicio = time()
-                if cantidad_archivos_descargados != 0:
-                    retroceder_a_catalogador()
-                if porcentaje == 100 and rango_porcentaje != range(72, 100+1, 4):
-                    rango_porcentaje, rango_dias = range(72, 100 + 1, 4), range(2, 12 + 1)
+                print(Fore.LIGHTCYAN_EX + f"Iniciando Descarga N° {cantidad_archivos_descargados+1}" + Style.RESET_ALL)
+                # Configurar catalogación para obtener las señales
+                configurar_catalogacion(timeframe, porcentaje, dia)
 
-                seleccionar_mercado()
-                obtener_inputs()
-                agregar_efectividad(porcentaje)
-                agregar_direccion_op()
+                senales = obtener_senales()
+                if senales == None:
+                    retroceder_a_catalogador()
+                    break
+                if (rango_porcentaje != range(72, 100+1, 4) or porcentaje == 100) or senales == None:
+                        rango_porcentaje, rango_dias = range(72, 100 + 1, 4), range(2, 12 + 1)
+                retroceder_a_catalogador()
+                sleep(1)
+
+                # Crear carpeta dia, guardando señales en arhcivos txt
+
+                directorio_dia = os.path.join(directorio_tiempo, carpeta_dia)
+                os.chdir(directorio_dia)
+
+                lineas = senales.split("\n")
+                num_lineas = len(lineas)
+                nombre_archivo = f"Porcentaje_{porcentaje}_tiempo_{timeframe}_sen_{num_lineas}.txt"
+
+                print("Señales obtenidas...\n")
+                guardar_senales_txt(nombre_archivo, senales)
+                cantidad_archivos_descargados += 1
+
+                print(Fore.CYAN + f"Archivo Número {cantidad_archivos_descargados}" + Style.RESET_ALL)
+                print(f"Tiempo_operación: {timeframe} minutos")
+                print(f"Día: {dia}")
+                print(f"Porcentaje: {porcentaje}")
+                print(f"Cantidad de señales: {num_lineas}")
+
+                # obtener_cantidad_senales(nombre_archivo)
+                configuracion_catalogador_txt(directorio_sin_filtro, timeframe, tiempos, dia, porcentaje)
 
                 tiempo_fin = time()
                 tiempo_catalogacion = round(tiempo_fin - tiempo_inicio, 2)
@@ -82,14 +148,9 @@ def obtener_guardar_senales(directorio):
                     f"Tiempo total: {round(sum(lista_tiempos_catalogacion) // 3600):02d}:{round((sum(lista_tiempos_catalogacion) % 3600) // 60):02d}:{round((sum(lista_tiempos_catalogacion)) % 3600 % 60):02d}")
                 print(
                     f"Promedio tiempo: {round(sum(lista_tiempos_catalogacion)/len(lista_tiempos_catalogacion), 2)} s\n")
-                
-                sleep(100)
-
 
 
     ruta_archivo_configuracion = os.path.join(directorio_sin_filtro, "configuracion_catalogador.txt")
 
     if os.path.exists(ruta_archivo_configuracion):
         os.remove(ruta_archivo_configuracion)
-
-    print("\nDescarga de señales finalizada exitosamente...")
