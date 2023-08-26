@@ -10,9 +10,11 @@ from Directorio import obtener_directorio
 
 def main():
     directorio = obtener_directorio()
+    print("Ruta de la carpeta seleccionada:", directorio)
     makedirs(directorio, exist_ok=True)
 
     obtener_guardar_senales(directorio)
+    print("\nDescarga de señales finalizada exitosamente...")
 
 
 if __name__ == "__main__":
