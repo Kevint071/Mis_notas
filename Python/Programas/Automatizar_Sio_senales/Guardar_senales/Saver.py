@@ -108,10 +108,12 @@ def obtener_guardar_senales(directorio):
 
                 senales = obtener_senales()
                 if senales == None:
+                    print("No hay señales en esta catalogación...")
                     retroceder_a_catalogador()
                     break
-                if (rango_porcentaje != range(72, 100+1, 4) or porcentaje == 100) or senales == None:
-                        rango_porcentaje, rango_dias = range(72, 100 + 1, 4), range(2, 12 + 1)
+                if (rango_porcentaje != range(70, 100+1, 5) or porcentaje == 100) or senales == None:
+                        rango_porcentaje, rango_dias = range(70, 100 + 1, 5), range(2, 12 + 1)
+                print("Señales obtenidas...")
                 retroceder_a_catalogador()
                 sleep(1)
 
@@ -124,7 +126,6 @@ def obtener_guardar_senales(directorio):
                 num_lineas = len(lineas)
                 nombre_archivo = f"Porcentaje_{porcentaje}_tiempo_{timeframe}_sen_{num_lineas}.txt"
 
-                print("Señales obtenidas...\n")
                 guardar_senales_txt(nombre_archivo, senales)
                 cantidad_archivos_descargados += 1
 
