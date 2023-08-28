@@ -5,24 +5,24 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import JavascriptException
+from selenium.common.exceptions import UnexpectedAlertPresentException
 from time import sleep
 
 # Agregar a ejecutar_navegador() si no se quiere mostrar el navegador
-
 # options = Options()
 # options.headless = True
+# options.add_argument("--log-level=3")
 # driver = webdriver.Chrome(options=options)
 
+# Si se quiere ver la pantalla del navegador simplemente en la variable driver pege el codigo:
+# driver = webdriver.Chrome()
+
 def ejecutar_navegador():
-    options = Options()
-    options.headless = True
-    options.add_argument("--log-level=3")
 
     # Encontrar ruta de el webdriver y abrir una ventana
     chdir(path.dirname(path.dirname(path.abspath(__file__))))
     global driver
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome()
     driver.maximize_window()
 
     # Definir la ruta a abrir y abrirla
@@ -201,21 +201,21 @@ def iniciar_catalogacion():
         print("Iniciando catalogación...")
         boton_iniciar.click()
     except:
-        print("Hubo un error al iniciar la catalogación...\n")
+        print("Hubo un error de conexión o de la página... Intente más tarde.\n")
 
 
 def obtener_senales():
     # Obtener las señales que estan en el textarea
-    # try:
-    WebDriverWait(driver, 180).until(EC.presence_of_element_located((By.TAG_NAME, "textarea")))
-    textarea = driver.find_element(By.TAG_NAME, "textarea")
-    print("Obteniendo señales...\n")
-    senales = textarea.get_attribute("value")
-    if senales == "":
-        print("No hay señales en esta catalogación...")
-        return None
-    return senales
-    # except:
-    #     print("No se pudo obtener el textarea ni su contenido...\n")
-
-sleep(1)
+    try:
+        WebDriverWait(driver, 180).until(EC.presence_of_element_located((By.TAG_NAME, "textarea")))
+        textarea = driver.find_element(By.TAG_NAME, "textarea")
+        print("Obteniendo señales...\n")
+        senales = textarea.get_attribute("value")
+        if senales == "":
+            print("No hay señales en esta catalogación...")
+            return None
+        return senales
+    except UnexpectedAlertPresentException:
+        print("Error, alert ha aparecido...")
+        driver.refresh()
+        return False

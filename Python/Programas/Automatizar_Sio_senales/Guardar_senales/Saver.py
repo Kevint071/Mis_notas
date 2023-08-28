@@ -111,6 +111,11 @@ def obtener_guardar_senales(directorio):
                     print("No hay señales en esta catalogación...")
                     retroceder_a_catalogador()
                     break
+                elif senales == False:
+                    print("Error al obtener las señales en esta catalogación...\n")
+                    cerrar_anuncio()
+                    continue
+
                 if (rango_porcentaje != range(70, 100+1, 5) or porcentaje == 100) or senales == None:
                         rango_porcentaje, rango_dias = range(70, 100 + 1, 5), range(2, 12 + 1)
                 print("Señales obtenidas...")
