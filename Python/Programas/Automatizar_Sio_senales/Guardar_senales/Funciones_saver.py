@@ -35,7 +35,7 @@ def retroceder_a_catalogador():
     try:
         WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, '//*[@id="screenshot"]/div/a')))
         retroceder = driver.find_element(by=By.XPATH, value='//*[@id="screenshot"]/div/a')
-        print("Retrocediendo...")
+        print("Volviendo al catalogador...\n")
         retroceder.click()
     except:
         print("No se pudo retroceder...\n")
@@ -60,7 +60,7 @@ def elegir_idioma():
 
     while True:
         try:
-            eleccion = int(input("\nElige un idioma: "))
+            eleccion = int(input("\nElige el idioma para la página: "))
             idioma = idiomas[eleccion - 1]
             if eleccion > 0 and eleccion <= 3:
                 break
