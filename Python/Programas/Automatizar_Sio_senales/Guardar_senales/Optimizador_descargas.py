@@ -23,9 +23,9 @@ def elegir_tiempo_op ():
     tiempos = []
 
     opciones_tiempos = {
-        1: 1,
-        2: 5,
-        3: 15,
+        1: (1,),
+        2: (5,),
+        3: (15,),
         4: (1, 5),
         5: (1, 15),
         6: (5, 15),
@@ -59,7 +59,7 @@ def obtener_archivo_configuracion_listas_senales(ruta_archivo_configuracion):
         lineas = archivo.readlines()
         tiempos = [int(x) for x in lineas[0].strip("[]\n").split(", ")]
         rango_dias = range(int(lineas[1]), 12 +1)
-        rango_porcentaje = range(int(lineas[2]), 100 + 1, 4)
+        rango_porcentaje = range(int(lineas[2]), 100 + 1, 5)
 
     return [tiempos, rango_dias, rango_porcentaje]
 
@@ -82,7 +82,7 @@ def configuracion_listas_senales(directorio_sin_filtro):
                 print("Opcion no válida")
         else:
             rango_dias = range(2, 12 + 1)
-            rango_porcentaje = range(72, 100 + 1, 4)
+            rango_porcentaje = range(70, 100 + 1, 5)
             tiempos = elegir_tiempo_op()
 
             return [tiempos, rango_dias, rango_porcentaje]
