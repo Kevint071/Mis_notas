@@ -102,7 +102,7 @@ def obtener_guardar_senales(directorio):
 
             for porcentaje in rango_porcentaje:
                 tiempo_inicio = time()
-                print(Fore.LIGHTCYAN_EX + f"Iniciando Descarga N° {cantidad_archivos_descargados+1}" + Style.RESET_ALL)
+                print(Fore.LIGHTGREEN_EX + f"Iniciando Descarga N° {cantidad_archivos_descargados+1}" + Style.RESET_ALL)
                 # Configurar catalogación para obtener las señales
                 configurar_catalogacion(timeframe, porcentaje, dia)
 
@@ -129,7 +129,7 @@ def obtener_guardar_senales(directorio):
                 guardar_senales_txt(nombre_archivo, senales)
                 cantidad_archivos_descargados += 1
 
-                print(Fore.CYAN + f"Archivo Número {cantidad_archivos_descargados}" + Style.RESET_ALL)
+                print(Fore.LIGHTRED_EX + f"Archivo Número {cantidad_archivos_descargados}" + Style.RESET_ALL)
                 print(f"Tiempo_operación: {timeframe} minutos")
                 print(f"Día: {dia}")
                 print(f"Porcentaje: {porcentaje}")
