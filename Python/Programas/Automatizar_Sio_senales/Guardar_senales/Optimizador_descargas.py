@@ -1,4 +1,5 @@
-from os import system, name, path
+from os import system, name, path, chdir
+from shutil import rmtree
 
 
 def limpiar_pantalla():
@@ -58,7 +59,7 @@ def obtener_archivo_configuracion_listas_senales(ruta_archivo_configuracion):
     with open(ruta_archivo_configuracion, 'r') as archivo:
         lineas = archivo.readlines()
         tiempos = [int(x) for x in lineas[0].strip("[]\n").split(", ")]
-        rango_dias = range(int(lineas[1]), 12 +1)
+        rango_dias = range(int(lineas[1]), 11 +1)
         rango_porcentaje = range(int(lineas[2]), 100 + 1, 5)
 
     return [tiempos, rango_dias, rango_porcentaje]
@@ -77,11 +78,17 @@ def configuracion_listas_senales(directorio_sin_filtro):
             if usar_conf == 1:
                 return obtener_archivo_configuracion_listas_senales(ruta_archivo_configuracion)
             elif usar_conf == 2:
-                break
+                chdir(path.dirname(directorio_sin_filtro))
+                if path.exists("Sin_filtro"):
+                    rmtree(directorio_sin_filtro)
+                rango_dias = range(2, 11 + 1)
+                rango_porcentaje = range(70, 100 + 1, 5)
+                tiempos = elegir_tiempo_op()
+                return [tiempos, rango_dias, rango_porcentaje]
             else:
                 print("Opcion no válida")
         else:
-            rango_dias = range(2, 12 + 1)
+            rango_dias = range(2, 11 + 1)
             rango_porcentaje = range(70, 100 + 1, 5)
             tiempos = elegir_tiempo_op()
 
