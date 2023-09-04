@@ -18,11 +18,16 @@ from time import sleep
 # driver = webdriver.Chrome()
 
 def ejecutar_navegador():
+    """Encuentra la ruta del webdriver, abre una ventana y navega a una URL específica."""
 
     # Encontrar ruta de el webdriver y abrir una ventana
     chdir(path.dirname(path.dirname(path.abspath(__file__))))
+    options = Options()
+    options.headless = True
+    options.add_argument("--log-level=3")
+    
     global driver
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=options)
     driver.maximize_window()
 
     # Definir la ruta a abrir y abrirla
@@ -31,10 +36,32 @@ def ejecutar_navegador():
     sleep(1)
 
 
-def retroceder_a_catalogador():
+
+def esperar_elemento(locator, by_arg, valor_arg, time=3):
+    """
+    Espera hasta que un elemento esté presente en la página.
+    Paráms: locator (WebDriver): La instancia del navegador. by_arg (By): El método de búsqueda del elemento. valor_arg (str): El valor a buscar. time (int): El tiempo máximo de espera en segundos.
+    Returns: WebElement: El elemento encontrado.
+    """
+    WebDriverWait(locator, time).until(EC.presence_of_element_located((by_arg, valor_arg)))
+    element = driver.find_element(by=by_arg, value=valor_arg)
+    return element
+
+
+def esperar_elementos(locator, by_arg, valor_arg, time=3):
+    """
+    Espera hasta que un elemento esté presente en la página.
+    Paráms: locator (WebDriver): La instancia del navegador. by_arg (By): El método de búsqueda del elemento. valor_arg (str): El valor a buscar. time (int): El tiempo máximo de espera en segundos.
+    Returns: WebElement: El elemento encontrado.
+    """
+    WebDriverWait(locator, time).until(EC.presence_of_all_elements_located((by_arg, valor_arg)))
+    elements = driver.find_elements(by=by_arg, value=valor_arg)
+    return elements
+
+def retroceder_a_catalogador(): 
+    """Retrocede al catalogador en la página."""
     try:
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, '//*[@id="screenshot"]/div/a')))
-        retroceder = driver.find_element(by=By.XPATH, value='//*[@id="screenshot"]/div/a')
+        retroceder = esperar_elemento(driver, By.XPATH, '//*[@id="screenshot"]/div/a', 3)
         print("Volviendo al catalogador...\n")
         retroceder.click()
     except:
@@ -42,10 +69,10 @@ def retroceder_a_catalogador():
 
 
 def cerrar_anuncio():
+    """Cierra el anuncio principal en la página."""
     # Cerrar anuncio principal
     try:
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[@onclick='closeModal()']")))
-        div = driver.find_element(by=By.XPATH, value="//div[@onclick='closeModal()']")
+        div = esperar_elemento(driver, By.XPATH, "//div[@onclick='closeModal()']", 3)
         print("Cerrando anuncio...\n")
         div.click()
     except:
@@ -53,6 +80,7 @@ def cerrar_anuncio():
 
 
 def elegir_idioma():
+    """Permite al usuario elegir el idioma de la página."""
     idiomas = ["English", "Español", "Português"]
 
     for indice, idioma in enumerate(idiomas, start=1):
@@ -70,8 +98,7 @@ def elegir_idioma():
     # Cambiando idioma
 
     try:
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, f"//option[text()='{idioma}']")))
-        select_languaje = driver.find_element(by=By.XPATH, value=f"//option[text()='{idioma}']")
+        select_languaje = esperar_elemento(driver, By.XPATH, f"//option[text()='{idioma}']", 3)
         print("\nCambiando idioma...\n")
         select_languaje.click()
     except:
@@ -79,11 +106,11 @@ def elegir_idioma():
 
 
 def seleccionar_mercado():
+    """Permite al usuario seleccionar el mercado en la página."""
     # Seleccionando dropdown de mercados
 
     try:
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, '//div[contains(@class, "css-19bb58m") and input/@id="react-select-2-input"]')))
-        select_dropdown = driver.find_element(by=By.XPATH, value='//div[contains(@class, "css-19bb58m") and input/@id="react-select-2-input"]')
+        select_dropdown = esperar_elemento(driver, By.XPATH, '//div[contains(@class, "css-19bb58m") and input/@id="react-select-2-input"]', 3)
         select_dropdown.click()
     except:
         print("Error seleccionar los pares...")
@@ -92,8 +119,7 @@ def seleccionar_mercado():
     # Eligiendo el mercado de opciones binarias
 
     try:
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//*[text()='BINÁRIAS']")))
-        opcion_binarias = driver.find_element(by=By.XPATH, value="//*[text()='BINÁRIAS']")
+        opcion_binarias = esperar_elemento(driver, By.XPATH, "//*[text()='BINÁRIAS']", 3)
         opcion_binarias.click()
     except:
         print("Error al seleccionar la opción binaria...")
@@ -101,8 +127,7 @@ def seleccionar_mercado():
     # Eligiendo el mercado de opciones digitales
     
     try:
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//*[text()='DIGITAIS']")))
-        opcion_binarias = driver.find_element(by=By.XPATH, value="//*[text()='DIGITAIS']")
+        opcion_binarias = esperar_elemento(driver, By.XPATH, "//*[text()='DIGITAIS']", 3)
         opcion_binarias.click()
         select_dropdown.click()
     except:
@@ -110,67 +135,76 @@ def seleccionar_mercado():
 
 
 def obtener_inputs():
-  # Obteniendo elementos input
-  try:
-      WebDriverWait(driver, 3).until(EC.presence_of_all_elements_located((By.XPATH, "//input[contains(@class,'bg-[#222f3e]')]")))
-      global elementos_input
-      elementos_input = driver.find_elements(by=By.XPATH, value="//input[contains(@class,'bg-[#222f3e]')]")
-  except:
-      print("Error al obtener inputs\n")
+    """Obtiene los elementos de entrada en la página."""
+    # Obteniendo elementos input
+    try:
+        global elementos_input
+        elementos_input = esperar_elementos(driver, By.XPATH, "//input[contains(@class,'bg-[#222f3e]')]", 3)
+    except:
+        print("Error al obtener inputs\n")
 
 
 def agregar_efectividad(num):
-  # Clickeando el input de porcentaje de efectividad
+    """
+    Agrega un porcentaje de efectividad en la página.
+    Paráms: num (int): El porcentaje de efectividad a agregar.
+    """
+    # Clickeando el input de porcentaje de efectividad
 
-  try:
-      input_efectividad = elementos_input[0]
-      input_efectividad.click()
-  except:
-      print("Error al clickear el input de efectividad...\n")
+    try:
+        input_efectividad = elementos_input[0]
+        input_efectividad.click()
+    except:
+        print("Error al clickear el input de efectividad...\n")
 
-  # Digitando el porcentaje de efectividad
-  input_efectividad.send_keys(f"{num}")
+    # Digitando el porcentaje de efectividad
+    input_efectividad.send_keys(f"{num}")
 
 
 def agregar_direccion_op():
-  # Desplegando el Dropdown de las direcciones
-  try:
-      WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[4]/div/select")))
-      dropdown_direccion = driver.find_element(by=By.XPATH, value="//div[4]/div/select")
-      dropdown_direccion.click()
-  except:
-      print("Error al desplegar el dropdown\n")
+    """Agrega una dirección en la página."""
+    # Desplegando el Dropdown de las direcciones
+    try:
+        dropdown_direccion = esperar_elemento(driver, By.XPATH, "//div[4]/div/select", 3)
+        dropdown_direccion.click()
+    except:
+        print("Error al desplegar el dropdown\n")
 
-  # Agregando direccion call y put
-      
-  try:
-      WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[4]/div/select/option[3]")))
-      option_call_put = driver.find_element(by=By.XPATH, value="//div[4]/div/select/option[3]")
-      option_call_put.click()
-  except:
-      print("Error al agregar la dirección\n")
+    # Agregando direccion call y put
+    
+    try:
+        option_call_put = esperar_elemento(driver, By.XPATH, "//div[4]/div/select/option[3]", 3)
+        option_call_put.click()
+    except:
+        print("Error al agregar la dirección\n")
 
 
 def agregar_timeframe(timeframe):
-  # Desplegando el Dropdown de los timeframe
-  try:
-      WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[5]/div/select")))
-      dropdown_timeframe = driver.find_element(by=By.XPATH, value="//div[4]/div/select")
-      dropdown_timeframe.click()
-  except:
-      print("Error al desplegar el dropdown\n")
+    """
+    Agrega un marco de tiempo en la página.
+    Paráms: timeframe (str): El marco de tiempo a agregar.
+    """
+    # Desplegando el Dropdown de los timeframe
+    try:
+        dropdown_timeframe = esperar_elemento(driver, By.XPATH, "//div[5]/div/select", 3)
+        dropdown_timeframe.click()
+    except:
+        print("Error al desplegar el dropdown\n")
 
-  # Agregando timeframe
-      
-  try:
-      WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, f"//option[@value='{timeframe}']")))
-      option_timeframe = dropdown_timeframe.find_element(by=By.XPATH, value=f"//option[@value='{timeframe}']")
-      option_timeframe.click()
-  except:
-      print("Error al agregar el timeframe\n")
+    # Agregando timeframe
+    
+    try:
+        option_timeframe = esperar_elemento(driver, By.XPATH, f"//option[@value='{timeframe}']", 3)
+        option_timeframe.click()
+    except:
+        print("Error al agregar el timeframe\n")
 
 
 def agregar_dia(dia):
+    """
+    Agrega un día en el input de la página.
+    Paráms: dia (int): El día a agregar.
+    """
     # Agregando los dias de efectividad
     try:
         input_dia = elementos_input[1]
@@ -184,20 +218,20 @@ def agregar_dia(dia):
 
 
 def filtrar_noticias():
+    """Filtra las noticias en la página."""
     # Presionando el input de filtrar noticias
     try:
-      WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID, "filter")))
-      input_filtrar = elementos_input[2]
-      input_filtrar.click()
+        input_filtrar = esperar_elemento(driver, By.ID, "filter", 3)
+        input_filtrar.click()
     except:
         print("No se pudo seleccional el input de filtrar noticias...\n")
 
 
 def iniciar_catalogacion():
+    """Inicia la catalogación en la página."""
     # Se preciona el boton iniciar
     try:
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//div[9]/button")))
-        boton_iniciar = driver.find_element(By.XPATH, value="//div[9]/button")
+        boton_iniciar = esperar_elemento(driver, By.XPATH, "//div[9]/button", 3)
         print("Iniciando catalogación...")
         boton_iniciar.click()
     except:
@@ -205,10 +239,13 @@ def iniciar_catalogacion():
 
 
 def obtener_senales():
+    """
+    Obtiene las señales de la página.
+    Returns: str: Las señales obtenidas. None: Si el textarea está vacío. False: Si ocurre un error.
+    """
     # Obtener las señales que estan en el textarea
     try:
-        WebDriverWait(driver, 180).until(EC.presence_of_element_located((By.TAG_NAME, "textarea")))
-        textarea = driver.find_element(By.TAG_NAME, "textarea")
+        textarea = esperar_elemento(driver, By.TAG_NAME, "textarea", 180)
         print("Obteniendo señales...\n")
         senales = textarea.get_attribute("value")
         if senales == "":
@@ -219,3 +256,4 @@ def obtener_senales():
         print("Error, alert ha aparecido...")
         driver.refresh()
         return False
+    
