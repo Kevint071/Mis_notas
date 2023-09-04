@@ -53,26 +53,17 @@ def obtener_guardar_senales(directorio):
     carpeta_fecha = f"{mes_actual}_day_{dia_actual}"
 
     os.chdir(directorio)
-
-    if not os.path.exists(carpeta_fecha):
-        os.mkdir(carpeta_fecha)
-
+    
     # Creando directorio carpeta Sin_filtro
 
-    directorio_fecha = os.path.join(directorio, carpeta_fecha)
-    os.chdir(directorio_fecha)
-
     carpeta_senales_sin_filtro = "Sin_filtro"
-
-    if not os.path.exists(carpeta_senales_sin_filtro):
-        os.mkdir(carpeta_senales_sin_filtro)
-
     cantidad_archivos_descargados = 0
     lista_tiempos_catalogacion = []
 
-    directorio_sin_filtro = os.path.join(directorio_fecha, carpeta_senales_sin_filtro)
+    ruta_sin_filtro = os.path.join(directorio, carpeta_fecha, carpeta_senales_sin_filtro)
 
-    rangos = configuracion_listas_senales(directorio_sin_filtro)
+    rangos = configuracion_listas_senales(ruta_sin_filtro)
+    os.makedirs(ruta_sin_filtro, exist_ok=True)
     tiempos, rango_dias, rango_porcentaje = rangos
     hora_inicio = datetime.now().strftime("%H:%M:%S")
     print(f"Hora de inicio: {hora_inicio}")
@@ -85,7 +76,7 @@ def obtener_guardar_senales(directorio):
 
     for timeframe in tiempos:
         
-        os.chdir(directorio_sin_filtro)
+        os.chdir(ruta_sin_filtro)
         carpeta_tiempo = f"Tiempo_M{timeframe}"
 
         if not os.path.exists(carpeta_tiempo):
@@ -93,7 +84,7 @@ def obtener_guardar_senales(directorio):
 
         for dia in rango_dias:
            
-            directorio_tiempo = os.path.join(directorio_sin_filtro, carpeta_tiempo)
+            directorio_tiempo = os.path.join(ruta_sin_filtro, carpeta_tiempo)
             carpeta_dia = f"Dia_{dia}"
             os.chdir(directorio_tiempo)
 
@@ -117,7 +108,7 @@ def obtener_guardar_senales(directorio):
                     continue
 
                 if (rango_porcentaje != range(70, 100+1, 5) or porcentaje == 100) or senales == None:
-                        rango_porcentaje, rango_dias = range(70, 100 + 1, 5), range(2, 12 + 1)
+                        rango_porcentaje, rango_dias = range(70, 100 + 1, 5), range(2, 11 + 1)
                 print("Señales obtenidas...")
                 retroceder_a_catalogador()
                 sleep(1)
@@ -129,7 +120,7 @@ def obtener_guardar_senales(directorio):
 
                 lineas = senales.split("\n")
                 num_lineas = len(lineas)
-                nombre_archivo = f"Porcentaje_{porcentaje}_tiempo_{timeframe}_sen_{num_lineas}.txt"
+                nombre_archivo = f"Tiempo_{timeframe}_dia_{dia}_porcentaje_{porcentaje}_sen_{num_lineas}.txt"
 
                 guardar_senales_txt(nombre_archivo, senales)
                 cantidad_archivos_descargados += 1
@@ -141,7 +132,7 @@ def obtener_guardar_senales(directorio):
                 print(f"Cantidad de señales: {num_lineas}")
 
                 # obtener_cantidad_senales(nombre_archivo)
-                configuracion_catalogador_txt(directorio_sin_filtro, timeframe, tiempos, dia, porcentaje)
+                configuracion_catalogador_txt(ruta_sin_filtro, timeframe, tiempos, dia, porcentaje)
 
                 tiempo_fin = time()
                 tiempo_catalogacion = round(tiempo_fin - tiempo_inicio, 2)
@@ -156,7 +147,7 @@ def obtener_guardar_senales(directorio):
                     f"Promedio tiempo: {round(sum(lista_tiempos_catalogacion)/len(lista_tiempos_catalogacion), 2)} s\n")
 
 
-    ruta_archivo_configuracion = os.path.join(directorio_sin_filtro, "configuracion_catalogador.txt")
+    ruta_archivo_configuracion = os.path.join(ruta_sin_filtro, "configuracion_catalogador.txt")
 
     if os.path.exists(ruta_archivo_configuracion):
         os.remove(ruta_archivo_configuracion)
