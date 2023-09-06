@@ -35,6 +35,8 @@ def ejecutar_navegador():
     driver.get(url)
     sleep(1)
 
+    is_headless = options.headless
+    return is_headless
 
 
 def esperar_elemento(locator, by_arg, valor_arg, time=3):
@@ -246,7 +248,7 @@ def obtener_senales():
     # Obtener las señales que estan en el textarea
     try:
         textarea = esperar_elemento(driver, By.TAG_NAME, "textarea", 180)
-        print("Obteniendo señales...\n")
+        print("Obteniendo señales...")
         senales = textarea.get_attribute("value")
         if senales == "":
             print("No hay señales en esta catalogación...")
