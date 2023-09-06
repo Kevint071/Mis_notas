@@ -18,7 +18,7 @@ def obtener_cantidad_senales(nombre_archivo):
         return cantidad_senales
 
 
-def configuracion_catalogador_txt(directorio_sin_filtro, timeframe, tiempos, dia, porcentaje):
+def configuracion_catalogador_txt(directorio_sin_filtro, timeframe, tiempos, dia, porcentaje, cantidad_archivos_descargados):
     os.chdir(directorio_sin_filtro)
 
     with open("configuracion_catalogador.txt", "w") as archivo:
@@ -30,7 +30,8 @@ def configuracion_catalogador_txt(directorio_sin_filtro, timeframe, tiempos, dia
             archivo.write(f"{tiempos[2]}\n")
 
         archivo.write(f"{dia}\n")
-        archivo.write(f"{porcentaje}")
+        archivo.write(f"{porcentaje}\n")
+        archivo.write(f"{cantidad_archivos_descargados}")
 
 
 def configurar_catalogacion(timeframe, porcentaje, dia):
@@ -48,6 +49,10 @@ def configurar_catalogacion(timeframe, porcentaje, dia):
 
 
 def obtener_guardar_senales(directorio):
+    """
+    Esta función crea directorios y guarda señales en archivos de texto.
+    Parametros: directorio (str) - Ruta del directorio donde se guardarán las señales.
+    """
     # Creando directorio carpeta fecha
     dia_actual, mes_actual = [datetime.now().day, datetime.now().strftime("%B")]
     carpeta_fecha = f"{mes_actual}_day_{dia_actual}"
@@ -57,22 +62,22 @@ def obtener_guardar_senales(directorio):
     # Creando directorio carpeta Sin_filtro
 
     carpeta_senales_sin_filtro = "Sin_filtro"
-    cantidad_archivos_descargados = 0
     lista_tiempos_catalogacion = []
 
     ruta_sin_filtro = os.path.join(directorio, carpeta_fecha, carpeta_senales_sin_filtro)
 
-    rangos = configuracion_listas_senales(ruta_sin_filtro)
+    configuraciones = configuracion_listas_senales(ruta_sin_filtro)
     os.makedirs(ruta_sin_filtro, exist_ok=True)
-    tiempos, rango_dias, rango_porcentaje = rangos
+    tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados = configuraciones
     hora_inicio = datetime.now().strftime("%H:%M:%S")
     print(f"Hora de inicio: {hora_inicio}")
 
-    ejecutar_navegador()
+    is_headless = ejecutar_navegador()
     sleep(0.5)
     cerrar_anuncio()
     sleep(0.5)
-    elegir_idioma()
+    if not is_headless:
+        elegir_idioma()
 
     for timeframe in tiempos:
         
@@ -93,7 +98,12 @@ def obtener_guardar_senales(directorio):
 
             for porcentaje in rango_porcentaje:
                 tiempo_inicio = time()
-                print(Fore.LIGHTGREEN_EX + f"Iniciando Descarga N° {cantidad_archivos_descargados+1}" + Style.RESET_ALL)
+                print(Fore.LIGHTCYAN_EX + f"Iniciando Descarga N° {cantidad_archivos_descargados+1}" + Style.RESET_ALL)
+                print(Fore.LIGHTBLUE_EX + f"Archivo Número {cantidad_archivos_descargados+1}" + Style.RESET_ALL)
+
+                print(f"Tiempo_operación: {timeframe} minutos")
+                print(f"Día: {dia}")
+                print(f"Porcentaje: {porcentaje}\n")
                 # Configurar catalogación para obtener las señales
                 configurar_catalogacion(timeframe, porcentaje, dia)
 
@@ -125,14 +135,12 @@ def obtener_guardar_senales(directorio):
                 guardar_senales_txt(nombre_archivo, senales)
                 cantidad_archivos_descargados += 1
 
-                print(Fore.LIGHTRED_EX + f"Archivo Número {cantidad_archivos_descargados}" + Style.RESET_ALL)
-                print(f"Tiempo_operación: {timeframe} minutos")
-                print(f"Día: {dia}")
-                print(f"Porcentaje: {porcentaje}")
+                print(Fore.LIGHTGREEN_EX + f"Archivo N° {cantidad_archivos_descargados} descargado exitosamente..." + Style.RESET_ALL)
+                
                 print(f"Cantidad de señales: {num_lineas}")
 
                 # obtener_cantidad_senales(nombre_archivo)
-                configuracion_catalogador_txt(ruta_sin_filtro, timeframe, tiempos, dia, porcentaje)
+                configuracion_catalogador_txt(ruta_sin_filtro, timeframe, tiempos, dia, porcentaje, cantidad_archivos_descargados)
 
                 tiempo_fin = time()
                 tiempo_catalogacion = round(tiempo_fin - tiempo_inicio, 2)
