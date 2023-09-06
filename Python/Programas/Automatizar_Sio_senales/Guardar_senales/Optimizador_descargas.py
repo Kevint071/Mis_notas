@@ -61,8 +61,9 @@ def obtener_archivo_configuracion_listas_senales(ruta_archivo_configuracion):
         tiempos = [int(x) for x in lineas[0].strip("[]\n").split(", ")]
         rango_dias = range(int(lineas[1]), 11 +1)
         rango_porcentaje = range(int(lineas[2]), 100 + 1, 5)
+        cantidad_archivos_descargados = int(lineas[3])
 
-    return [tiempos, rango_dias, rango_porcentaje]
+    return [tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados]
 
 
 def configuracion_listas_senales(directorio_sin_filtro):
@@ -71,6 +72,11 @@ def configuracion_listas_senales(directorio_sin_filtro):
     ruta_archivo_configuracion = path.join(directorio_sin_filtro, "configuracion_catalogador.txt")
 
     while True:
+        rango_dias = range(2, 11 + 1)
+        rango_porcentaje = range(70, 100 + 1, 5)
+        
+        cantidad_archivos_descargados = 0
+
         if path.exists(ruta_archivo_configuracion):
             usar_conf = continuar_descarga_senales()
             limpiar_pantalla()
@@ -81,15 +87,10 @@ def configuracion_listas_senales(directorio_sin_filtro):
                 chdir(path.dirname(directorio_sin_filtro))
                 if path.exists("Sin_filtro"):
                     rmtree(directorio_sin_filtro)
-                rango_dias = range(2, 11 + 1)
-                rango_porcentaje = range(70, 100 + 1, 5)
                 tiempos = elegir_tiempo_op()
-                return [tiempos, rango_dias, rango_porcentaje]
+                return [tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados]
             else:
                 print("Opcion no válida")
         else:
-            rango_dias = range(2, 11 + 1)
-            rango_porcentaje = range(70, 100 + 1, 5)
             tiempos = elegir_tiempo_op()
-
-            return [tiempos, rango_dias, rango_porcentaje]
+            return [tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados]
