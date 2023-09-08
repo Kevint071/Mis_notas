@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import UnexpectedAlertPresentException
+from selenium.webdriver.common.keys import Keys
 from time import sleep
 from colorama import Fore, Style
 
@@ -22,6 +23,7 @@ def limpiar_pantalla():
         system("clear")
     elif name == "nt" or name == "dos" or name == "ce":
         system("cls")
+
 
 def esperar_elemento(locator, by_arg, valor_arg, time=3):
     """
@@ -107,9 +109,11 @@ def agregar_senales_textarea(senales):
         textarea = esperar_elemento(driver, By.TAG_NAME, "textarea", 3)
         textarea.click()
         print("Agregando señales...")
-        sleep(0.2)
-        textarea.send_keys(senales)
-        sleep(0.5)
+        sleep(0.1)
+        driver.execute_script("arguments[0].value = arguments[1];", textarea, senales)
+        textarea.click()
+        textarea.send_keys(" ")
+        textarea.send_keys(Keys.BACKSPACE)
     except:
         print("No se agregaron las señales...\n")
 
@@ -120,7 +124,7 @@ def iniciar_filtrado():
         boton_iniciar = esperar_elemento(driver, By.XPATH, "//div[2]/button", 3)
         boton_iniciar.click()
     except:
-        print("No se pudo iniciar el proceos de filtrado de señales riesgosas...\n")
+        print("No se pudo iniciar el proceso de filtrado de señales riesgosas...\n")
 
 
 def retroceder_a_filtrador():

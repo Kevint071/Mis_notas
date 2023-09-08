@@ -89,17 +89,22 @@ def comienzo_filtracion(directorio, directorio_filtro_riesgo):
 
                     with open(ruta, "r") as f:
                         contenido = f.read()
+                        lineas_contenido = f.readlines()
                     
                     print(f"{tiempo}")
                     print(f"{dia}")
                     print(f"Archivo: {archivo}")
-
                     agregar_senales_textarea(contenido)
                     iniciar_filtrado()
                     senales_filtradas = obtener_senales_filtradas()
-                    retroceder_a_filtrador()
-                    if senales_filtradas != None:
+
+                    if senales_filtradas == None or senales_filtradas != False:
+                        retroceder_a_filtrador()
+                    
+                    if senales_filtradas != None and senales_filtradas != False:
                         guardar_senales_filtradas(directorio_filtro_riesgo, tiempo, dia, archivo, senales_filtradas)
+                    else:
+                        print("No hay señales en este filtrado...\n")
                     guardar_progreso(directorio_filtro_riesgo, archivo)
 
     chdir(directorio_filtro_riesgo)
@@ -112,6 +117,9 @@ def comienzo_filtracion(directorio, directorio_filtro_riesgo):
 
 def run():
     directorio = obtener_directorio()
+    if directorio == None:
+        return None
+    
     directorio_filtro_riesgo = path.join(directorio, "Filtro_riesgo")
     makedirs(directorio_filtro_riesgo, exist_ok=True)
     chdir(directorio_filtro_riesgo)

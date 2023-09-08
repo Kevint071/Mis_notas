@@ -54,11 +54,20 @@ def comienzo_filtracion(directorio, directorio_filtro_ema, ema):
     # Pedir continuar (si quedo incompleta la filtracion)
 
     if path.exists("progreso.txt"):
-        continuar = int(input("""¿Quiere continuar por donde quedó?:
+        while True:
+            continuar = int(input("""¿Quiere continuar por donde quedó?:
+
     1. Sí
     2. No
-                              
+                                
     Elija una opción (1 o 2): """))
+            if continuar in [1, 2]:
+                limpiar_pantalla()
+                break
+            else:
+                limpiar_pantalla()
+                print("Ese valor no es valido, escriba 1 o 2...\n")
+                
     else:
         continuar = None
         
@@ -70,21 +79,25 @@ def comienzo_filtracion(directorio, directorio_filtro_ema, ema):
     # Obtener señales.txt de la carpeta de señales Sin_filtro
 
     diccionario_archivos, archivos_todos = obtener_senales_txt(directorio_filtro_riesgo)
+    archivos_todos = set(i.strip() for i in archivos_todos)
 
     # Obtener solo los archivos que un no se han filtrado
 
     if continuar == 1:
         chdir(directorio_filtro_ema)
         with open("progreso.txt", "r") as progreso:
+            # cantidad_archivos_filtrados = len(progreso.readlines())
             archivos_filtrados = set(line.strip() for line in progreso)
-            print(f"Archivos filtrados: {len(archivos_filtrados)}")
+            cantidad_archivos_filtrados = len(archivos_filtrados)
+            print(f"Archivos filtrados: {cantidad_archivos_filtrados}")
         
-        archivos_todos = set(i.strip() for i in archivos_todos)
         archivos_sin_filtrar = archivos_todos - archivos_filtrados
         print(f"Todos los archivos: {len(archivos_todos)}")
-        print(f"Archivos sin filtrar: {len(archivos_sin_filtrar)}\n")
+        print(f"Archivos para filtrar: {len(archivos_sin_filtrar)}\n")
     else:
         archivos_sin_filtrar = archivos_todos
+        cantidad_archivos_filtrados = 0
+        print(f"Archivos para filtrar: {len(archivos_todos)}")
 
     for tiempo, dias in diccionario_archivos.items():
         for dia, archivos in dias.items():
@@ -96,9 +109,10 @@ def comienzo_filtracion(directorio, directorio_filtro_ema, ema):
                     with open(ruta, "r") as f:
                         contenido = f.read()
                     
+                    print(Fore.LIGHTCYAN_EX + f"Archivo N° {cantidad_archivos_filtrados+1}\n" + Style.RESET_ALL)
                     print(f"EMA: {ema}")
-                    print(f"{tiempo}")
-                    print(f"{dia}")
+                    print(f"Timeframe: {tiempo.split('_')[1]}")
+                    print(f"Dia {dia.split('_')[1]}")
                     print(f"Archivo: {archivo}\n")
 
                     agregar_senales_textarea(contenido)
@@ -109,6 +123,7 @@ def comienzo_filtracion(directorio, directorio_filtro_ema, ema):
                     if senales_filtradas != None and senales_filtradas != False:
                         guardar_senales_filtradas(directorio_filtro_ema, ema, tiempo, dia, archivo, senales_filtradas)
                     guardar_progreso(directorio_filtro_ema, archivo)
+                    cantidad_archivos_filtrados += 1
 
     chdir(directorio_filtro_ema)
 
@@ -116,6 +131,7 @@ def comienzo_filtracion(directorio, directorio_filtro_ema, ema):
 
     if path.exists("progreso.txt"):
         remove("progreso.txt")
+
 
 def leer_progreso_ema():
     if path.exists("progreso_ema.txt"):
@@ -126,10 +142,12 @@ def leer_progreso_ema():
     else:
         return None
 
-        
 
 def run():
     directorio = obtener_directorio()
+    if directorio == None:
+        return None
+    
     directorio_filtro_ema = path.join(directorio, "Filtro_ema")
     makedirs(directorio_filtro_ema, exist_ok=True)
     chdir(directorio_filtro_ema)
@@ -148,13 +166,9 @@ def run():
     print(Fore.LIGHTYELLOW_EX + "Señales filtradas exitosamente..." + Style.RESET_ALL)
     chdir(directorio_filtro_ema)
     
-    if path.exists("progrso_ema.txt"):
+    if path.exists("progreso_ema.txt"):
         remove("progreso_ema.txt")
 
 
 if __name__ == "__main__":
     run()
-
-
-
-# MEEEENNN TIENES QUE GUARDAR SEÑALES PONERLO EN OTRO LADO O PONERLE UNA CONDICIONAL CON NONE O FALSE POQUE SE HACE UN SPLIT A SENALES FILTRADAS

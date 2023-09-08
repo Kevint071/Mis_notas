@@ -10,6 +10,9 @@ from Directorio import obtener_directorio
 
 def main():
     directorio = obtener_directorio()
+    if directorio == None:
+        return None
+
     print("Ruta de la carpeta seleccionada:", directorio)
     makedirs(directorio, exist_ok=True)
 

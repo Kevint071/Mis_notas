@@ -5,10 +5,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import UnexpectedAlertPresentException
+from selenium.webdriver.common.keys import Keys
 from time import sleep
-from colorama import Fore, Style
+from colorama import Fore, Style, init
 
-
+init()
 # from selenium.webdriver.chrome.options import Options
 
 # Agregar a ejecutar_navegador() si no se quiere mostrar el navegador
@@ -22,16 +23,6 @@ def limpiar_pantalla():
         system("clear")
     elif name == "nt" or name == "dos" or name == "ce":
         system("cls")
-
-def esperar_elemento(locator, by_arg, valor_arg, time=3):
-    """
-    Espera hasta que un elemento esté presente en la página.
-    Paráms: locator (WebDriver): La instancia del navegador. by_arg (By): El método de búsqueda del elemento. valor_arg (str): El valor a buscar. time (int): El tiempo máximo de espera en segundos.
-    Returns: WebElement: El elemento encontrado.
-    """
-    WebDriverWait(locator, time).until(EC.presence_of_element_located((by_arg, valor_arg)))
-    element = driver.find_element(by=by_arg, value=valor_arg)
-    return element
 
 
 def ejecutar_navegador():
@@ -50,6 +41,17 @@ def ejecutar_navegador():
     url = "https://siofiltrosinais.com/trend"
     driver.get(url)
     sleep(1)
+    
+    
+def esperar_elemento(locator, by_arg, valor_arg, time=3):
+    """
+    Espera hasta que un elemento esté presente en la página.
+    Paráms: locator (WebDriver): La instancia del navegador. by_arg (By): El método de búsqueda del elemento. valor_arg (str): El valor a buscar. time (int): El tiempo máximo de espera en segundos.
+    Returns: WebElement: El elemento encontrado.
+    """
+    WebDriverWait(locator, time).until(EC.presence_of_element_located((by_arg, valor_arg)))
+    element = driver.find_element(by=by_arg, value=valor_arg)
+    return element
 
 
 def obtener_timeframes(directorio_filtro_riesgo):
@@ -108,9 +110,13 @@ def agregar_senales_textarea(senales):
         textarea = esperar_elemento(driver, By.TAG_NAME, "textarea", 3)
         textarea.click()
         print("Agregando señales...")
-        sleep(0.2)
-        textarea.send_keys(senales)
-        sleep(0.5)
+        sleep(0.1)
+        driver.execute_script("arguments[0].value = arguments[1];", textarea, senales)
+        sleep(0.1)
+        textarea.click()
+        textarea.send_keys(" ")
+        textarea.send_keys(Keys.BACKSPACE)
+        sleep(0.1)
     except:
         print("No se agregaron las señales...\n")
 
@@ -129,11 +135,14 @@ def agregar_periodo(ema):
 
 def iniciar_filtrado():
     try:
-        print("Iniciando proceso de filtracion con EMA...")
+        print("Calibrando configuraciones...")
         boton_iniciar = esperar_elemento(driver, By.XPATH, "//div[4]/button", 3)
         boton_iniciar.click()
-    except:
-        print("No se pudo iniciar...\n")
+        esperar_elemento(driver, By.XPATH, '//*[@id="root"]/div/div/span', 15)
+       
+        print("Iniciando proceso de filtracion con EMA...")
+    except Exception as e:
+        print(Fore.LIGHTRED_EX + f"No se pudo iniciar el filtrado... debido a {e}\n" + Style.RESET_ALL)
 
 
 def retroceder_a_filtrador():
@@ -141,8 +150,8 @@ def retroceder_a_filtrador():
         retroceder = esperar_elemento(driver, By.XPATH, '//div/a', 3)
         print("Volviendo al filtrador...\n")
         retroceder.click()
-    except:
-        print("No se pudo retroceder...\n")
+    except Exception as e:
+        print(Fore.LIGHTRED_EX +  f"No se pudo retroceder por {e}...\n" + Style.RESET_ALL)
 
 
 def obtener_senales_filtradas():

@@ -4,6 +4,7 @@ from Funciones_saver import ejecutar_navegador, retroceder_a_catalogador, cerrar
 from time import time, sleep
 from Optimizador_descargas import configuracion_listas_senales
 from colorama import Fore, Style
+import locale
 
 
 def guardar_senales_txt(nombre_archivo, senales):
@@ -53,9 +54,11 @@ def obtener_guardar_senales(directorio):
     Esta función crea directorios y guarda señales en archivos de texto.
     Parametros: directorio (str) - Ruta del directorio donde se guardarán las señales.
     """
+
+    locale.setlocale(locale.LC_TIME, "es_ES.UTF-8")
     # Creando directorio carpeta fecha
     dia_actual, mes_actual = [datetime.now().day, datetime.now().strftime("%B")]
-    carpeta_fecha = f"{mes_actual}_day_{dia_actual}"
+    carpeta_fecha = f"Senales_{mes_actual}_dia_{dia_actual}"
 
     os.chdir(directorio)
     
