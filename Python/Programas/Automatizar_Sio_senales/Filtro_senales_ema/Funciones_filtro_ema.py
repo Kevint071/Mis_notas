@@ -148,7 +148,7 @@ def iniciar_filtrado():
 def retroceder_a_filtrador():
     try:
         retroceder = esperar_elemento(driver, By.XPATH, '//div/a', 3)
-        print("Volviendo al filtrador...\n")
+        print("Volviendo al filtrador...")
         retroceder.click()
     except Exception as e:
         print(Fore.LIGHTRED_EX +  f"No se pudo retroceder por {e}...\n" + Style.RESET_ALL)
