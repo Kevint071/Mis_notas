@@ -20,6 +20,43 @@ def continuar_descarga_senales():
     return usar_conf
 
 
+def elegir_mercado():
+    mercados = []
+
+    opciones_mercados = {
+        1: ("BINÁRIAS", ),
+        2: ("OTC", ),
+        3: ("DIGITAIS", ),
+        4: ("BINÁRIAS", "DIGITAIS"),
+        5: ("BINÁRIAS", "OTC"),
+        6: ("DIGITAIS", "OTC"),
+        7: ("BINÁRIAS", "DIGITAIS", "OTC"),
+        8: ("ABERTOS", ),
+    }
+
+    while True:
+        elegir_mercados = int(input("""Mercados a elegir:
+                    
+    1. Binarias
+    2. OTC
+    3. Digitales
+    4. Binarias y digitales
+    5. Binarias y OTC
+    6. Digitales y OTC
+    7. Binarias, digitales y OTC
+    8. Abiertos
+
+    Elige una opcion: """))
+
+        if elegir_mercados in opciones_mercados:
+            mercados.extend(opciones_mercados[elegir_mercados])
+            limpiar_pantalla()
+            break
+        else:
+            print("Opcion no válida")
+    return mercados
+
+
 def elegir_tiempo_op ():
     tiempos = []
 
@@ -62,8 +99,9 @@ def obtener_archivo_configuracion_listas_senales(ruta_archivo_configuracion):
         rango_dias = range(int(lineas[1]), 11 +1)
         rango_porcentaje = range(int(lineas[2]), 100 + 1, 5)
         cantidad_archivos_descargados = int(lineas[3])
+        mercados = [x.strip("'") for x in lineas[4].strip("[]\n").split(", ")]
 
-    return [tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados]
+    return [tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados, mercados]
 
 
 def configuracion_listas_senales(directorio_sin_filtro):
@@ -88,9 +126,11 @@ def configuracion_listas_senales(directorio_sin_filtro):
                 if path.exists("Sin_filtro"):
                     rmtree(directorio_sin_filtro)
                 tiempos = elegir_tiempo_op()
-                return [tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados]
+                mercados = elegir_mercado()
+                return [tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados, mercados]
             else:
                 print("Opcion no válida")
         else:
             tiempos = elegir_tiempo_op()
-            return [tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados]
+            mercados = elegir_mercado()
+            return [tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados, mercados]
