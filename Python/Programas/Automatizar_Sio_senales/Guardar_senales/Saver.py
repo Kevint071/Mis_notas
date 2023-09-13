@@ -19,7 +19,7 @@ def obtener_cantidad_senales(nombre_archivo):
         return cantidad_senales
 
 
-def configuracion_catalogador_txt(directorio_sin_filtro, timeframe, tiempos, dia, porcentaje, cantidad_archivos_descargados):
+def configuracion_catalogador_txt(directorio_sin_filtro, timeframe, tiempos, dia, porcentaje, cantidad_archivos_descargados, mercados):
     os.chdir(directorio_sin_filtro)
 
     with open("configuracion_catalogador.txt", "w") as archivo:
@@ -32,14 +32,18 @@ def configuracion_catalogador_txt(directorio_sin_filtro, timeframe, tiempos, dia
 
         archivo.write(f"{dia}\n")
         archivo.write(f"{porcentaje}\n")
-        archivo.write(f"{cantidad_archivos_descargados}")
+        archivo.write(f"{cantidad_archivos_descargados}\n")
+        archivo.write(f"{mercados}")
 
 
-def configurar_catalogacion(timeframe, porcentaje, dia):
+def configurar_catalogacion(timeframe, porcentaje, dia, mercados):
+    print(type(timeframe))
+    print(timeframe)
     print("Iniciando configuración de catalogación...")
     funciones_catalogacion = [seleccionar_mercado, obtener_inputs, agregar_efectividad, agregar_direccion_op, agregar_timeframe, agregar_dia, filtrar_noticias, iniciar_catalogacion]
 
-    params = {agregar_efectividad: (porcentaje, ),
+    params = {seleccionar_mercado: (mercados, ),
+              agregar_efectividad: (porcentaje, ),
               agregar_timeframe: (timeframe, ),
               agregar_dia: (dia, ),}
 
@@ -71,7 +75,7 @@ def obtener_guardar_senales(directorio):
 
     configuraciones = configuracion_listas_senales(ruta_sin_filtro)
     os.makedirs(ruta_sin_filtro, exist_ok=True)
-    tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados = configuraciones
+    tiempos, rango_dias, rango_porcentaje, cantidad_archivos_descargados, mercados = configuraciones
     hora_inicio = datetime.now().strftime("%H:%M:%S")
     print(f"Hora de inicio: {hora_inicio}")
 
@@ -108,7 +112,7 @@ def obtener_guardar_senales(directorio):
                 print(f"Día: {dia}")
                 print(f"Porcentaje: {porcentaje}\n")
                 # Configurar catalogación para obtener las señales
-                configurar_catalogacion(timeframe, porcentaje, dia)
+                configurar_catalogacion(timeframe, porcentaje, dia, mercados)
 
                 senales = obtener_senales()
                 if senales == None:
@@ -143,7 +147,7 @@ def obtener_guardar_senales(directorio):
                 print(f"Cantidad de señales: {num_lineas}")
 
                 # obtener_cantidad_senales(nombre_archivo)
-                configuracion_catalogador_txt(ruta_sin_filtro, timeframe, tiempos, dia, porcentaje, cantidad_archivos_descargados)
+                configuracion_catalogador_txt(ruta_sin_filtro, timeframe, tiempos, dia, porcentaje, cantidad_archivos_descargados, mercados)
 
                 tiempo_fin = time()
                 tiempo_catalogacion = round(tiempo_fin - tiempo_inicio, 2)
