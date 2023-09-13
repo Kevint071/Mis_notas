@@ -107,7 +107,7 @@ def elegir_idioma():
         print("Error al cambiar el idioma... El idioma no fue encontrado no hay problemas de conexión...\n")
 
 
-def seleccionar_mercado():
+def seleccionar_mercado(mercados):
     """Permite al usuario seleccionar el mercado en la página."""
     # Seleccionando dropdown de mercados
 
@@ -118,22 +118,13 @@ def seleccionar_mercado():
         print("Error seleccionar los pares...")
     sleep(0.1)
 
-    # Eligiendo el mercado de opciones binarias
-
-    try:
-        opcion_binarias = esperar_elemento(driver, By.XPATH, "//*[text()='BINÁRIAS']", 3)
-        opcion_binarias.click()
-    except:
-        print("Error al seleccionar la opción binaria...")
-    
-    # Eligiendo el mercado de opciones digitales
-    
-    try:
-        opcion_binarias = esperar_elemento(driver, By.XPATH, "//*[text()='DIGITAIS']", 3)
-        opcion_binarias.click()
-        select_dropdown.click()
-    except:
-        print("Error al seleccionar la opción digital..")
+    for mercado in mercados:
+        try:
+            opcion_mercado = esperar_elemento(driver, By.XPATH, f"//*[text()='{mercado}']", 3)
+            opcion_mercado.click()
+        except:
+            print(f"Error al seleccionar la opción {mercado}...")
+    select_dropdown.click()
 
 
 def obtener_inputs():
@@ -196,7 +187,7 @@ def agregar_timeframe(timeframe):
     # Agregando timeframe
     
     try:
-        option_timeframe = esperar_elemento(driver, By.XPATH, f"//option[@value='{timeframe}']", 3)
+        option_timeframe = esperar_elemento(driver, By.XPATH, f"//div[4]/div[5]/div/select/option[@value='{timeframe}']", 3)
         option_timeframe.click()
     except:
         print("Error al agregar el timeframe\n")
@@ -236,8 +227,8 @@ def iniciar_catalogacion():
         boton_iniciar = esperar_elemento(driver, By.XPATH, "//div[9]/button", 3)
         print("Iniciando catalogación...")
         boton_iniciar.click()
-    except:
-        print("Hubo un error de conexión o de la página... Intente más tarde.\n")
+    except Exception as e:
+        print(f"Hubo un error de {e}\n")
 
 
 def obtener_senales():
