@@ -60,6 +60,7 @@ def esperar_elementos(locator, by_arg, valor_arg, time=3):
     elements = driver.find_elements(by=by_arg, value=valor_arg)
     return elements
 
+
 def retroceder_a_catalogador(): 
     """Retrocede al catalogador en la página."""
     try:
@@ -249,4 +250,3 @@ def obtener_senales():
         print("Error, alert ha aparecido...")
         driver.refresh()
         return False
-    
