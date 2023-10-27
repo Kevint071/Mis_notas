@@ -10,4 +10,4 @@ El comando "git show" muestra todos los cambios hechos en un archivos en especí
 
     git show
 
->Si crees que faltaron cambios presiona le tecla **down** para llegar hasta el final de los cambios
+>Si crees que faltaron cambios presiona la tecla **down** para llegar hasta el final de los cambios

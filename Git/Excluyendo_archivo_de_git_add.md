@@ -2,7 +2,7 @@
 
 Para excluir a un archivo después de agregarlo con git add se hace lo siguiente:
 
-    git rm --cached Nombre_del_archivo
+    git rm --cached archivo.txt
 
 >Con este comando, el archivo estará como si no se hubiera agregado con git add
 
