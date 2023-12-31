@@ -1,0 +1,238 @@
+{
+  "html.autoClosingTags": true,
+  "html.hover.documentation": false,
+  "html.format.templating": true,
+  "html.format.indentInnerHtml": true,
+  "snippets.priority": 1,
+  "snippets.userSnippetsDirectory": "~/AppData/Local/nvim/snippets/ultisnips",
+  "snippets.shortcut": "S",
+  "snippets.autoTrigger": true,
+  "snippets.triggerCharacters": [],
+  "snippets.loadFromExtensions": true,
+  "snippets.textmateSnippetsRoots": ["~/AppData/Local/nvim/snippets/textmate"],
+  "snippets.ultisnips.enable": true,
+  "snippets.ultisnips.usePythonx": true,
+  "snippets.ultisnips.directories": ["UltiSnips"],
+  "snippets.snipmate.enable": true,
+  "prettier.enable": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "scss",
+    "dart",
+    "java",
+    "php",
+    "html",
+    "python",
+    "django",
+    "htmldjango",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json"
+  ],
+  "emmet.excludeLanguages": ["css", "javascript"],
+  "emmet.includeLanguages": {
+    "htmldjango": "html",
+    "javascript": "javascriptreact"
+  },
+  "eslint.format.enable": true,
+  "eslint.run": ["onType", "onSave"],
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "html",
+    "vue",
+    "markdown",
+    "python",
+    "dart",
+    "css",
+    "php",
+    "java",
+    "htmldjango",
+    "djhtml"
+  ],
+  "codeLens.enable": true,
+  "diagnostic.errorSign": "✘",
+  "diagnostic.warningSign": "",
+  "diagnostic.infoSign": "",
+  "diagnostic.enableMessage": "always",
+  "diagnostic.virtualText": false,
+  "diagnostic.virtualTextCurrentLineOnly": false,
+  "suggest.noselect": true,
+  "suggest.enablePreselect": true,
+  "suggest.completionItemKindLabels": {
+    "keyword": "\uf1de", //  sliders
+    "variable": "\ue79b", //  isometric box
+    "value": "\uf89f", //  digits 123
+    "operator": "\u03a8", // Ψ greek letter psi
+    "constructor": "\uf0ad", //  wrench
+    "function": "\u0192", // ƒ latin small letter F
+    "reference": "\ufa46", // 渚 retweet symbol
+    "constant": "\uf8fe", //  greek letter pi
+    "method": "\uf09a", //  facebook "f"
+    "struct": "\ufb44", // פּ file tree
+    "class": "\uf0e8", //  hierarchy / site map
+    "interface": "\uf417", //  git commit / line interrupted by circle
+    "text": "\ue612", //  left-justified lines
+    "enum": "\uf02c", //  pair of tags
+    "enumMember": "\uf02b", //  tag
+    "module": "\uf40d", //  code file / page showing angle brackets
+    "color": "\ue22b", //  palette
+    "property": "\ue624", //  predator dots
+    "field": "\uf9be", // 料left-justified sorted lines
+    "unit": "\uf475", //  negative-space ellipsis
+    "event": "\ufacd", // 鬒clock alert / clock with exclamation mark
+    "file": "\uf15b", //  file / blank page
+    "folder": "\uf07b", //  folder
+    "snippet": " ",
+    "typeParameter": "\uf728", //  file presentation box
+    "default": "\uf29c" //  question mark in circle
+  },
+  //LINTING ICONS
+  "diagnostic.enable": true,
+  "diagnostic.enableSign": true,
+  "diagnostic.level": "error",
+  "intelephense.diagnostics.embeddedLanguages": true,
+  "html-css-support.enabledLanguages": [
+    "html",
+    "vue",
+    "blade",
+    "htmldjango",
+    "javascript",
+    "typescriptreact",
+    "javascriptreact"
+  ],
+  "explorer.focus": true,
+  "explorer.previewAction.onHover": false,
+  "explorer.git.icon.status.added": "✚",
+  "explorer.git.icon.status.deleted": "✖",
+  "explorer.git.icon.status.renamed": "➜",
+  "explorer.git.icon.status.unmerged": "≠",
+  "explorer.git.icon.status.untracked": "?",
+  "explorer.git.icon.status.modified": "✹",
+  "explorer.git.icon.status.ignored": "☒",
+  "explorer.git.icon.status.mixed": "*",
+  "explorer.icon.enableNerdfont": true,
+  "explorer.quitOnOpen": true,
+  "explorer.file.showHiddenFiles": false,
+  "explorer.file.column.clip.copy": "",
+  "explorer.file.column.clip.cut": "",
+  "explorer.width": 30,
+  "explorer.file.hiddenRules": {
+    "extensions": ["o", "a", "obj", "pyc"],
+    "filenames": ["\\.byebug+", "\\.DS_Store|"],
+    "patternMatches": ["^\\.git$", "^\\node_modules$", "^\\plugged$"]
+  },
+  "explorer.keyMappings.global": {
+    "i": false, // cancel default mapkey
+    "<c-o>": "noop",
+
+    "1": "toggleSelection",
+    "<tab>": "actionMenu",
+
+    "gk": ["wait", "expandablePrev"],
+    "gj": ["wait", "expandableNext"],
+    "h": ["wait", "collapse"],
+    "l": ["wait", "expandable?", "expand", "open"],
+    "J": ["wait", "toggleSelection", "normal:j"],
+    "K": ["wait", "toggleSelection", "normal:k"],
+    "gl": ["wait", "expand:recursive"],
+    "gh": ["wait", "collapse:recursive"],
+    "<2-LeftMouse>": [
+      "expandable?",
+      ["expanded?", "collapse", "expand"],
+      "open"
+    ],
+    "o": ["wait", "expanded?", "collapse", "expand"],
+    "C": ["wait", "expandable?", "cd", "open"],
+    "e": "open",
+    "s": "open:split",
+    "v": "open:vsplit",
+    "t": "open:tab",
+    "u": ["wait", "gotoParent"],
+    "gs": ["wait", "reveal:select"],
+    "il": "preview:labeling",
+    "ic": "preview:content",
+    "Il": "previewOnHover:toggle:labeling",
+    "Ic": "previewOnHover:toggle:content",
+    "II": "previewOnHover:disable",
+
+    "yp": "copyFilepath",
+    "yn": "copyFilename",
+    "yy": "copyFile",
+    "dd": "cutFile",
+    "p": "pasteFile",
+    "df": "delete",
+    "d": "deleteForever",
+
+    "a": "addFile",
+    "A": "addDirectory",
+    "r": "rename",
+
+    "zh": "toggleHidden",
+    "g<dot>": "toggleHidden",
+    "R": "refresh",
+
+    "?": "help",
+    "q": "quit",
+    "<esc>": "esc",
+    "X": "systemExecute",
+    "gd": "listDrive",
+
+    "f": "search",
+    "F": "searchRecursive",
+
+    "gf": "gotoSource:file",
+    "gb": "gotoSource:buffer",
+
+    "[[": ["wait", "sourcePrev"],
+    "]]": ["wait", "sourceNext"],
+
+    "[i": ["wait", "indentPrev"],
+    "]i": ["wait", "indentNext"],
+
+    "[m": ["wait", "markPrev:modified"],
+    "]m": ["wait", "markNext:modified"],
+
+    "[d": ["wait", "markPrev:diagnosticError:diagnosticWarning"],
+    "]d": ["wait", "markNext:diagnosticError:diagnosticWarning"],
+    "[D": ["wait", "markPrev:diagnosticError"],
+    "]D": ["wait", "markNext:diagnosticError"],
+
+    "[c": ["wait", "markPrev:git"],
+    "]c": ["wait", "markNext:git"],
+    "<<": "gitStage",
+    ">>": "gitUnstage"
+  },
+  "explorer.file.root.template": "[icon & 1] PROJECT ([root])",
+  "explorer.buffer.root.template": "[icon & 1] OPEN EDITORS",
+  "explorer.file.child.template": "[git | 2] [selection | clip | 1] [indent][icon | 1] [diagnosticError & 1][filename omitCenter 1][modified][readonly] [linkIcon & 1][link growRight 1 omitCenter 5]",
+
+  "tabnine.disable_file_regex": [
+    "[.]md$",
+    "[.]html$",
+    "[.]txt$",
+    "[.]php$",
+    "[.]css$",
+    "[.]scss$",
+    "[.]dart$",
+    "[.]js$",
+    "[.]ts$",
+    "[.]java$"
+  ],
+  "javascript.referencesCodeLens.enable": false,
+  "typescript.referencesCodeLens.enable": false,
+  "cssmodules.camelCase": true,
+  "cssmodules.hintName": " cssmodules ",
+  "html-css-support.enabledLanguages": [
+    "html",
+    "vue",
+    "blade",
+    "htmldjango",
+    "typescriptreact",
+    "javascriptreact"
+  ]
+}
